@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { lintReport } = require('../lib/sanity.js');
+const { computeValuation } = require('../lib/valuation.js');
 'use strict';
 const yahooFinance = require('yahoo-finance2').default;
 const yf = new yahooFinance({ suppressNotices: ['yahooSurvey'] });
@@ -106,7 +107,7 @@ function fund(qs) {
   const bil = v => v != null ? +(v / 1e9).toFixed(3) : null;
   const r2 = v => v != null ? +(+v).toFixed(2) : null;
 
-  // FIX: Accurate ROIC Calculation (Invested Capital = Book Equity + Total Debt)
+  // FIX: Capital-structure-aware ROIC/WACC (handles captive finance + goodwill)
   const totalDebt = fd.totalDebt || 0;
   const marketCap = p.marketCap || 0;
   
@@ -116,29 +117,15 @@ function fund(qs) {
   } else if (marketCap > 0 && sd.priceToBook > 0) {
       bookEquity = marketCap / sd.priceToBook;
   }
-  const investedCapital = bookEquity + totalDebt;
-  const totalCapMkt = totalDebt + marketCap; // For WACC weights
-  
-  let wacc = null;
-  let roic = null;
-  const taxRate = 0.21;
-  
-  if (totalCapMkt > 0 && marketCap > 0) {
-      const riskFreeRate = 0.042;
-      const equityRiskPremium = 0.055;
-      const betaVal = sd.beta ?? k.beta ?? 1.0;
-      const costOfEquity = riskFreeRate + (betaVal * equityRiskPremium);
-      const weightEquity = marketCap / totalCapMkt;
-      const weightDebt = totalDebt / totalCapMkt;
-      const costOfDebt = 0.06; 
-      
-      wacc = (weightEquity * costOfEquity) + (weightDebt * costOfDebt * (1 - taxRate));
-  }
-  
-  if (investedCapital > 0 && fd.operatingMargins != null && fd.totalRevenue != null) {
-      const operatingIncome = fd.operatingMargins * fd.totalRevenue;
-      roic = (operatingIncome * (1 - taxRate)) / investedCapital;
-  }
+
+  const _val = computeValuation({
+    operatingMargin: fd.operatingMargins, totalRevenue: fd.totalRevenue,
+    totalDebt, bookEquity, cash: fd.totalCash, marketCap,
+    beta: sd.beta ?? k.beta, debtToEquity: fd.debtToEquity,
+    sector: k.sector, priceToBook: sd.priceToBook, returnOnEquity: fd.returnOnEquity,
+  });
+  const roic = _val.roic;   // headline (finance-adjusted when applicable)
+  const wacc = _val.wacc;
 
   const rawData = {
     mktcap: bil(p.marketCap), fwdPE: r2(k.forwardPE), evEbitda: r2(k.enterpriseToEbitda),
@@ -158,7 +145,10 @@ function fund(qs) {
     rec: typeof fd.recommendationKey === 'string' ? fd.recommendationKey.toUpperCase().replace('_', ' ') : null,
     nAnalysts: fd.numberOfAnalystOpinions ?? null,
     envScore: esg.environmentScore, socScore: esg.socialScore, govScore: esg.governanceScore,
-    wacc: wacc ? +(wacc * 100).toFixed(2) : null, roic: roic ? +(roic * 100).toFixed(2) : null
+    wacc: _val.wacc, roic: _val.roic,
+    roicNaive: _val.roicNaive, roicAdjusted: _val.roicAdjusted,
+    valuationBasis: _val.basisLabel, valuationRegime: _val.regime,
+    valuationFlag: _val.artifactFlag
   };
   
   return rawData;
@@ -719,7 +709,9 @@ function hideTooltip() {
   }).join('');
 
   
-  const errors = lintReport(vBot + ' ' + vRat, F.roic, F.wacc, T.rsi);
+  const errors = lintReport(vBot + ' ' + vRat, F.roic, F.wacc, T.rsi, {
+    regime: F.valuationRegime, roicAdjusted: F.roicAdjusted, artifactFlag: F.valuationFlag,
+  });
   let linterHtml = '';
   if (errors.length > 0) {
       linterHtml = `<div class="panel" style="border-left: 4px solid var(--accent-red); background: rgba(239,68,68,0.05); margin-bottom: 24px;">
@@ -871,7 +863,9 @@ function hideTooltip() {
                 <div style="font-size:11px; color:var(--text-muted); font-weight:700;">VALUE SPREAD ⓘ</div>
                 <div style="font-size:20px; font-weight:800; color:${(F.roic - F.wacc) > 0 ? 'var(--accent-green)' : 'var(--accent-red)'};">${(F.roic - F.wacc) > 0 ? '+' : ''}${(F.roic - F.wacc).toFixed(2)}%</div>
             </div>
-        </div>` : ''}
+        </div>
+        ${F.valuationBasis ? `<div style="font-size:11px; color:var(--text-muted); margin-top:10px;">Basis: ${F.valuationBasis}${F.roicNaive != null && F.roicAdjusted != null && F.roicNaive !== F.roic ? ` &nbsp;|&nbsp; naive ROIC ${F.roicNaive}% → adjusted ${F.roic}%` : ''}</div>` : ''}
+        ${F.valuationFlag ? `<div style="font-size:11px; color:#fbbf24; margin-top:4px;">⚠️ ${F.valuationFlag}</div>` : ''}` : ''}
     </div>
     <p class="story-text">${valMethod}</p>
     ${valMatrixHtml ? `
