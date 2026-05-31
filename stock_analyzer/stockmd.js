@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const { lintReport } = require('../lib/sanity.js');
+const { computeValuation } = require('../lib/valuation.js');
 'use strict';
 const yahooFinance = require('yahoo-finance2').default;
 const yf = new yahooFinance({ suppressNotices: ['yahooSurvey'] });
@@ -106,7 +107,7 @@ function fund(qs) {
   const bil = v => v != null ? +(v / 1e9).toFixed(3) : null;
   const r2 = v => v != null ? +(+v).toFixed(2) : null;
 
-  // FIX: Accurate ROIC Calculation (Invested Capital = Book Equity + Total Debt)
+  // FIX: Capital-structure-aware ROIC/WACC (handles captive finance + goodwill)
   const totalDebt = fd.totalDebt || 0;
   const marketCap = p.marketCap || 0;
   
@@ -116,29 +117,15 @@ function fund(qs) {
   } else if (marketCap > 0 && sd.priceToBook > 0) {
       bookEquity = marketCap / sd.priceToBook;
   }
-  const investedCapital = bookEquity + totalDebt;
-  const totalCapMkt = totalDebt + marketCap; // For WACC weights
-  
-  let wacc = null;
-  let roic = null;
-  const taxRate = 0.21;
-  
-  if (totalCapMkt > 0 && marketCap > 0) {
-      const riskFreeRate = 0.042;
-      const equityRiskPremium = 0.055;
-      const betaVal = sd.beta ?? k.beta ?? 1.0;
-      const costOfEquity = riskFreeRate + (betaVal * equityRiskPremium);
-      const weightEquity = marketCap / totalCapMkt;
-      const weightDebt = totalDebt / totalCapMkt;
-      const costOfDebt = 0.06; 
-      
-      wacc = (weightEquity * costOfEquity) + (weightDebt * costOfDebt * (1 - taxRate));
-  }
-  
-  if (investedCapital > 0 && fd.operatingMargins != null && fd.totalRevenue != null) {
-      const operatingIncome = fd.operatingMargins * fd.totalRevenue;
-      roic = (operatingIncome * (1 - taxRate)) / investedCapital;
-  }
+
+  const _val = computeValuation({
+    operatingMargin: fd.operatingMargins, totalRevenue: fd.totalRevenue,
+    totalDebt, bookEquity, cash: fd.totalCash, marketCap,
+    beta: sd.beta ?? k.beta, debtToEquity: fd.debtToEquity,
+    sector: k.sector, priceToBook: sd.priceToBook, returnOnEquity: fd.returnOnEquity,
+  });
+  const roic = _val.roic;   // headline (finance-adjusted when applicable)
+  const wacc = _val.wacc;
 
   const rawData = {
     mktcap: bil(p.marketCap), fwdPE: r2(k.forwardPE), evEbitda: r2(k.enterpriseToEbitda),
@@ -158,7 +145,10 @@ function fund(qs) {
     rec: typeof fd.recommendationKey === 'string' ? fd.recommendationKey.toUpperCase().replace('_', ' ') : null,
     nAnalysts: fd.numberOfAnalystOpinions ?? null,
     envScore: esg.environmentScore, socScore: esg.socialScore, govScore: esg.governanceScore,
-    wacc: wacc ? +(wacc * 100).toFixed(2) : null, roic: roic ? +(roic * 100).toFixed(2) : null
+    wacc: _val.wacc, roic: _val.roic,
+    roicNaive: _val.roicNaive, roicAdjusted: _val.roicAdjusted,
+    valuationBasis: _val.basisLabel, valuationRegime: _val.regime,
+    valuationFlag: _val.artifactFlag
   };
   
   return rawData;
@@ -635,6 +625,18 @@ function hideTooltip() {
   const peer2 = D.PEER2 || '';
   const nextEarnings = D.NEXT_EARNINGS || 'TBD';
   const sources = pipes(D.SOURCES || '');
+  const followCash = pipes(D.FOLLOW_THE_CASH || '');
+  const preMortem = pipes(D.PRE_MORTEM || D.POST_MORTEM || '');
+  const thesisWeights = pipes(D.THESIS_WEIGHTS || D.WEIGHTS || '');
+  const techVerdict = D.TECH_SETUP || D.TECH_VERDICT || '';
+  const weightCards = thesisWeights.map(item => {
+    const m = item.match(/^(.*?)\s*=\s*(\d+)%?$/) || item.match(/^(.*?)\s+(\d+)%$/) || item.match(/^(.*?)~(\d+)%?$/);
+    if (!m) return `<div class="kpi"><div class="lbl">Factor</div><div class="val">${item}</div></div>`;
+    const label = m[1].trim();
+    const pct = +m[2];
+    const color = pct >= 25 ? 'pos' : pct >= 15 ? 'neu' : '';
+    return `<div class="kpi"><div class="lbl">${label}</div><div class="val ${color}">${pct}%</div><div class="sub">thesis weight</div></div>`;
+  }).join('');
   const sourceLinks = sources.length
     ? `<div style="display:flex; gap:12px; flex-wrap:wrap;">${sources.map(s => { const parts = s.split(' '); const url = parts.pop(); const name = parts.join(' '); return url && url.startsWith('http') ? `<a href="${url}" target="_blank" class="dataroma-link">${name} ↗</a>` : `<span class="badge badge-blue">${s}</span>`; }).join('')}</div>`
     : '<p class="story-text">Yahoo Finance via Node.js</p>';
@@ -719,7 +721,9 @@ function hideTooltip() {
   }).join('');
 
   
-  const errors = lintReport(vBot + ' ' + vRat, F.roic, F.wacc, T.rsi);
+  const errors = lintReport(vBot + ' ' + vRat, F.roic, F.wacc, T.rsi, {
+    regime: F.valuationRegime, roicAdjusted: F.roicAdjusted, artifactFlag: F.valuationFlag,
+  });
   let linterHtml = '';
   if (errors.length > 0) {
       linterHtml = `<div class="panel" style="border-left: 4px solid var(--accent-red); background: rgba(239,68,68,0.05); margin-bottom: 24px;">
@@ -820,6 +824,12 @@ function hideTooltip() {
     </div>
   </div>
 
+  ${(followCash.length || preMortem.length) ? `
+  <div class="grid g2">
+    ${followCash.length ? `<div class="panel"><h2>💵 Follow the Cash</h2>${li(followCash, 'neu')}</div>` : ''}
+    ${preMortem.length ? `<div class="panel"><h2>🪦 Pre-Mortem</h2><p class="story-text" style="margin-top:-8px;font-size:13px;color:var(--text-muted)">If the stock materially underperforms, these are the most likely failure paths.</p>${li(preMortem, 'bear')}</div>` : ''}
+  </div>` : ''}
+
   ${arenaHtml ? `
   <div class="panel">
     <h2>⚔️ Competitive Moat Risk Matrix</h2>
@@ -871,7 +881,9 @@ function hideTooltip() {
                 <div style="font-size:11px; color:var(--text-muted); font-weight:700;">VALUE SPREAD ⓘ</div>
                 <div style="font-size:20px; font-weight:800; color:${(F.roic - F.wacc) > 0 ? 'var(--accent-green)' : 'var(--accent-red)'};">${(F.roic - F.wacc) > 0 ? '+' : ''}${(F.roic - F.wacc).toFixed(2)}%</div>
             </div>
-        </div>` : ''}
+        </div>
+        ${F.valuationBasis ? `<div style="font-size:11px; color:var(--text-muted); margin-top:10px;">Basis: ${F.valuationBasis}${F.roicNaive != null && F.roicAdjusted != null && F.roicNaive !== F.roic ? ` &nbsp;|&nbsp; naive ROIC ${F.roicNaive}% → adjusted ${F.roic}%` : ''}</div>` : ''}
+        ${F.valuationFlag ? `<div style="font-size:11px; color:#fbbf24; margin-top:4px;">⚠️ ${F.valuationFlag}</div>` : ''}` : ''}
     </div>
     <p class="story-text">${valMethod}</p>
     ${valMatrixHtml ? `
@@ -943,13 +955,18 @@ function hideTooltip() {
       <div class="box" style="border-top:4px solid var(--accent-blue)">
         <h3>Rating: ${vRat} <span style="color:var(--accent-amber);margin-left:8px;font-size:18px;">${starStr}</span></h3>
         <p class="story-text" style="font-size:15px;">${vBot}</p>
+        ${techVerdict ? `<div style="margin-top:16px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:12px;border-left:4px solid var(--accent-amber)"><strong style="color:var(--accent-amber)">Technical weight in the call:</strong><div class="story-text" style="margin-top:6px">${techVerdict}</div></div>` : ''}
+        ${(F.roic != null && F.wacc != null) ? `<div style="margin-top:16px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:12px;border-left:4px solid ${(F.roic - F.wacc) >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}"><strong style="color:${(F.roic - F.wacc) >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">Value spread contribution:</strong><div class="story-text" style="margin-top:6px">ROIC ${f2(F.roic)}% versus WACC ${f2(F.wacc)}% implies a ${(F.roic - F.wacc) >= 0 ? 'positive' : 'negative'} spread of ${((F.roic - F.wacc) >= 0 ? '+' : '') + f2(F.roic - F.wacc)}%. This should be explicitly weighed in the final rating rather than treated as a side note.</div></div>` : ''}
       </div>
-      <div class="grid g2">
-        ${kpi('Ideal Entry', trEntry)}
-        ${kpi('Stop Loss', trStop, '', 'neg')}
-        ${kpi('Targets', `${trT1} → ${trT2}`, '', 'pos')}
-        ${kpi('Position Size', trSize)}
-        ${divYield ? kpi('Div Yield', divYield + '%', `\$${f2(F.divRate)}/yr`, 'neu') : ''}
+      <div>
+        ${weightCards ? `<div class="panel" style="padding:20px; margin-bottom:16px;"><h2 style="font-size:18px; margin-bottom:16px;">🧮 Thesis Weighting</h2><div class="grid g3" style="gap:14px;">${weightCards}</div></div>` : ''}
+        <div class="grid g2">
+          ${kpi('Ideal Entry', trEntry)}
+          ${kpi('Stop Loss', trStop, '', 'neg')}
+          ${kpi('Targets', `${trT1} → ${trT2}`, '', 'pos')}
+          ${kpi('Position Size', trSize)}
+          ${divYield ? kpi('Div Yield', divYield + '%', `\$${f2(F.divRate)}/yr`, 'neu') : ''}
+        </div>
       </div>
     </div>
   </div>
