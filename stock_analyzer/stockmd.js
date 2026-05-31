@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const { lintReport } = require('../lib/sanity.js');
 const { computeValuation } = require('../lib/valuation.js');
+const { compositeScore } = require('../lib/quality.js');
 'use strict';
 const yahooFinance = require('yahoo-finance2').default;
 const yf = new yahooFinance({ suppressNotices: ['yahooSurvey'] });
@@ -479,6 +480,21 @@ function hideTooltip() {
   const PEERS  = (D.PEERS || '').trim().split(/\s+/).filter(Boolean).map(s => s.toUpperCase());
   const NAME   = D.NAME?.trim() || TICKER;
 
+  // ── Read the deterministic quality/composite block written by stockfetch.js ──
+  // These are computed from Yahoo annual statements (not LLM recall) so we render
+  // them verbatim. Insider score (from the report's INSIDER line) is folded into
+  // the composite here so the headline scorecard reflects all signals.
+  let DATA = null, QUAL = null, COMP = null;
+  try {
+    const dataPath = `${TICKER}_data.json`;
+    if (fs.existsSync(dataPath)) {
+      DATA = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+      const primary = Array.isArray(DATA) ? DATA[0] : null;
+      QUAL = primary?.quality || null;
+      COMP = primary?.composite || null;
+    }
+  } catch (e) { process.stderr.write(`[stockmd] note: could not read ${TICKER}_data.json (${e.message})\n`); }
+
   process.stderr.write(`[stockmd] fetching ${TICKER}+${PEERS.length} peers...\n`);
 
   const d1 = Math.floor(Date.now() / 1000) - 370 * 24 * 3600;
@@ -677,6 +693,8 @@ function hideTooltip() {
   const trT1 = getKV(D.TRADE||'', 'T1');
   const trT2 = getKV(D.TRADE||'', 'T2');
   const trSize = getKVQ(D.TRADE||'', 'SIZE');
+  const trConfirm = getKVQ(D.TRADE||'', 'CONFIRM');
+  const trAvoid = getKVQ(D.TRADE||'', 'AVOID');
   
   const vRat = getKVQ(D.VERDICT||'', 'RATING');
   const vBot = (D.VERDICT||'').match(/BOTTOM=(.*)/) ? (D.VERDICT||'').match(/BOTTOM=(.*)/)[1].trim() : '';
@@ -686,6 +704,103 @@ function hideTooltip() {
   const ins = D.INSIDER || '';
   const insScore = getKV(ins, 'SCORE');
   const insSignal = (ins.match(/SIGNAL=(.+)$/) ? ins.match(/SIGNAL=(.+)$/)[1].trim() : ins.replace(/\w+=\S+\s*/g, '').trim());
+
+  // ── Recompute the composite WITH the insider score folded in (stockfetch's
+  //    baseline excludes it). All inputs are Yahoo-derived; insider from SEC. ──
+  let COMP_FULL = COMP;
+  if (QUAL && QUAL.available) {
+    COMP_FULL = compositeScore({
+      revGr: F.revGr, netMgn: F.netMgn, roe: F.roe,
+      fScore: QUAL.piotroski.score,
+      evaSpreadPct: QUAL.eva.spreadPct,
+      cashConversion: QUAL.earningsQuality.cashConversion,
+      marginOfSafetyPct: QUAL.marginOfSafety.discountPct,
+      price: T.price, ma50: T.ma50, ma200: T.ma200, rsi: T.rsi, macd: T.macd,
+      goldenCross: T.gc,
+      insiderScore: insScore !== '' && !isNaN(+insScore) ? +insScore : null,
+    });
+  }
+
+  // ── Build the deterministic Quality & Scoring HTML block ──
+  const qualHtml = (() => {
+    if (!QUAL || !QUAL.available) return '';
+    const p = QUAL.piotroski, eq = QUAL.earningsQuality, ev = QUAL.eva, mo = QUAL.marginOfSafety;
+    const fColor = p.score >= 8 ? 'pos' : p.score >= 5 ? 'neu' : 'neg';
+    const fRows = p.criteria.map((c, i) => {
+      const icon = c.pass === 1 ? '✅' : c.pass === 0 ? '❌' : '⚠️';
+      const cls = c.pass === 1 ? 'pos' : c.pass === 0 ? 'neg' : 'neu';
+      return `<tr><td>${i + 1}</td><td>${c.label}</td><td>${c.detail}</td><td class="${cls}" style="text-align:center">${icon} ${c.pass == null ? 'n/a' : c.pass}</td></tr>`;
+    }).join('');
+    const eqColor = eq.flag === 'positive' ? 'pos' : eq.flag === 'negative' ? 'neg' : 'neu';
+    const stmtRows = (QUAL.statements || []).map(s => {
+      const b = v => v != null ? (v / 1e9).toFixed(2) : '—';
+      return `<tr><td>${s.date}</td><td>${b(s.totalRevenue)}</td><td>${b(s.netIncome)}</td><td>${b(s.operatingCashFlow)}</td><td>${b(s.freeCashFlow)}</td><td>${b(s.totalAssets)}</td></tr>`;
+    }).join('');
+    const subScoreBar = (label, v) => v == null ? '' : `
+      <div style="margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:4px;"><span>${label}</span><span class="${v >= 7 ? 'pos' : v >= 4 ? 'neu' : 'neg'}" style="font-weight:700;">${v}/10</span></div>
+        <div style="height:8px;border-radius:5px;background:rgba(255,255,255,0.06);overflow:hidden;"><div style="height:100%;width:${v * 10}%;border-radius:5px;background:${v >= 7 ? 'var(--accent-green)' : v >= 4 ? 'var(--accent-amber)' : 'var(--accent-red)'};"></div></div>
+      </div>`;
+    const ss = COMP_FULL?.subScores || {};
+    const compColor = COMP_FULL && COMP_FULL.composite >= 6 ? 'pos' : COMP_FULL && COMP_FULL.composite >= 4 ? 'neu' : 'neg';
+
+    // ── Peer-comparable quality table (every ticker now carries quality+composite) ──
+    const peerQualRows = (Array.isArray(DATA) ? DATA : []).map(row => {
+      const rq = row.quality, rc = row.composite, isP = row.sym === TICKER;
+      if (!rq || !rq.available) {
+        return `<tr${isP ? ' style="background:rgba(255,255,255,.05);font-weight:700"' : ''}><td>${row.sym}${isP ? ' ★' : ''}</td><td colspan="5" style="color:var(--text-muted)">quality n/a (insufficient statements)</td></tr>`;
+      }
+      const fcol = rq.piotroski.score >= 8 ? 'pos' : rq.piotroski.score >= 5 ? 'neu' : 'neg';
+      const ccol = rc && rc.composite >= 6 ? 'pos' : rc && rc.composite >= 4 ? 'neu' : 'neg';
+      const evCol = rq.eva.spreadPct > 0 ? 'pos' : 'neg';
+      const moCol = rq.marginOfSafety.discountPct > 10 ? 'pos' : rq.marginOfSafety.discountPct >= 0 ? 'neu' : 'neg';
+      return `<tr${isP ? ' style="background:rgba(255,255,255,.05);font-weight:700"' : ''}>
+<td>${row.sym}${isP ? ' ★' : ''}</td>
+<td class="${fcol}" style="text-align:center">${rq.piotroski.score}/9</td>
+<td class="${rq.earningsQuality.flag === 'positive' ? 'pos' : rq.earningsQuality.flag === 'negative' ? 'neg' : 'neu'}">${rq.earningsQuality.cashConversion != null ? rq.earningsQuality.cashConversion + 'x' : '—'}</td>
+<td class="${evCol}">${rq.eva.spreadPct != null ? (rq.eva.spreadPct > 0 ? '+' : '') + rq.eva.spreadPct + '%' : '—'}</td>
+<td class="${moCol}">${rq.marginOfSafety.discountPct != null ? rq.marginOfSafety.discountPct + '%' : '—'}</td>
+<td class="${ccol}" style="text-align:center;font-weight:700">${rc ? rc.composite + '/10' : '—'}</td></tr>`;
+    }).join('');
+    const peerQualTable = peerQualRows ? `
+  <h4 class="block" style="font-size:14px;color:var(--text-main);margin:24px 0 12px;">Peer-Comparable Quality &amp; Composite <span style="font-weight:normal;color:var(--text-muted);font-size:12px;">— all deterministic from Yahoo statements; composite ex-insider for apples-to-apples</span></h4>
+  <div class="table-wrap"><table><thead><tr><th>Ticker</th><th style="text-align:center">F-Score</th><th>Cash Conv.</th><th>EVA Spread</th><th>Margin of Safety</th><th style="text-align:center">Composite</th></tr></thead><tbody>${peerQualRows}</tbody></table></div>` : '';
+
+    return `
+<div class="panel">
+  <h2>🏅 Quality &amp; Scoring <span style="font-size:13px;color:var(--text-muted);font-weight:normal;text-transform:none;">— computed from Yahoo annual statements (FY ${QUAL.fiscalPrior} → ${QUAL.fiscalCurrent})</span></h2>
+  <div class="grid g4" style="margin-bottom:20px;">
+    ${kpi('Piotroski F-Score', `${p.score}/9`, p.verdict, fColor)}
+    ${kpi('Earnings Quality', eq.cashConversion != null ? `${eq.cashConversion}x` : '—', `CFO/NI · ${eq.verdict}`, eqColor)}
+    ${kpi('Accruals Ratio', eq.accrualRatioPct != null ? `${eq.accrualRatioPct}%` : '—', 'negative = cash-backed', eq.accrualRatioPct != null && eq.accrualRatioPct <= 0 ? 'pos' : 'neu')}
+    ${kpi('Economic Value Added', ev.evaB != null ? `$${ev.evaB}B` : '—', ev.verdict, ev.spreadPct > 0 ? 'pos' : 'neg')}
+    ${kpi('Margin of Safety', mo.discountPct != null ? `${mo.discountPct}%` : '—', mo.band, mo.discountPct > 10 ? 'pos' : mo.discountPct >= 0 ? 'neu' : 'neg')}
+    ${COMP_FULL ? kpi('Composite Score', `${COMP_FULL.composite}/10`, `${COMP_FULL.signal} · ${COMP_FULL.action} · ${COMP_FULL.conviction}`, compColor) : ''}
+  </div>
+
+  <div class="g g2">
+    <div>
+      <h4 class="block" style="font-size:14px;color:var(--text-main);margin:0 0 12px;">Piotroski F-Score Breakdown</h4>
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>Criterion</th><th>Detail</th><th>Score</th></tr></thead><tbody>${fRows}</tbody></table></div>
+      <p class="story-text" style="font-size:12px;color:var(--text-muted);margin-top:8px;">${p.evaluated}/9 criteria measurable from Yahoo data. ⚠️ = field unavailable (scored 0, not estimated).</p>
+    </div>
+    <div>
+      <h4 class="block" style="font-size:14px;color:var(--text-main);margin:0 0 12px;">Weighted Composite (0–10)</h4>
+      ${subScoreBar('Fundamentals / Growth', ss.fundamentals)}
+      ${subScoreBar('Quality (F-Score + EVA)', ss.quality)}
+      ${subScoreBar('Valuation / Margin of Safety', ss.valuation)}
+      ${subScoreBar('Technical Setup', ss.technical)}
+      ${subScoreBar('Insider / Ownership', ss.insider)}
+      ${COMP_FULL ? `<div style="margin-top:14px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border-left:4px solid ${compColor === 'pos' ? 'var(--accent-green)' : compColor === 'neu' ? 'var(--accent-amber)' : 'var(--accent-red)'};"><strong>Composite ${COMP_FULL.composite}/10</strong> → ${COMP_FULL.signal} / ${COMP_FULL.action} / ${COMP_FULL.conviction} conviction. <span style="color:var(--text-muted);font-size:12px;">8–10 Strongly Bullish · 6–7.9 Moderately Bullish · 4–5.9 Neutral · &lt;4 Bearish</span></div>` : ''}
+    </div>
+  </div>
+
+  ${peerQualTable}
+
+  ${stmtRows ? `<h4 class="block" style="font-size:14px;color:var(--text-main);margin:24px 0 12px;">Exact Fundamentals — Annual Statements ($B, source: Yahoo fundamentalsTimeSeries)</h4>
+  <div class="table-wrap"><table><thead><tr><th>Fiscal Year</th><th>Revenue</th><th>Net Income</th><th>Op. Cash Flow</th><th>Free Cash Flow</th><th>Total Assets</th></tr></thead><tbody>${stmtRows}</tbody></table></div>` : ''}
+</div>`;
+  })();
 
   
   const catHistRaw = D.CATALYSTS_HIST || '';
@@ -896,6 +1011,8 @@ function hideTooltip() {
     </div>` : ''}
   </div>
 
+  ${qualHtml}
+
   <div class="panel">
     <h2>🎯 Scenario Analysis</h2>
     <div class="s-nav">
@@ -967,6 +1084,8 @@ function hideTooltip() {
           ${kpi('Position Size', trSize)}
           ${divYield ? kpi('Div Yield', divYield + '%', `\$${f2(F.divRate)}/yr`, 'neu') : ''}
         </div>
+        ${trConfirm ? `<div style="margin-top:16px;padding:16px 18px;background:rgba(59,130,246,0.06);border-radius:12px;border-left:4px solid var(--accent-blue)"><strong style="color:#60a5fa;display:block;margin-bottom:8px;">📈 Scale-In / Confirmation Trigger</strong><div class="story-text" style="margin:0;font-size:14px;">The second tranche is <em>not</em> automatic. Add the remaining size only once this confirmation condition is met: <strong style="color:var(--text-main)">${trConfirm}</strong></div></div>` : ''}
+        ${trAvoid ? `<div style="margin-top:12px;padding:14px 16px;background:rgba(239,68,68,0.05);border-radius:12px;border-left:4px solid var(--accent-red)"><strong style="color:#f87171;">Avoid:</strong> <span class="story-text" style="font-size:14px;">${trAvoid}</span></div>` : ''}
       </div>
     </div>
   </div>

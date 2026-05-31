@@ -6,6 +6,7 @@ const yf = new yahooFinance({ suppressNotices: ['yahooSurvey'] });
 const fs = require('fs');
 const { getRSI, getSMA, getMACD, getADX } = require('../lib/indicators.js');
 const { computeValuation } = require('../lib/valuation.js');
+const { piotroski, earningsQuality, eva, marginOfSafety, compositeScore } = require('../lib/quality.js');
 
 const args = process.argv.slice(2);
 if (!args.length) {
@@ -156,32 +157,127 @@ function extractFund(qs) {
   };
 }
 
-async function fetchOne(sym) {
+// ── Annual financial statements via fundamentalsTimeSeries ──────────────────
+// The legacy *History modules return almost nothing since Nov-2024, so Yahoo
+// directs us to fundamentalsTimeSeries. We pull the fields the F-Score / earnings
+// -quality math needs and normalize to plain {field: number} rows, newest last.
+const STMT_FIELDS = [
+  'totalRevenue', 'grossProfit', 'costOfRevenue', 'operatingIncome', 'netIncome',
+  'totalAssets', 'currentAssets', 'currentLiabilities', 'longTermDebt', 'totalDebt',
+  'operatingCashFlow', 'freeCashFlow', 'dilutedAverageShares',
+];
+
+async function fetchStatements(sym) {
+  try {
+    const period1 = `${new Date().getFullYear() - 5}-01-01`;
+    const period2 = new Date().toISOString().slice(0, 10);
+    const rows = await yf.fundamentalsTimeSeries(sym, {
+      period1, period2, type: 'annual', module: 'all',
+    }).catch(() => null);
+    if (!Array.isArray(rows) || !rows.length) return [];
+    return rows.map(r => {
+      const out = { date: r.date ? new Date(r.date).toISOString().slice(0, 10) : null };
+      for (const f of STMT_FIELDS) if (r[f] != null && !Number.isNaN(+r[f])) out[f] = +r[f];
+      return out;
+    }).filter(r => r.totalRevenue != null);
+  } catch { return []; }
+}
+
+// Build the deterministic quality block from the two latest annual statements.
+function computeQuality(stmts, fund, tech) {
+  if (!stmts || stmts.length < 2) {
+    return { available: false, note: 'insufficient annual statement history' };
+  }
+  const cur = stmts[stmts.length - 1];
+  const prv = stmts[stmts.length - 2];
+
+  const f = piotroski(cur, prv);
+  const eq = earningsQuality(cur, prv);
+  const evaR = eva({ roicPct: fund.roic, waccPct: fund.wacc, investedCapitalB: fund.investedCapitalB });
+  const mos = marginOfSafety(tech.price, fund.tgtMean);
+
+  return {
+    available: true,
+    fiscalCurrent: cur.date,
+    fiscalPrior: prv.date,
+    piotroski: f,
+    earningsQuality: eq,
+    eva: evaR,
+    marginOfSafety: mos,
+    statements: stmts.slice(-4), // keep last 4y for the report's mini-table
+  };
+}
+
+async function fetchOne(sym, withStatements) {
   const d1 = Math.floor(Date.now() / 1000) - 370 * 24 * 3600;
-  const [qs, ch] = await Promise.all([
+  const [qs, ch, stmts] = await Promise.all([
     yf.quoteSummary(sym, {
       modules: ['price', 'defaultKeyStatistics', 'financialData', 'summaryDetail']
     }).catch(() => null),
     yf.chart(sym, { period1: d1, interval: '1d' }).catch(() => null),
+    withStatements ? fetchStatements(sym) : Promise.resolve(null),
   ]);
 
-  return {
-    sym,
-    fund: extractFund(qs),
-    tech: computeTech(ch?.quotes || []),
-  };
+  const fund = extractFund(qs);
+  const tech = computeTech(ch?.quotes || []);
+  const out = { sym, fund, tech };
+  if (withStatements) out.quality = computeQuality(stmts, fund, tech);
+  return out;
 }
 
 (async () => {
   const allSyms = [TICKER, ...PEERS];
-  const results = await Promise.all(allSyms.map(fetchOne));
-  fs.writeFileSync(`${TICKER}_data.json`, JSON.stringify(results, null, 2));
+  // Statements (for the deterministic quality block) are fetched for EVERY ticker
+  // so the Piotroski F-Score, EVA, margin-of-safety and 0–10 composite are
+  // comparable across the whole peer table — not just the primary.
+  const results = await Promise.all(
+    allSyms.map(s => fetchOne(s, true))
+  );
+
+  // ── Deterministic 0–10 composite per ticker (insider score is primary-only,
+  //    injected later from insiderfetch.js; peers get the fundamentals baseline). ──
+  for (const r of results) {
+    const rf = r.fund || {}, rt = r.tech || {}, rq = r.quality || {};
+    r.composite = compositeScore({
+      revGr: rf.revGr, netMgn: rf.netMgn, roe: rf.roe,
+      fScore: rq.available ? rq.piotroski.score : null,
+      evaSpreadPct: rq.available ? rq.eva.spreadPct : rf.valueSpread,
+      cashConversion: rq.available ? rq.earningsQuality.cashConversion : null,
+      marginOfSafetyPct: rq.available ? rq.marginOfSafety.discountPct : null,
+      price: rt.price, ma50: rt.ma50, ma200: rt.ma200, rsi: rt.rsi, macd: rt.macd,
+      goldenCross: rt.goldenCross,
+    });
+  }
 
   const primary = results[0] || {};
   const f = primary.fund || {};
   const t = primary.tech || {};
-  const fetchDate = new Date().toISOString().slice(0, 10);
+  const q = primary.quality || {};
+  const comp = primary.composite;
 
-  console.log(`[stockfetch] ✓ Wrote ${TICKER}_data.json with unified valuation math.`);
-  console.log(`DATA_INTEGRITY: PRICE=${t.price ?? 'NA'} FWDPE=${f.fwdPE ?? 'NA'} TGTMEAN=${f.tgtMean ?? 'NA'} REVGR=${f.revGr ?? 'NA'} MA50=${t.ma50 ?? 'NA'} MA200=${t.ma200 ?? 'NA'} W52H=${t.w52h ?? 'NA'} W52L=${t.w52l ?? 'NA'} ROIC=${f.roic ?? 'NA'} WACC=${f.wacc ?? 'NA'} VALUE_SPREAD=${f.valueSpread ?? 'NA'} SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=${fetchDate}`);
+  fs.writeFileSync(`${TICKER}_data.json`, JSON.stringify(results, null, 2));
+
+  const fetchDate = new Date().toISOString().slice(0, 10);
+  const fs2 = q.available ? `${q.piotroski.score}/9` : 'NA';
+  const evaSpread = q.available ? q.eva.spreadPct : (f.valueSpread ?? 'NA');
+  const mos = q.available && q.marginOfSafety.discountPct != null ? q.marginOfSafety.discountPct : 'NA';
+  const cashConv = q.available ? q.earningsQuality.cashConversion : 'NA';
+
+  console.log(`[stockfetch] ✓ Wrote ${TICKER}_data.json with unified valuation + quality math.`);
+  if (q.available) {
+    console.log(`[stockfetch] Piotroski F-Score: ${q.piotroski.score}/9 (${q.piotroski.verdict}) | FY ${q.fiscalPrior} → ${q.fiscalCurrent}`);
+    console.log(`[stockfetch] Earnings Quality: accruals ${q.earningsQuality.accrualRatioPct}% | cash-conversion ${q.earningsQuality.cashConversion}x (${q.earningsQuality.verdict})`);
+    console.log(`[stockfetch] EVA: ${q.eva.evaB}B (${q.eva.verdict}) | Margin of Safety: ${q.marginOfSafety.discountPct}% (${q.marginOfSafety.band})`);
+    console.log(`[stockfetch] Composite (ex-insider): ${comp.composite}/10 → ${comp.signal} / ${comp.action} / ${comp.conviction}`);
+  } else {
+    console.log(`[stockfetch] ⚠️ Quality block unavailable: ${q.note || 'no statements'}`);
+  }
+  // Peer-comparable quality table (all tickers, deterministic, ex-insider)
+  console.log(`[stockfetch] ── Peer Quality Comparison (F-Score / Composite, ex-insider) ──`);
+  for (const r of results) {
+    const rq = r.quality || {}, rc = r.composite || {};
+    const fs = rq.available ? `${rq.piotroski.score}/9` : 'n/a';
+    console.log(`[stockfetch]   ${r.sym.padEnd(6)} F-Score ${fs.padEnd(5)} | Composite ${rc.composite ?? 'n/a'}/10 ${rc.signal || ''}`);
+  }
+  console.log(`DATA_INTEGRITY: PRICE=${t.price ?? 'NA'} FWDPE=${f.fwdPE ?? 'NA'} TGTMEAN=${f.tgtMean ?? 'NA'} REVGR=${f.revGr ?? 'NA'} MA50=${t.ma50 ?? 'NA'} MA200=${t.ma200 ?? 'NA'} W52H=${t.w52h ?? 'NA'} W52L=${t.w52l ?? 'NA'} ROIC=${f.roic ?? 'NA'} WACC=${f.wacc ?? 'NA'} VALUE_SPREAD=${f.valueSpread ?? 'NA'} FSCORE=${fs2} EVA_SPREAD=${evaSpread} CASH_CONV=${cashConv} MOS=${mos} COMPOSITE=${comp.composite} SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=${fetchDate}`);
 })();

@@ -46,6 +46,8 @@ curl -sLO https://raw.githubusercontent.com/researchshipper/arena2/main/stock_an
 mkdir -p ../lib
 curl -sL https://raw.githubusercontent.com/researchshipper/arena2/main/lib/indicators.js -o ../lib/indicators.js
 curl -sL https://raw.githubusercontent.com/researchshipper/arena2/main/lib/sanity.js -o ../lib/sanity.js
+curl -sL https://raw.githubusercontent.com/researchshipper/arena2/main/lib/valuation.js -o ../lib/valuation.js
+curl -sL https://raw.githubusercontent.com/researchshipper/arena2/main/lib/quality.js -o ../lib/quality.js
 npm install yahoo-finance2 --silent
 ```
 
@@ -65,6 +67,35 @@ If this playbook's embedded code differs from the local repo files, the local re
 - `stockfetch.js` must use the same valuation engine as `stockmd.js` / `../lib/valuation.js`
 - the LLM should anchor on the **headline ROIC**, **WACC**, and **value spread** written into `{TICKER}_data.json`
 - if `stockfetch.js` exposes `roicNaive`, `roicAdjusted`, `valueSpread`, or `valuationBasis`, use those fields directly rather than recomputing from memory
+
+## 🏅 DETERMINISTIC QUALITY ENGINE (`../lib/quality.js`)
+
+`stockfetch.js` now pulls Yahoo **annual financial statements** via `fundamentalsTimeSeries`
+(the legacy `*History` modules return almost nothing since Nov-2024) and computes a full
+quality block in code — never by LLM recall. The primary ticker's `{TICKER}_data.json`
+gains a `quality` object and a `composite` object:
+
+- **Piotroski F-Score (0–9)** — 9 binary criteria on the two latest fiscal years. Criteria
+  whose Yahoo fields are missing are marked `⚠️ n/a` (scored 0, never estimated) and the
+  `evaluated` count is shown. Verdict: 8–9 strong · 5–7 average · 0–4 weak.
+- **Earnings Quality** — accruals ratio `(NI − CFO)/avg assets` (negative = cash-backed) and
+  cash-conversion `CFO/NI` (≥1.0x healthy, <0.7x suspect).
+- **Economic Value Added (EVA)** — `(ROIC − WACC) × invested capital`, consistent with the
+  headline value spread from `valuation.js`.
+- **Margin of Safety** — discount of price to the Yahoo analyst-mean target, banded
+  (>30% compelling · 10–30% attractive · 0–10% fair · <0 premium).
+- **Composite Score (0–10)** — deterministic weighted blend of fundamentals, quality
+  (F-Score + EVA + cash conversion), valuation (margin of safety), technicals, and insider
+  score. `stockfetch.js` writes a baseline (ex-insider); `stockmd.js` recomputes it with the
+  SEC insider score folded in and renders the 🏅 Quality & Scoring panel + Exact Fundamentals
+  annual-statement table.
+
+**RULE:** The F-Score, EVA, cash-conversion, margin-of-safety and composite shown in the
+report MUST be the values printed by `stockfetch.js` / stored in `{TICKER}_data.json`. Never
+hand-write these — they are measured, and the LLM frequently guesses them wrong (e.g. it will
+assume a fast-grower has F-Score 7/9 when balance-sheet growth outpacing profit makes it 4/9).
+Copy `FSCORE`, `EVA_SPREAD`, `CASH_CONV`, `MOS`, `COMPOSITE` from the stdout `DATA_INTEGRITY`
+line into the report's `DATA_INTEGRITY` line so they are double-verified.
 
 ### Verdict rules
 The final call must synthesize **valuation, supply chain, insider signal, technical setup, and ROIC/WACC value spread**.
@@ -1010,7 +1041,7 @@ CATALYSTS_HIST:
 2026-05-19 | JP Morgan Conf | Event | Positive | Shipment growth 54% YoY
 RISKS: Supply Chain ~ High Impact ~ Operational ~ CoWoS packaging bottlenecks | Concentration ~ Medium Impact ~ Revenue ~ MSFT and META account for >40% of sales
 UPCOMING: Q2 Earnings | 800G shipments scale
-TRADE: ENTRY=$150 STOP=$135 T1=$185 T2=$220 SIZE=Full_Position AVOID=Chasing pre-earnings
+TRADE: ENTRY=$150 STOP=$135 T1=$185 T2=$220 SIZE=Half_Position (¼ starter, add ¼ on confirmation) CONFIRM=Daily close back above the post-earnings gap ($165) on above-average volume, OR a successful retest that holds the 50-day MA AVOID=Chasing pre-earnings
 VERDICT: RATING=STRONG BUY STARS=5 CONVICTION=High BOTTOM=ANET is a definitive buy at these levels. Despite the systemic geopolitical supply chain risks regarding TSMC dependency, the aggressive AI capex cycle is fundamentally extending its networking monopoly. We reject the generic fear of margin compression; the underlying EOS software integration has structurally raised the margin floor. The valuation at 42x forward earnings offers a rare margin of safety for a hyper-scaler entering an AI production supercycle.
 SOURCES: Source1 URL1 | Source2 URL2
 DATA_INTEGRITY: PRICE=201.97 FWDPE=12.94 TGTMEAN=280.16 REVGR=23.4 MA50=226.35 MA200=349.23 W52H=632.39 W52L=173.25 SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=2026-05-25
@@ -1051,9 +1082,10 @@ DATA_INTEGRITY: PRICE=201.97 FWDPE=12.94 TGTMEAN=280.16 REVGR=23.4 MA50=226.35 M
 - BULL, BEAR, SUPPLY, CATALYSTS, RISKS, UPCOMING, AI_OPP, AI_THR — pipe `|` separated items
 - INSIDER — `SCORE=N SENTIMENT=X BUYS=... SELLS=... SIGNAL=...`
 - VALUATION — `FAIR=$X BEAR=$Y UPSIDE=Z%` then `METHOD=` then description
-- TRADE — `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... AVOID=...`
+- TRADE — `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... CONFIRM=... AVOID=...`
+  - **CONFIRM** is MANDATORY whenever SIZE is a scaled/partial position (e.g. "add ¼ on confirmation"). It must state the exact, observable trigger (a price level, MA reclaim, volume condition, or post-earnings event) that justifies adding the second tranche. Never leave "on confirmation" undefined.
 - VERDICT — `RATING=... STARS=N CONVICTION=...` then `BOTTOM=` then paragraph
-- DATA_INTEGRITY — copy exact values from `stockfetch.js` stdout output. Format: `PRICE=X.XX FWDPE=X.XX TGTMEAN=X.XX REVGR=X.X MA50=X.XX MA200=X.XX W52H=X.XX W52L=X.XX SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD`
+- DATA_INTEGRITY — copy exact values from `stockfetch.js` stdout output. Format: `PRICE=X.XX FWDPE=X.XX TGTMEAN=X.XX REVGR=X.X MA50=X.XX MA200=X.XX W52H=X.XX W52L=X.XX ROIC=X WACC=X VALUE_SPREAD=X FSCORE=N/9 EVA_SPREAD=X CASH_CONV=X MOS=X COMPOSITE=X SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD` (copy ALL fields verbatim from stockfetch.js stdout)
 - Use real numbers from `{TICKER}_data.json` — never placeholders
 
 ---
@@ -1137,7 +1169,7 @@ node stockmd.js {TICKER}_report.txt
  * CATALYSTS: Catalyst one | Catalyst two | Catalyst three
  * RISKS: Risk one | Risk two | Risk three
  * UPCOMING: Event one | Event two
- * TRADE: ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=Description AVOID=What not to do
+ * TRADE: ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=Description CONFIRM=Exact trigger to add the second tranche AVOID=What not to do
  * VERDICT: RATING=STRONG BUY STARS=5 CONVICTION=High BOTTOM=One paragraph conclusion.
  * SOURCES: Source1 URL1 | Source2 URL2 | Source3 URL3
  * ─────────────────────────────────────────────────────────────────────
@@ -1983,10 +2015,10 @@ Copy this into chat when running a new ticker. Check off each step.
 | CATALYSTS | Pipe-separated (5–6 items) |
 | RISKS | Pipe-separated list of `Title ~ Impact(High/Medium/Low) ~ Category ~ Description` |
 | UPCOMING | Pipe-separated (3–4 items) |
-| TRADE | `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... AVOID=...` |
+| TRADE | `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... CONFIRM=... AVOID=...` — if SIZE is scaled (¼ starter / add ¼), CONFIRM MUST define the exact observable trigger (price level, MA reclaim, volume, or event) for the add. |
 | VERDICT | `RATING=... STARS=N CONVICTION=...` then `BOTTOM=Prescriptive, definitive stance. No generic filler. Synthesize supply chain, risks, and valuation to make a firm call. Use the actual COMPANY NAME (not just the ticker). Do not give conflicting statements; weigh the risks but take a definitive stand.` |
 | SOURCES | `Name URL` pairs separated by pipes |
-| DATA_INTEGRITY | Copy exact values from `stockfetch.js` stdout. `PRICE=X FWDPE=X TGTMEAN=X REVGR=X MA50=X MA200=X W52H=X W52L=X SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD` |
+| DATA_INTEGRITY | Copy exact values from `stockfetch.js` stdout. `PRICE=X FWDPE=X TGTMEAN=X REVGR=X MA50=X MA200=X W52H=X W52L=X ROIC=X WACC=X VALUE_SPREAD=X FSCORE=N/9 EVA_SPREAD=X CASH_CONV=X MOS=X COMPOSITE=X SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD` |
 
 ---
 
@@ -2698,7 +2730,7 @@ CATALYSTS_HIST:
 2026-05-19 | JP Morgan Conf | Event | Positive | Shipment growth 54% YoY
 RISKS: Supply Chain ~ High Impact ~ Operational ~ CoWoS packaging bottlenecks | Concentration ~ Medium Impact ~ Revenue ~ MSFT and META account for >40% of sales
 UPCOMING: Q2 Earnings | 800G shipments scale
-TRADE: ENTRY=$150 STOP=$135 T1=$185 T2=$220 SIZE=Full_Position AVOID=Chasing pre-earnings
+TRADE: ENTRY=$150 STOP=$135 T1=$185 T2=$220 SIZE=Half_Position (¼ starter, add ¼ on confirmation) CONFIRM=Daily close back above the post-earnings gap ($165) on above-average volume, OR a successful retest that holds the 50-day MA AVOID=Chasing pre-earnings
 VERDICT: RATING=STRONG BUY STARS=5 CONVICTION=High BOTTOM=ANET is a definitive buy at these levels. Despite the systemic geopolitical supply chain risks regarding TSMC dependency, the aggressive AI capex cycle is fundamentally extending its networking monopoly. We reject the generic fear of margin compression; the underlying EOS software integration has structurally raised the margin floor. The valuation at 42x forward earnings offers a rare margin of safety for a hyper-scaler entering an AI production supercycle.
 SOURCES: Source1 URL1 | Source2 URL2
 DATA_INTEGRITY: PRICE=201.97 FWDPE=12.94 TGTMEAN=280.16 REVGR=23.4 MA50=226.35 MA200=349.23 W52H=632.39 W52L=173.25 SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=2026-05-25
@@ -2739,9 +2771,10 @@ DATA_INTEGRITY: PRICE=201.97 FWDPE=12.94 TGTMEAN=280.16 REVGR=23.4 MA50=226.35 M
 - BULL, BEAR, SUPPLY, CATALYSTS, RISKS, UPCOMING, AI_OPP, AI_THR — pipe `|` separated items
 - INSIDER — `SCORE=N SENTIMENT=X BUYS=... SELLS=... SIGNAL=...`
 - VALUATION — `FAIR=$X BEAR=$Y UPSIDE=Z%` then `METHOD=` then description
-- TRADE — `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... AVOID=...`
+- TRADE — `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... CONFIRM=... AVOID=...`
+  - **CONFIRM** is MANDATORY whenever SIZE is a scaled/partial position (e.g. "add ¼ on confirmation"). It must state the exact, observable trigger (a price level, MA reclaim, volume condition, or post-earnings event) that justifies adding the second tranche. Never leave "on confirmation" undefined.
 - VERDICT — `RATING=... STARS=N CONVICTION=...` then `BOTTOM=` then paragraph
-- DATA_INTEGRITY — copy exact values from `stockfetch.js` stdout output. Format: `PRICE=X.XX FWDPE=X.XX TGTMEAN=X.XX REVGR=X.X MA50=X.XX MA200=X.XX W52H=X.XX W52L=X.XX SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD`
+- DATA_INTEGRITY — copy exact values from `stockfetch.js` stdout output. Format: `PRICE=X.XX FWDPE=X.XX TGTMEAN=X.XX REVGR=X.X MA50=X.XX MA200=X.XX W52H=X.XX W52L=X.XX ROIC=X WACC=X VALUE_SPREAD=X FSCORE=N/9 EVA_SPREAD=X CASH_CONV=X MOS=X COMPOSITE=X SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD` (copy ALL fields verbatim from stockfetch.js stdout)
 - Use real numbers from `{TICKER}_data.json` — never placeholders
 
 ---
@@ -2825,7 +2858,7 @@ node stockmd.js {TICKER}_report.txt
  * CATALYSTS: Catalyst one | Catalyst two | Catalyst three
  * RISKS: Risk one | Risk two | Risk three
  * UPCOMING: Event one | Event two
- * TRADE: ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=Description AVOID=What not to do
+ * TRADE: ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=Description CONFIRM=Exact trigger to add the second tranche AVOID=What not to do
  * VERDICT: RATING=STRONG BUY STARS=5 CONVICTION=High BOTTOM=One paragraph conclusion.
  * SOURCES: Source1 URL1 | Source2 URL2 | Source3 URL3
  * ─────────────────────────────────────────────────────────────────────
@@ -3671,10 +3704,10 @@ Copy this into chat when running a new ticker. Check off each step.
 | CATALYSTS | Pipe-separated (5–6 items) |
 | RISKS | Pipe-separated list of `Title ~ Impact(High/Medium/Low) ~ Category ~ Description` |
 | UPCOMING | Pipe-separated (3–4 items) |
-| TRADE | `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... AVOID=...` |
+| TRADE | `ENTRY=$X STOP=$Y T1=$A T2=$B SIZE=... CONFIRM=... AVOID=...` — if SIZE is scaled (¼ starter / add ¼), CONFIRM MUST define the exact observable trigger (price level, MA reclaim, volume, or event) for the add. |
 | VERDICT | `RATING=... STARS=N CONVICTION=...` then `BOTTOM=Prescriptive, definitive stance. No generic filler. Synthesize supply chain, risks, and valuation to make a firm call. Use the actual COMPANY NAME (not just the ticker). Do not give conflicting statements; weigh the risks but take a definitive stand.` |
 | SOURCES | `Name URL` pairs separated by pipes |
-| DATA_INTEGRITY | Copy exact values from `stockfetch.js` stdout. `PRICE=X FWDPE=X TGTMEAN=X REVGR=X MA50=X MA200=X W52H=X W52L=X SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD` |
+| DATA_INTEGRITY | Copy exact values from `stockfetch.js` stdout. `PRICE=X FWDPE=X TGTMEAN=X REVGR=X MA50=X MA200=X W52H=X W52L=X ROIC=X WACC=X VALUE_SPREAD=X FSCORE=N/9 EVA_SPREAD=X CASH_CONV=X MOS=X COMPOSITE=X SOURCE=Yahoo-Finance-yahoo-finance2 FETCHDATE=YYYY-MM-DD` |
 
 ---
 
