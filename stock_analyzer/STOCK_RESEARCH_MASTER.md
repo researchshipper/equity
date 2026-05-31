@@ -59,6 +59,34 @@ Act as an elite institutional equity analyst. You must **double-verify** all qua
 
 **ALT_DATA RULE:** Each `ALT_DATA` item must EITHER cite a real source you found via `web_search` (e.g. "Per LinkedIn data, AI engineer postings +40% QoQ"), OR be explicitly prefixed with `HYP:` to mark it as an unverified hypothesis. Never present an unsourced figure as measured fact.
 
+## 🚨 PATCH OVERRIDE — AUTHORITATIVE DECISION FRAMEWORK
+
+If this playbook's embedded code differs from the local repo files, the local repo files are authoritative. In particular:
+- `stockfetch.js` must use the same valuation engine as `stockmd.js` / `../lib/valuation.js`
+- the LLM should anchor on the **headline ROIC**, **WACC**, and **value spread** written into `{TICKER}_data.json`
+- if `stockfetch.js` exposes `roicNaive`, `roicAdjusted`, `valueSpread`, or `valuationBasis`, use those fields directly rather than recomputing from memory
+
+### Verdict rules
+The final call must synthesize **valuation, supply chain, insider signal, technical setup, and ROIC/WACC value spread**.
+- Positive value spread strengthens conviction
+- Negative value spread must be discussed explicitly, not ignored
+- If technicals are weak but the fundamental call is bullish, explain why timing risk is acceptable
+- If technicals are strong but value spread / fundamentals are weak, avoid issuing a lazy momentum-only BUY
+
+### Required decision transparency
+The report should explicitly state what is carrying the call and how much weight each factor has.
+Add these keys when possible:
+- `THESIS_WEIGHTS:` e.g. `Valuation=30% | Technicals=20% | Value_Spread=20% | Supply_Chain=15% | Catalysts=10% | Insider=5%`
+- `TECH_SETUP:` one short paragraph on how the technical structure affects conviction and timing
+- `FOLLOW_THE_CASH:` pipe-separated bullets on cash generation, capex intensity, working capital, buybacks/dividends, or finance-arm considerations
+- `PRE_MORTEM:` pipe-separated bullets describing the most likely reasons the thesis could fail over the next 6–18 months
+
+### Value spread interpretation guardrails
+- `Value Spread > +5%` → supports BUY / STRONG BUY if the rest of the thesis is coherent
+- `+1% to +5%` → mildly supportive; do not overstate it
+- `0% to -3%` → caution; conviction must be tempered or justified with a specific catalyst
+- `< -3%` → treat as a real warning sign unless a documented capital-structure artifact explains it
+
 ## 🔄 EXECUTION ORDER
 
 **The golden rule: DATA FIRST, RESEARCH SECOND, TEXT THIRD, HTML LAST.**

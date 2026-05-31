@@ -625,6 +625,18 @@ function hideTooltip() {
   const peer2 = D.PEER2 || '';
   const nextEarnings = D.NEXT_EARNINGS || 'TBD';
   const sources = pipes(D.SOURCES || '');
+  const followCash = pipes(D.FOLLOW_THE_CASH || '');
+  const preMortem = pipes(D.PRE_MORTEM || D.POST_MORTEM || '');
+  const thesisWeights = pipes(D.THESIS_WEIGHTS || D.WEIGHTS || '');
+  const techVerdict = D.TECH_SETUP || D.TECH_VERDICT || '';
+  const weightCards = thesisWeights.map(item => {
+    const m = item.match(/^(.*?)\s*=\s*(\d+)%?$/) || item.match(/^(.*?)\s+(\d+)%$/) || item.match(/^(.*?)~(\d+)%?$/);
+    if (!m) return `<div class="kpi"><div class="lbl">Factor</div><div class="val">${item}</div></div>`;
+    const label = m[1].trim();
+    const pct = +m[2];
+    const color = pct >= 25 ? 'pos' : pct >= 15 ? 'neu' : '';
+    return `<div class="kpi"><div class="lbl">${label}</div><div class="val ${color}">${pct}%</div><div class="sub">thesis weight</div></div>`;
+  }).join('');
   const sourceLinks = sources.length
     ? `<div style="display:flex; gap:12px; flex-wrap:wrap;">${sources.map(s => { const parts = s.split(' '); const url = parts.pop(); const name = parts.join(' '); return url && url.startsWith('http') ? `<a href="${url}" target="_blank" class="dataroma-link">${name} ↗</a>` : `<span class="badge badge-blue">${s}</span>`; }).join('')}</div>`
     : '<p class="story-text">Yahoo Finance via Node.js</p>';
@@ -812,6 +824,12 @@ function hideTooltip() {
     </div>
   </div>
 
+  ${(followCash.length || preMortem.length) ? `
+  <div class="grid g2">
+    ${followCash.length ? `<div class="panel"><h2>💵 Follow the Cash</h2>${li(followCash, 'neu')}</div>` : ''}
+    ${preMortem.length ? `<div class="panel"><h2>🪦 Pre-Mortem</h2><p class="story-text" style="margin-top:-8px;font-size:13px;color:var(--text-muted)">If the stock materially underperforms, these are the most likely failure paths.</p>${li(preMortem, 'bear')}</div>` : ''}
+  </div>` : ''}
+
   ${arenaHtml ? `
   <div class="panel">
     <h2>⚔️ Competitive Moat Risk Matrix</h2>
@@ -937,13 +955,18 @@ function hideTooltip() {
       <div class="box" style="border-top:4px solid var(--accent-blue)">
         <h3>Rating: ${vRat} <span style="color:var(--accent-amber);margin-left:8px;font-size:18px;">${starStr}</span></h3>
         <p class="story-text" style="font-size:15px;">${vBot}</p>
+        ${techVerdict ? `<div style="margin-top:16px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:12px;border-left:4px solid var(--accent-amber)"><strong style="color:var(--accent-amber)">Technical weight in the call:</strong><div class="story-text" style="margin-top:6px">${techVerdict}</div></div>` : ''}
+        ${(F.roic != null && F.wacc != null) ? `<div style="margin-top:16px;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:12px;border-left:4px solid ${(F.roic - F.wacc) >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}"><strong style="color:${(F.roic - F.wacc) >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'}">Value spread contribution:</strong><div class="story-text" style="margin-top:6px">ROIC ${f2(F.roic)}% versus WACC ${f2(F.wacc)}% implies a ${(F.roic - F.wacc) >= 0 ? 'positive' : 'negative'} spread of ${((F.roic - F.wacc) >= 0 ? '+' : '') + f2(F.roic - F.wacc)}%. This should be explicitly weighed in the final rating rather than treated as a side note.</div></div>` : ''}
       </div>
-      <div class="grid g2">
-        ${kpi('Ideal Entry', trEntry)}
-        ${kpi('Stop Loss', trStop, '', 'neg')}
-        ${kpi('Targets', `${trT1} → ${trT2}`, '', 'pos')}
-        ${kpi('Position Size', trSize)}
-        ${divYield ? kpi('Div Yield', divYield + '%', `\$${f2(F.divRate)}/yr`, 'neu') : ''}
+      <div>
+        ${weightCards ? `<div class="panel" style="padding:20px; margin-bottom:16px;"><h2 style="font-size:18px; margin-bottom:16px;">🧮 Thesis Weighting</h2><div class="grid g3" style="gap:14px;">${weightCards}</div></div>` : ''}
+        <div class="grid g2">
+          ${kpi('Ideal Entry', trEntry)}
+          ${kpi('Stop Loss', trStop, '', 'neg')}
+          ${kpi('Targets', `${trT1} → ${trT2}`, '', 'pos')}
+          ${kpi('Position Size', trSize)}
+          ${divYield ? kpi('Div Yield', divYield + '%', `\$${f2(F.divRate)}/yr`, 'neu') : ''}
+        </div>
       </div>
     </div>
   </div>
