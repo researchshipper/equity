@@ -1014,7 +1014,15 @@ ALT_DATA: Per SensorTower data, App store downloads up 15% YoY | HYP: Open job p
 COMPETITIVE_ARENA: High-Speed Switching (800G) ~ Dominant ~ Over 40% market share in 400G+ ports | Enterprise Campus ~ Neutral ~ Expanding but still trails Cisco | AI Back-end Fabrics ~ Strong ~ Winning key designs in Meta/Microsoft clusters
 SUPPLY: 🟢 Expanding 800G switch capacity | ✅ Securing CoWoS allocation from TSMC | 🔴 Vulnerable to China-Taiwan trade wars | ⚠️ High reliance on Broadcom ASIC roadmap
 WHATS_NEW: Massive Q1 Beat | Broadcom supply constraints easing
-PATTERN: Bull Flag | Consolidating in a tight range on declining volume
+PATTERN: [Pattern Name] | [Narrative Description]
+RULE: If no textbook chart pattern (e.g., Bull Flag, Head & Shoulders) is present, you MUST synthesize a "Price Action Signal."
+SYNTHESIS GUIDE:
+- If Price ≈ 52w Low → "Bottom Fishing / Testing Support at 52w Lows"
+- If Price ≈ 52w High → "Breakout Attempt / Testing 52w Highs"
+- If Price is far below MA50/MA200 → "Strong Bearish Regime / Searching for Floor"
+- If Price is between MA50 and MA200 → "Mean Reversion / Range Bound"
+- If MA50 just crossed MA200 → "Golden/Death Cross Transition"
+NEVER omit this key. Always provide a signal based on the data.
 VAL_METHOD: High-growth networking requires PEG and EV/EBITDA normalization. WACC assumed at 8.5%, Terminal Growth at 4.0%. Blended Fair Value = (0.4 * Multiple) + (0.3 * DCF) + (0.3 * Analyst Target).
 VAL_MATRIX:
 ANET | 154.03 | 186.90 | 182.50 | 188.20 | 185.97 | +20.74% | Undervalued
@@ -2703,7 +2711,15 @@ ALT_DATA: Per SensorTower data, App store downloads up 15% YoY | HYP: Open job p
 COMPETITIVE_ARENA: High-Speed Switching (800G) ~ Dominant ~ Over 40% market share in 400G+ ports | Enterprise Campus ~ Neutral ~ Expanding but still trails Cisco | AI Back-end Fabrics ~ Strong ~ Winning key designs in Meta/Microsoft clusters
 SUPPLY: 🟢 Expanding 800G switch capacity | ✅ Securing CoWoS allocation from TSMC | 🔴 Vulnerable to China-Taiwan trade wars | ⚠️ High reliance on Broadcom ASIC roadmap
 WHATS_NEW: Massive Q1 Beat | Broadcom supply constraints easing
-PATTERN: Bull Flag | Consolidating in a tight range on declining volume
+PATTERN: [Pattern Name] | [Narrative Description]
+RULE: If no textbook chart pattern (e.g., Bull Flag, Head & Shoulders) is present, you MUST synthesize a "Price Action Signal."
+SYNTHESIS GUIDE:
+- If Price ≈ 52w Low → "Bottom Fishing / Testing Support at 52w Lows"
+- If Price ≈ 52w High → "Breakout Attempt / Testing 52w Highs"
+- If Price is far below MA50/MA200 → "Strong Bearish Regime / Searching for Floor"
+- If Price is between MA50 and MA200 → "Mean Reversion / Range Bound"
+- If MA50 just crossed MA200 → "Golden/Death Cross Transition"
+NEVER omit this key. Always provide a signal based on the data.
 VAL_METHOD: High-growth networking requires PEG and EV/EBITDA normalization. WACC assumed at 8.5%, Terminal Growth at 4.0%. Blended Fair Value = (0.4 * Multiple) + (0.3 * DCF) + (0.3 * Analyst Target).
 VAL_MATRIX:
 ANET | 154.03 | 186.90 | 182.50 | 188.20 | 185.97 | +20.74% | Undervalued

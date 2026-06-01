@@ -1193,7 +1193,7 @@ function hideTooltip() {
 <div id="tech" class="tab-content">
   ${patRaw ? `
   <div class="panel">
-    <h2>📐 Chart Pattern</h2>
+    <h2>📐 Technical Pattern / Signal</h2>
     <div class="box" style="border-top:4px solid var(--accent-blue);">
       <h3 style="color:#60a5fa; font-size: 20px; margin-bottom: 8px;">${patName}</h3>
       <p class="story-text" style="margin:0;">${patDesc}</p>
