@@ -2,6 +2,10 @@
 /**
  * report_linter.js
  *
+ * Deterministic schema validator for {TICKER}_report.txt on the finaltest branch.
+ * Checks for all required sections, structured formats, and performs cross-check
+ * validation against {TICKER}_data.json (including Piotroski F-Score and Quality Metrics)
+ * before proceeding to stockmd.js compilation.
  * Deterministic schema validator for {TICKER}_report.txt.
  * Checks for all required sections, structured formats, and performs cross-check
  * validation against {TICKER}_data.json before proceeding to stockmd.js compilation.
@@ -88,6 +92,16 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     const stop = getKV(trade, 'STOP');
     const t1 = getKV(trade, 'T1');
     const t2 = getKV(trade, 'T2');
+    const size = getKVQ(trade, 'SIZE');
+    const confirm = getKVQ(trade, 'CONFIRM');
+    const avoid = getKVQ(trade, 'AVOID');
+    
+    if (!entry) errors.push('Structured error inside "TRADE": "ENTRY=$X" is missing.');
+    if (!stop) errors.push('Structured error inside "TRADE": "STOP=$Y" is missing.');
+    if (!t1 || !t2) errors.push('Structured error inside "TRADE": target "T1" or "T2" is missing.');
+    if (!size) errors.push('Structured error inside "TRADE": "SIZE=X" is missing.');
+    if (!confirm) errors.push('Structured error inside "TRADE": "CONFIRM=X" trigger is missing.');
+    if (!avoid) errors.push('Structured error inside "TRADE": "AVOID=X" warning is missing.');
     if (!entry) errors.push('Structured error inside "TRADE": "ENTRY=$X" is missing.');
     if (!stop) errors.push('Structured error inside "TRADE": "STOP=$Y" is missing.');
     if (!t1 || !t2) errors.push('Structured error inside "TRADE": target "T1" or "T2" is missing.');
@@ -103,6 +117,7 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     if (!conviction) errors.push('Structured error inside "VERDICT": "CONVICTION=X" is missing.');
   }
 
+  // 3. ELI5 Rules Validation (Strict checks on forbidden words)
   // 3. ELI5 Rules Validation (Strict checks on forbidden words and layout)
   if (D.ELI5) {
     const eli5 = D.ELI5.toLowerCase();
@@ -114,6 +129,7 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     }
   }
 
+  // 4. Data Cross-Check Validation against {TICKER}_data.json (including quality fields)
   // 4. Data Cross-Check Validation against {TICKER}_data.json
   const dataPath = path.join(path.dirname(srcFile), `${TICKER.toLowerCase()}_data.json`);
   const altDataPath = path.join(path.dirname(srcFile), `${TICKER}_data.json`);
@@ -126,6 +142,12 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
       const prim = dataRaw[0] || {};
       const F = prim.fund || {};
       const T = prim.tech || {};
+      const Q = prim.quality || {};
+      const C = prim.composite || {};
+
+      if (D.DATA_INTEGRITY) {
+        const di = D.DATA_INTEGRITY;
+        
 
       if (D.DATA_INTEGRITY) {
         const di = D.DATA_INTEGRITY;
@@ -139,6 +161,48 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
           }
         };
 
+        // Standard checks
+        checkNum('PRICE', T.price, getKV(di, 'PRICE'));
+        checkNum('FWDPE', F.fwdPE, getKV(di, 'FWDPE'));
+        checkNum('TGTMEAN', F.tgtMean, getKV(di, 'TGTMEAN'));
+        checkNum('REVGR', F.revGr, getKV(di, 'REVGR'));
+        checkNum('MA50', T.ma50, getKV(di, 'MA50'));
+        checkNum('MA200', T.ma200, getKV(di, 'MA200'));
+
+        // Quality and Piotroski Checks
+        if (Q.available) {
+          console.log('\nValidating Piotroski and Quality metrics in report against statement computations...');
+          
+          // Piotroski F-Score check
+          const fscoreRep = getKV(di, 'FSCORE');
+          if (fscoreRep) {
+            const parsedFScore = parseInt(fscoreRep.split('/')[0], 10);
+            const actualFScore = Q.piotroski.score;
+            if (parsedFScore !== actualFScore) {
+              errors.push(`Piotroski Quality Error: Reported FSCORE=${fscoreRep} does not match computed Piotroski score ${actualFScore}/9.`);
+            } else {
+              console.log(`  [MATCH] FSCORE: computed ${actualFScore}/9 vs report ${fscoreRep}`);
+            }
+          } else {
+            errors.push('Quality Error: FSCORE variable is missing from DATA_INTEGRITY line.');
+          }
+
+          // EVA Spread check
+          const evaRep = getKV(di, 'EVA_SPREAD');
+          checkNum('EVA_SPREAD', Q.eva.spreadPct, evaRep);
+
+          // Cash Conversion check
+          const cashConvRep = getKV(di, 'CASH_CONV');
+          checkNum('CASH_CONV', Q.earningsQuality.cashConversion, cashConvRep);
+
+          // Margin of Safety check
+          const mosRep = getKV(di, 'MOS');
+          checkNum('MOS', Q.marginOfSafety.discountPct, mosRep);
+
+          // Weighted Composite check
+          const compositeRep = getKV(di, 'COMPOSITE');
+          checkNum('COMPOSITE', C.composite, compositeRep);
+        }
         const priceRep = getKV(di, 'PRICE');
         const fwdPeRep = getKV(di, 'FWDPE');
         const tgtMeanRep = getKV(di, 'TGTMEAN');
@@ -160,6 +224,7 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     warnings.push(`No database file ${TICKER}_data.json found. Skipping numerical cross-check.`);
   }
 
+  // 5. Summarize and Exit
   // 4. Summarize and Exit
   console.log('\n====== VALIDATION SUMMARY ======\n');
   if (warnings.length > 0) {
@@ -172,6 +237,11 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     console.log('STATUS: FAILED');
     console.log(`Found ${errors.length} validation errors that MUST be corrected before HTML generation:\n`);
     errors.forEach((e, idx) => console.log(`  ${idx + 1}. [ERROR] ${e}`));
+    console.log('\n>>> ACTION REQUIRED: The LLM must REGENERATE the report.txt file to include the missing keys or correct quality check errors. <<<');
+    process.exit(1);
+  } else {
+    console.log('STATUS: PASSED');
+    console.log('All required sections, formats, and numerical quality points (Piotroski, EVA, Cash Conversion) matched perfectly!');
     console.log('\n>>> ACTION REQUIRED: The LLM must REGENERATE the report.txt file to include the missing keys or correct structured data errors. <<<');
     process.exit(1);
   } else {
