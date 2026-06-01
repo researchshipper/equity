@@ -6,6 +6,9 @@
  * Checks for all required sections, structured formats, and performs cross-check
  * validation against {TICKER}_data.json (including Piotroski F-Score and Quality Metrics)
  * before proceeding to stockmd.js compilation.
+ * Deterministic schema validator for {TICKER}_report.txt.
+ * Checks for all required sections, structured formats, and performs cross-check
+ * validation against {TICKER}_data.json before proceeding to stockmd.js compilation.
  *
  * Usage: node report_linter.js {TICKER}_report.txt
  */
@@ -99,6 +102,9 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     if (!size) errors.push('Structured error inside "TRADE": "SIZE=X" is missing.');
     if (!confirm) errors.push('Structured error inside "TRADE": "CONFIRM=X" trigger is missing.');
     if (!avoid) errors.push('Structured error inside "TRADE": "AVOID=X" warning is missing.');
+    if (!entry) errors.push('Structured error inside "TRADE": "ENTRY=$X" is missing.');
+    if (!stop) errors.push('Structured error inside "TRADE": "STOP=$Y" is missing.');
+    if (!t1 || !t2) errors.push('Structured error inside "TRADE": target "T1" or "T2" is missing.');
   }
 
   if (D.VERDICT) {
@@ -112,6 +118,7 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
   }
 
   // 3. ELI5 Rules Validation (Strict checks on forbidden words)
+  // 3. ELI5 Rules Validation (Strict checks on forbidden words and layout)
   if (D.ELI5) {
     const eli5 = D.ELI5.toLowerCase();
     const forbidden = ['valuation', 'p/e', 'forward p/e', 'target', 'technicals', 'rsi', 'bull case', 'bear case'];
@@ -123,6 +130,7 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
   }
 
   // 4. Data Cross-Check Validation against {TICKER}_data.json (including quality fields)
+  // 4. Data Cross-Check Validation against {TICKER}_data.json
   const dataPath = path.join(path.dirname(srcFile), `${TICKER.toLowerCase()}_data.json`);
   const altDataPath = path.join(path.dirname(srcFile), `${TICKER}_data.json`);
   const finalDataPath = fs.existsSync(dataPath) ? dataPath : (fs.existsSync(altDataPath) ? altDataPath : null);
@@ -140,6 +148,9 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
       if (D.DATA_INTEGRITY) {
         const di = D.DATA_INTEGRITY;
         
+
+      if (D.DATA_INTEGRITY) {
+        const di = D.DATA_INTEGRITY;
         const checkNum = (lbl, actual, reported) => {
           if (actual == null || reported == null || isNaN(reported)) return;
           const drift = Math.abs(+actual - +reported) / (+actual || 1);
@@ -192,6 +203,19 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
           const compositeRep = getKV(di, 'COMPOSITE');
           checkNum('COMPOSITE', C.composite, compositeRep);
         }
+        const priceRep = getKV(di, 'PRICE');
+        const fwdPeRep = getKV(di, 'FWDPE');
+        const tgtMeanRep = getKV(di, 'TGTMEAN');
+        const revGrRep = getKV(di, 'REVGR');
+        const ma50Rep = getKV(di, 'MA50');
+        const ma200Rep = getKV(di, 'MA200');
+
+        checkNum('PRICE', T.price, priceRep);
+        checkNum('FWDPE', F.fwdPE, fwdPeRep);
+        checkNum('TGTMEAN', F.tgtMean, tgtMeanRep);
+        checkNum('REVGR', F.revGr, revGrRep);
+        checkNum('MA50', T.ma50, ma50Rep);
+        checkNum('MA200', T.ma200, ma200Rep);
       }
     } catch (e) {
       warnings.push(`Could not parse data file ${path.basename(finalDataPath)}: ${e.message}`);
@@ -201,6 +225,7 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
   }
 
   // 5. Summarize and Exit
+  // 4. Summarize and Exit
   console.log('\n====== VALIDATION SUMMARY ======\n');
   if (warnings.length > 0) {
     console.log('WARNINGS:');
@@ -217,6 +242,11 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
   } else {
     console.log('STATUS: PASSED');
     console.log('All required sections, formats, and numerical quality points (Piotroski, EVA, Cash Conversion) matched perfectly!');
+    console.log('\n>>> ACTION REQUIRED: The LLM must REGENERATE the report.txt file to include the missing keys or correct structured data errors. <<<');
+    process.exit(1);
+  } else {
+    console.log('STATUS: PASSED');
+    console.log('All required sections, formats, and numerical anchor points matched perfectly!');
     console.log('Proceed to HTML report generation: node stockmd.js ' + path.basename(srcFile));
     process.exit(0);
   }
