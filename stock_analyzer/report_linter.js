@@ -2,13 +2,10 @@
 /**
  * report_linter.js
  *
- * Deterministic schema validator for {TICKER}_report.txt on the finaltest branch.
- * Checks for all required sections, structured formats, and performs cross-check
- * validation against {TICKER}_data.json (including Piotroski F-Score and Quality Metrics)
- * before proceeding to stockmd.js compilation.
  * Deterministic schema validator for {TICKER}_report.txt.
- * Checks for all required sections, structured formats, and performs cross-check
- * validation against {TICKER}_data.json before proceeding to stockmd.js compilation.
+ * Checks required sections, structured formats, and cross-checks
+ * against {TICKER}_data.json (including Piotroski F-Score and Quality Metrics)
+ * before proceeding to stockmd.js compilation.
  *
  * Usage: node report_linter.js {TICKER}_report.txt
  */
@@ -67,76 +64,55 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
   let errors = [];
   let warnings = [];
 
-  // 1. Section Presence Validation
-  console.log('Checking required sections presence...');
+  // 1. Section Presence
+  console.log('Checking required sections...');
   for (const key of REQUIRED_KEYS) {
     if (!D[key] || !D[key].trim()) {
-      errors.push(`Missing section: "${key}" is missing or completely empty.`);
+      errors.push(`Missing section: "${key}" is missing or empty.`);
     } else {
       console.log(`  [OK] ${key}`);
     }
   }
 
-  // 2. Structured Fields Validation
+  // 2. Structured Fields
   if (D.INSIDER) {
-    const ins = D.INSIDER;
-    const score = getKV(ins, 'SCORE');
-    const sentiment = getKVQ(ins, 'SENTIMENT');
-    if (!score) errors.push('Structured error inside "INSIDER": "SCORE=N" is missing.');
-    if (!sentiment) errors.push('Structured error inside "INSIDER": "SENTIMENT=X" is missing.');
+    if (!getKV(D.INSIDER, 'SCORE')) errors.push('INSIDER: "SCORE=N" is missing.');
+    if (!getKVQ(D.INSIDER, 'SENTIMENT')) errors.push('INSIDER: "SENTIMENT=X" is missing.');
   }
 
   if (D.TRADE) {
-    const trade = D.TRADE;
-    const entry = getKV(trade, 'ENTRY');
-    const stop = getKV(trade, 'STOP');
-    const t1 = getKV(trade, 'T1');
-    const t2 = getKV(trade, 'T2');
-    const size = getKVQ(trade, 'SIZE');
-    const confirm = getKVQ(trade, 'CONFIRM');
-    const avoid = getKVQ(trade, 'AVOID');
-    
-    if (!entry) errors.push('Structured error inside "TRADE": "ENTRY=$X" is missing.');
-    if (!stop) errors.push('Structured error inside "TRADE": "STOP=$Y" is missing.');
-    if (!t1 || !t2) errors.push('Structured error inside "TRADE": target "T1" or "T2" is missing.');
-    if (!size) errors.push('Structured error inside "TRADE": "SIZE=X" is missing.');
-    if (!confirm) errors.push('Structured error inside "TRADE": "CONFIRM=X" trigger is missing.');
-    if (!avoid) errors.push('Structured error inside "TRADE": "AVOID=X" warning is missing.');
-    if (!entry) errors.push('Structured error inside "TRADE": "ENTRY=$X" is missing.');
-    if (!stop) errors.push('Structured error inside "TRADE": "STOP=$Y" is missing.');
-    if (!t1 || !t2) errors.push('Structured error inside "TRADE": target "T1" or "T2" is missing.');
+    if (!getKV(D.TRADE, 'ENTRY')) errors.push('TRADE: "ENTRY=$X" is missing.');
+    if (!getKV(D.TRADE, 'STOP')) errors.push('TRADE: "STOP=$Y" is missing.');
+    if (!getKV(D.TRADE, 'T1') || !getKV(D.TRADE, 'T2')) errors.push('TRADE: "T1" or "T2" target is missing.');
+    if (!getKVQ(D.TRADE, 'SIZE')) errors.push('TRADE: "SIZE=X" is missing.');
+    if (!getKVQ(D.TRADE, 'CONFIRM')) errors.push('TRADE: "CONFIRM=X" trigger is missing.');
+    if (!getKVQ(D.TRADE, 'AVOID')) errors.push('TRADE: "AVOID=X" warning is missing.');
   }
 
   if (D.VERDICT) {
-    const vrd = D.VERDICT;
-    const rating = getKVQ(vrd, 'RATING');
-    const stars = getKV(vrd, 'STARS');
-    const conviction = getKVQ(vrd, 'CONVICTION');
-    if (!rating) errors.push('Structured error inside "VERDICT": "RATING=X" is missing.');
-    if (!stars) errors.push('Structured error inside "VERDICT": "STARS=N" is missing.');
-    if (!conviction) errors.push('Structured error inside "VERDICT": "CONVICTION=X" is missing.');
+    if (!getKVQ(D.VERDICT, 'RATING')) errors.push('VERDICT: "RATING=X" is missing.');
+    if (!getKV(D.VERDICT, 'STARS')) errors.push('VERDICT: "STARS=N" is missing.');
+    if (!getKVQ(D.VERDICT, 'CONVICTION')) errors.push('VERDICT: "CONVICTION=X" is missing.');
   }
 
-  // 3. ELI5 Rules Validation (Strict checks on forbidden words)
-  // 3. ELI5 Rules Validation (Strict checks on forbidden words and layout)
+  // 3. ELI5 forbidden-words
   if (D.ELI5) {
     const eli5 = D.ELI5.toLowerCase();
     const forbidden = ['valuation', 'p/e', 'forward p/e', 'target', 'technicals', 'rsi', 'bull case', 'bear case'];
     for (const word of forbidden) {
       if (eli5.includes(word)) {
-        errors.push(`ELI5 violation: Forbidden market term "${word}" found in ELI5 section.`);
+        errors.push(`ELI5 violation: Forbidden term "${word}" found.`);
       }
     }
   }
 
-  // 4. Data Cross-Check Validation against {TICKER}_data.json (including quality fields)
-  // 4. Data Cross-Check Validation against {TICKER}_data.json
+  // 4. Data cross-check against {TICKER}_data.json
   const dataPath = path.join(path.dirname(srcFile), `${TICKER.toLowerCase()}_data.json`);
   const altDataPath = path.join(path.dirname(srcFile), `${TICKER}_data.json`);
   const finalDataPath = fs.existsSync(dataPath) ? dataPath : (fs.existsSync(altDataPath) ? altDataPath : null);
 
   if (finalDataPath) {
-    console.log(`\nFound data file: ${path.basename(finalDataPath)}. Cross-checking values...`);
+    console.log(`\nCross-checking against ${path.basename(finalDataPath)}...`);
     try {
       const dataRaw = JSON.parse(fs.readFileSync(finalDataPath, 'utf8'));
       const prim = dataRaw[0] || {};
@@ -147,21 +123,17 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
 
       if (D.DATA_INTEGRITY) {
         const di = D.DATA_INTEGRITY;
-        
-
-      if (D.DATA_INTEGRITY) {
-        const di = D.DATA_INTEGRITY;
         const checkNum = (lbl, actual, reported) => {
-          if (actual == null || reported == null || isNaN(reported)) return;
+          if (actual == null || reported == null || reported === 'NA' || isNaN(reported)) return;
           const drift = Math.abs(+actual - +reported) / (+actual || 1);
           if (drift > 0.02) {
-            errors.push(`Data Drift Error in "DATA_INTEGRITY": Reported ${lbl}=${reported} differs from live database value ${actual} (drift of ${(drift*100).toFixed(1)}%).`);
+            errors.push(`Data Drift: ${lbl} reported=${reported} vs live=${actual} (drift ${(drift*100).toFixed(1)}%).`);
           } else {
-            console.log(`  [MATCH] ${lbl}: database ${actual} vs report ${reported}`);
+            console.log(`  [MATCH] ${lbl}: ${actual} vs ${reported}`);
           }
         };
 
-        // Standard checks
+        // Standard anchors
         checkNum('PRICE', T.price, getKV(di, 'PRICE'));
         checkNum('FWDPE', F.fwdPE, getKV(di, 'FWDPE'));
         checkNum('TGTMEAN', F.tgtMean, getKV(di, 'TGTMEAN'));
@@ -169,85 +141,51 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
         checkNum('MA50', T.ma50, getKV(di, 'MA50'));
         checkNum('MA200', T.ma200, getKV(di, 'MA200'));
 
-        // Quality and Piotroski Checks
+        // Quality anchors (when available)
         if (Q.available) {
-          console.log('\nValidating Piotroski and Quality metrics in report against statement computations...');
-          
-          // Piotroski F-Score check
+          console.log('\nValidating quality metrics...');
           const fscoreRep = getKV(di, 'FSCORE');
           if (fscoreRep) {
-            const parsedFScore = parseInt(fscoreRep.split('/')[0], 10);
-            const actualFScore = Q.piotroski.score;
-            if (parsedFScore !== actualFScore) {
-              errors.push(`Piotroski Quality Error: Reported FSCORE=${fscoreRep} does not match computed Piotroski score ${actualFScore}/9.`);
+            const parsed = parseInt(fscoreRep.split('/')[0], 10);
+            if (parsed !== Q.piotroski.score) {
+              errors.push(`Piotroski drift: reported FSCORE=${fscoreRep} vs computed ${Q.piotroski.score}/9.`);
             } else {
-              console.log(`  [MATCH] FSCORE: computed ${actualFScore}/9 vs report ${fscoreRep}`);
+              console.log(`  [MATCH] FSCORE: ${Q.piotroski.score}/9`);
             }
           } else {
-            errors.push('Quality Error: FSCORE variable is missing from DATA_INTEGRITY line.');
+            errors.push('FSCORE missing from DATA_INTEGRITY line.');
           }
-
-          // EVA Spread check
-          const evaRep = getKV(di, 'EVA_SPREAD');
-          checkNum('EVA_SPREAD', Q.eva.spreadPct, evaRep);
-
-          // Cash Conversion check
-          const cashConvRep = getKV(di, 'CASH_CONV');
-          checkNum('CASH_CONV', Q.earningsQuality.cashConversion, cashConvRep);
-
-          // Margin of Safety check
-          const mosRep = getKV(di, 'MOS');
-          checkNum('MOS', Q.marginOfSafety.discountPct, mosRep);
-
-          // Weighted Composite check
-          const compositeRep = getKV(di, 'COMPOSITE');
-          checkNum('COMPOSITE', C.composite, compositeRep);
+          checkNum('EVA_SPREAD', Q.eva.spreadPct, getKV(di, 'EVA_SPREAD'));
+          checkNum('CASH_CONV', Q.earningsQuality.cashConversion, getKV(di, 'CASH_CONV'));
+          checkNum('MOS', Q.marginOfSafety.discountPct, getKV(di, 'MOS'));
+          checkNum('COMPOSITE', C.composite, getKV(di, 'COMPOSITE'));
         }
-        const priceRep = getKV(di, 'PRICE');
-        const fwdPeRep = getKV(di, 'FWDPE');
-        const tgtMeanRep = getKV(di, 'TGTMEAN');
-        const revGrRep = getKV(di, 'REVGR');
-        const ma50Rep = getKV(di, 'MA50');
-        const ma200Rep = getKV(di, 'MA200');
-
-        checkNum('PRICE', T.price, priceRep);
-        checkNum('FWDPE', F.fwdPE, fwdPeRep);
-        checkNum('TGTMEAN', F.tgtMean, tgtMeanRep);
-        checkNum('REVGR', F.revGr, revGrRep);
-        checkNum('MA50', T.ma50, ma50Rep);
-        checkNum('MA200', T.ma200, ma200Rep);
       }
     } catch (e) {
-      warnings.push(`Could not parse data file ${path.basename(finalDataPath)}: ${e.message}`);
+      warnings.push(`Could not parse ${path.basename(finalDataPath)}: ${e.message}`);
     }
   } else {
-    warnings.push(`No database file ${TICKER}_data.json found. Skipping numerical cross-check.`);
+    warnings.push(`No data file ${TICKER}_data.json found. Skipping cross-check.`);
   }
 
-  // 5. Summarize and Exit
-  // 4. Summarize and Exit
+  // 5. Summary
   console.log('\n====== VALIDATION SUMMARY ======\n');
   if (warnings.length > 0) {
     console.log('WARNINGS:');
-    warnings.forEach(w => console.log(`  ⚠️  ${w}`));
+    warnings.forEach(w => console.log(`  W: ${w}`));
     console.log('');
   }
 
   if (errors.length > 0) {
     console.log('STATUS: FAILED');
-    console.log(`Found ${errors.length} validation errors that MUST be corrected before HTML generation:\n`);
+    console.log(`${errors.length} errors must be corrected before HTML generation:\n`);
     errors.forEach((e, idx) => console.log(`  ${idx + 1}. [ERROR] ${e}`));
-    console.log('\n>>> ACTION REQUIRED: The LLM must REGENERATE the report.txt file to include the missing keys or correct quality check errors. <<<');
+    console.log('\n>>> REGENERATE the report.txt to fix the above errors, then re-run this linter. <<<');
     process.exit(1);
   } else {
     console.log('STATUS: PASSED');
-    console.log('All required sections, formats, and numerical quality points (Piotroski, EVA, Cash Conversion) matched perfectly!');
-    console.log('\n>>> ACTION REQUIRED: The LLM must REGENERATE the report.txt file to include the missing keys or correct structured data errors. <<<');
-    process.exit(1);
-  } else {
-    console.log('STATUS: PASSED');
-    console.log('All required sections, formats, and numerical anchor points matched perfectly!');
-    console.log('Proceed to HTML report generation: node stockmd.js ' + path.basename(srcFile));
+    console.log('All sections, formats, and numerical anchors verified.');
+    console.log('Proceed: node stockmd.js ' + path.basename(srcFile));
     process.exit(0);
   }
 })();
