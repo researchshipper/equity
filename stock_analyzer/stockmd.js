@@ -578,10 +578,20 @@ function hideTooltip() {
   const storyParas = (D.STORY || '').split(/\n\n+/).map(p => `<p>${p.trim()}</p>`).join('');
   
   const whatsNew = pipes(D.WHATS_NEW);
+  // ── Move Pattern/Signal to Overview Tab for maximum visibility ───────────────────────────────────────
   const patRaw = D.PATTERN || '';
   const patParts = patRaw.split('|').map(s=>s.trim());
-  const patName = patParts[0] || 'No Technical Pattern Identified';
-  const patDesc = patParts.slice(1).join(' | ') || 'Awaiting technical confirmation.';
+  const patName = patParts[0] || 'Price Action Analysis';
+  const patDesc = patParts.slice(1).join(' | ') || 'No specific textbook pattern identified. Price is currently consolidating; monitoring for a definitive breakout or reversal signal.';
+  
+  const patternPanel = `
+  <div class="panel" style="border-left: 4px solid var(--accent-blue); background: rgba(59,130,246,0.05);">
+    <h2 style="margin: 0 0 12px 0; font-size: 18px; color: #60a5fa; display: flex; align-items: center; gap: 8px;">📐 Technical Pattern / Signal</h2>
+    <div class="box" style="border:none; background:transparent; padding:0;">
+      <strong style="color:var(--text-main); font-size: 16px;">${patName}</strong>
+      <p class="story-text" style="margin: 8px 0 0; font-size: 14px;">${patDesc}</p>
+    </div>
+  </div>`;
   
   const compArena = pipes(D.COMPETITIVE_ARENA);
   const arenaHtml = compArena.map(item => {
