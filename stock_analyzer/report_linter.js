@@ -103,6 +103,21 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
     if (!conviction) errors.push('Structured error inside "VERDICT": "CONVICTION=X" is missing.');
   }
 
+  // 2b. Deterministic quality fields MUST be present inside the DATA_INTEGRITY line.
+  // These are produced by stockfetch.js / quality.js and copied verbatim by the LLM.
+  // They are NOT standalone report sections — they live inside DATA_INTEGRITY.
+  if (D.DATA_INTEGRITY) {
+    const di = D.DATA_INTEGRITY;
+    const qualityFields = ['FSCORE', 'EVA_SPREAD', 'CASH_CONV', 'MOS', 'COMPOSITE'];
+    for (const qf of qualityFields) {
+      if (!di.includes(qf + '=')) {
+        errors.push(`DATA_INTEGRITY missing quality field: "${qf}=" — copy ALL fields verbatim from the stockfetch.js stdout DATA_INTEGRITY line.`);
+      }
+    }
+  } else {
+    errors.push('Missing section: "DATA_INTEGRITY" line is required (carries PRICE/FWDPE/... plus FSCORE/EVA_SPREAD/CASH_CONV/MOS/COMPOSITE).');
+  }
+
   // 3. ELI5 Rules Validation (Strict checks on forbidden words and layout)
   if (D.ELI5) {
     const eli5 = D.ELI5.toLowerCase();
@@ -152,6 +167,17 @@ const getKVQ = (str, k) => { const m = str.match(new RegExp(k + '=(.+?)(?=\\s+[A
         checkNum('REVGR', F.revGr, revGrRep);
         checkNum('MA50', T.ma50, ma50Rep);
         checkNum('MA200', T.ma200, ma200Rep);
+
+        // Quality cross-checks: the F-Score and Composite copied into the report
+        // must match the deterministic values computed by stockfetch.js / quality.js.
+        const Q = prim.quality || {};
+        const C = prim.composite || {};
+        const fScoreActual = Q.available !== false && Q.piotroski ? Q.piotroski.score : null;
+        const fScoreRep = (getKV(di, 'FSCORE') || '').split('/')[0];   // "7/9" -> "7"
+        const compActual = C && C.composite != null ? C.composite : null;
+        const compRep = getKV(di, 'COMPOSITE');
+        checkNum('FSCORE', fScoreActual, fScoreRep);
+        checkNum('COMPOSITE', compActual, compRep);
       }
     } catch (e) {
       warnings.push(`Could not parse data file ${path.basename(finalDataPath)}: ${e.message}`);
