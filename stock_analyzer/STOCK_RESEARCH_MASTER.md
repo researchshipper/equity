@@ -89,7 +89,7 @@ Add these keys when possible:
 
 ## 🔄 EXECUTION ORDER
 
-**The golden rule: DATA FIRST, RESEARCH SECOND, TEXT THIRD, HTML LAST.**
+**The golden rule: DATA FIRST, RESEARCH SECOND, TEXT THIRD, LINT FOURTH, HTML LAST.**
 
 ```
 STEP 0 ── DELETE old report files from previous analysis
@@ -100,7 +100,10 @@ STEP 2b ─ Run insiderfetch.js → reads definitive SEC insider trades
 STEP 3 ── Agent reads {TICKER}_data.json → does web research
  ALL numbers in the report MUST come from the JSON.
 STEP 4 ── Agent writes {TICKER}_report.txt in PLAIN TEXT FORMAT
-STEP 5 ── ⚠️ MANDATORY: Run `node stockmd.js {TICKER}_report.txt` → writes {ticker}_rich_report.html. NEVER write the HTML yourself. If stockmd.js errors, FIX the error — do NOT fall back to manual HTML.
+STEP 4b ─ ⚠️ MANDATORY SCHEMA LINTER: Run `node report_linter.js {TICKER}_report.txt`
+ If report_linter.js prints "STATUS: FAILED", read the errors, REGENERATE the report, and re-run.
+ ONLY proceed when report_linter.js prints "STATUS: PASSED".
+STEP 5 ── ⚠️ MANDATORY HTML GENERATION: Run `node stockmd.js {TICKER}_report.txt` → writes {ticker}_rich_report.html. NEVER write the HTML yourself.
 ```
 
 ---
@@ -1923,6 +1926,9 @@ Copy this into chat when running a new ticker. Check off each step.
 [ ] 8. Web research: catalysts, moat, AI, supply chain
 [ ] 9. Write {TICKER}_report.txt using ONLY numbers from the JSON
 [ ]    — verify: every price/ratio/return in txt matches _data.json
+[ ] 9b. Run schema linter: node report_linter.js {TICKER}_report.txt
+        If "STATUS: FAILED", read the errors, regenerate/correct the text, and re-run.
+        Only proceed once linter outputs "STATUS: PASSED".
 [ ] 10. Confirm stockmd.js exists (extract from this .md if needed)
 [ ] 11. Run: node stockmd.js {TICKER}_report.txt
 [ ] 12. Open {ticker}_rich_report.html and verify numbers match JSON
@@ -3611,6 +3617,9 @@ Copy this into chat when running a new ticker. Check off each step.
 [ ] 8. Web research: catalysts, moat, AI, supply chain
 [ ] 9. Write {TICKER}_report.txt using ONLY numbers from the JSON
 [ ]    — verify: every price/ratio/return in txt matches _data.json
+[ ] 9b. Run schema linter: node report_linter.js {TICKER}_report.txt
+        If "STATUS: FAILED", read the errors, regenerate/correct the text, and re-run.
+        Only proceed once linter outputs "STATUS: PASSED".
 [ ] 10. Confirm stockmd.js exists (extract from this .md if needed)
 [ ] 11. Run: node stockmd.js {TICKER}_report.txt
 [ ] 12. Open {ticker}_rich_report.html and verify numbers match JSON
