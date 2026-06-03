@@ -1,0 +1,15 @@
+# Market Beat — transient files (regenerated daily, never source of truth)
+
+# Scoreboard rollup HTML — regenerate any time with: node scoreboard.js show --days=N
+scoreboard_*.html
+
+# Diff JSON — derivable from any two report.YYYY-MM-DD.json snapshots
+diff.*.json
+
+# Linter & enrichment prompts — agent-loop scratch
+lint.prompt.md
+enrich.prompt.md
+enrich.patch.json
+
+# Archived patches after `enrich.js apply`
+enrich.patch.*.json
