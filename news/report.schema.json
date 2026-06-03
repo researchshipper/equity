@@ -31,6 +31,47 @@
       }
     },
 
+    "macro": {
+      "type": "object",
+      "description": "Macro / economic-calendar block rendered as top tiles below the hero. Covers what happened/is happening today, what to expect tomorrow and the rest of the week, plus headline 'key event' tiles (Fed rate decision, CPI, Jobs, etc.).",
+      "properties": {
+        "headline": { "type": "string", "description": "One-line summary of the macro day/week." },
+        "regime":   { "type": "string", "description": "Current rate/policy regime read, e.g. 'HAWKISH TILT — markets pricing a hike...'. Text before an em-dash is shown as a pill badge." },
+        "keyEvents": {
+          "type": "array",
+          "description": "Headline macro tiles (Fed rate decision, CPI, Jobs/NFP, ADP, PCE, etc.). 3-5 recommended.",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label":  { "type": "string", "description": "e.g. 'Fed (FOMC)', 'Jobs (NFP)', 'CPI'" },
+              "value":  { "type": "string", "description": "e.g. 'Jun 16-17', 'Fri Jun 5', 'Today 8:15a'" },
+              "detail": { "type": "string", "description": "1-line context: forecast/prior, significance" },
+              "when":   { "type": "string", "enum": ["today","tomorrow","week","ahead"], "description": "Corner badge: today / week / ahead" },
+              "tone":   { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+            }
+          }
+        },
+        "today":    { "type": "array", "description": "Today's scheduled data releases & Fed events.", "items": { "$ref": "#/definitions/calItem" } },
+        "tomorrow": { "type": "array", "description": "Tomorrow's scheduled releases.", "items": { "$ref": "#/definitions/calItem" } },
+        "week": {
+          "type": "array",
+          "description": "Full week-at-a-glance calendar, Mon→Fri.",
+          "items": {
+            "type": "object",
+            "required": ["date", "event"],
+            "properties": {
+              "date":       { "type": "string", "description": "e.g. 'Fri Jun 5'" },
+              "event":      { "type": "string" },
+              "importance": { "type": "string", "enum": ["high","med","low"], "default": "med" },
+              "status":     { "type": "string", "enum": ["done","today","ahead"], "description": "Renders as a colored tag." },
+              "tone":       { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+            }
+          }
+        }
+      }
+    },
+
     "news": {
       "type": "array",
       "description": "News cards. Should already be sorted by priority desc by the generator.",
@@ -177,6 +218,18 @@
   },
 
   "definitions": {
+    "calItem": {
+      "type": "object",
+      "required": ["time", "event"],
+      "properties": {
+        "time":       { "type": "string", "description": "e.g. '8:30a ET'" },
+        "event":      { "type": "string", "description": "e.g. 'Nonfarm Payrolls (May)'" },
+        "importance": { "type": "string", "enum": ["high","med","low"], "default": "med", "description": "Dot color: high=red, med=amber, low=grey." },
+        "forecast":   { "type": "string", "description": "Consensus, e.g. '+85k' (use '—' or 'n/a' to hide)." },
+        "prior":      { "type": "string", "description": "Previous print, e.g. '+115k'." },
+        "tone":       { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+      }
+    },
     "level": {
       "type": "object",
       "required": ["text"],

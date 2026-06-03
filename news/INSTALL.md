@@ -32,13 +32,14 @@
 ### 🎨 Report sections (v0.2)
 
 1. **Hero** — title, date, source badges, 10-cell market mood bar, color legend
-2. **News Cards** — each card has 🟢🔴🟡⚪ sentiment dot + headline + priority/category/confidence pills + L1/L2/L3 narratives + beneficiaries/victims columns + D/W/M/L timeline
-3. **🏆 Bottom Line** — 🥇🥈🥉 ranked leaderboard of winners and losers
-4. **📌 Other Stories** — compact mini-table of low-priority headlines
-5. **📊 Ticker Reference Table** — every mentioned ticker with name, sector, color, driver
-6. **🌡️ Sector Heatmap** — sector net-score tiles (green/red gradient)
-7. **🎯 Action Summary** — 3-column buys / sells / watchlist
-8. **Footer**
+2. **🏛️ Macro & Economic Calendar** — top tiles: regime badge + headline, **key-event tiles** (Fed rate decision / Jobs-NFP / CPI / ADP), a **Today** vs **Tomorrow** release grid, and a Mon→Fri **week-at-a-glance** with done/today/ahead tags and high/med/low importance dots
+3. **News Cards** — each card has 🟢🔴🟡⚪ sentiment dot + headline + priority/category/confidence pills + L1/L2/L3 narratives + beneficiaries/victims columns + D/W/M/L timeline
+4. **🏆 Bottom Line** — 🥇🥈🥉 ranked leaderboard of winners and losers
+5. **📌 Other Stories** — compact mini-table of low-priority headlines
+6. **📊 Ticker Reference Table** — every mentioned ticker with name, sector, color, driver
+7. **🌡️ Sector Heatmap** — sector net-score tiles (green/red gradient)
+8. **🎯 Action Summary** — 3-column buys / sells / watchlist
+9. **Footer**
 
 Outputs (gitignored):
 | File | Purpose |
@@ -119,6 +120,22 @@ The full schema is in **`report.schema.json`**. The shape:
   "mood": [
     { "label": "S&P 500 (fut)", "value": "7,620", "delta": "-0.04%", "tone": "neg" }
   ],
+
+  "macro": {
+    "headline": "Jobs week; payrolls Friday is the swing event",
+    "regime": "HAWKISH TILT — markets price a hike by year-end",
+    "keyEvents": [
+      { "label": "Fed (FOMC)", "value": "Jun 16-17", "detail": "Decision Jun 17", "when": "ahead", "tone": "neu" },
+      { "label": "Jobs (NFP)", "value": "Fri Jun 5", "detail": "fcst ~85k vs +115k", "when": "week", "tone": "neu" },
+      { "label": "CPI", "value": "Jun 13", "detail": "last +3.8% YoY", "when": "ahead", "tone": "neg" }
+    ],
+    "today":    [ { "time": "8:15a ET", "event": "ADP Employment (May)", "importance": "high", "forecast": "+116k", "prior": "+109k", "tone": "neu" } ],
+    "tomorrow": [ { "time": "8:30a ET", "event": "Weekly Jobless Claims", "importance": "high", "forecast": "~213k", "prior": "215k", "tone": "neu" } ],
+    "week": [
+      { "date": "Tue Jun 2", "event": "JOLTS (Apr): 7.62M, 2-yr high", "importance": "high", "status": "done", "tone": "pos" },
+      { "date": "Fri Jun 5", "event": "NONFARM PAYROLLS (May)", "importance": "high", "status": "ahead", "tone": "neg" }
+    ]
+  },
 
   "news": [
     {
@@ -218,7 +235,9 @@ node -e "
 const r = require('./marketbeat/news/report.json');
 const ok = r.date && Array.isArray(r.news) &&
            r.news.every(n => n.levels?.L1 && n.levels?.L2 && n.levels?.L3);
+const macroOk = r.macro && Array.isArray(r.macro.keyEvents) && r.macro.keyEvents.length >= 3;
 console.log(ok ? '✅ schema-shaped' : '❌ missing required fields');
+console.log(macroOk ? '✅ macro block present (Fed/Jobs/CPI tiles)' : '⚠️  macro block missing/short');
 "
 
 # 3. Render it

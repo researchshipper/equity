@@ -142,6 +142,41 @@ table.mini th,table.mini td{padding:6px 10px;border-bottom:1px solid #1c2548;tex
 table.mini th{background:#1a2348;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#cfd8ff}
 table.mini tr:last-child td{border-bottom:none}
 @media (max-width:760px){.two,.action,.leader{grid-template-columns:1fr}}
+/* ── macro / economic calendar ─────────────────────────────────────────── */
+.macro{background:linear-gradient(135deg,#15203f,#0b1020 70%);border:1px solid var(--line);
+  border-radius:14px;padding:16px 18px;margin-bottom:18px}
+.macro .mh{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:4px}
+.macro .mh .ttl{font-size:16px;font-weight:700}
+.macro .regime{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;
+  letter-spacing:.4px;background:#3a1a1a;color:#f5c0c0;border:1px solid #5a2a2a}
+.macro .lede{color:var(--muted);font-size:12.5px;margin:2px 0 12px}
+.keyev{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.kev{background:#0e1430;border:1px solid var(--line);border-radius:10px;padding:10px 12px;position:relative}
+.kev .kl{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.kev .kv{font-size:16px;font-weight:700;margin-top:2px}
+.kev .kd{font-size:11.5px;color:#c3cbe8;margin-top:3px;line-height:1.35}
+.kev .when{position:absolute;top:9px;right:10px;font-size:9.5px;font-weight:700;letter-spacing:.5px;
+  text-transform:uppercase;padding:2px 6px;border-radius:6px}
+.when.today{background:#15301f;color:#7ee0a8}
+.when.week{background:#2a2342;color:#c9b6ff}
+.when.ahead{background:#1a2c4a;color:#9ec3ff}
+.kev.neg{border-color:#5a2a2a}.kev.pos{border-color:#1f5a3a}
+.macro .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:760px){.macro .cols{grid-template-columns:1fr}}
+.cal{background:#0e1430;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.cal h4{margin:0 0 6px;font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:#9ec3ff}
+.cal table{width:100%;border-collapse:collapse;font-size:12.3px}
+.cal td{padding:4px 6px;border-bottom:1px solid #1c2548;vertical-align:top}
+.cal tr:last-child td{border-bottom:none}
+.cal .tm{color:var(--muted);white-space:nowrap;font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+.cal .fp{white-space:nowrap;text-align:right;color:#c3cbe8;font-size:11.5px}
+.imp{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.imp.high{background:var(--red)}.imp.med{background:var(--yellow)}.imp.low{background:#5b6690}
+.wk td .st{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+  padding:1px 6px;border-radius:5px;margin-left:6px}
+.st.done{background:#23314a;color:#8fa6c9}.st.today{background:#15301f;color:#7ee0a8}
+.st.ahead{background:#1a2c4a;color:#9ec3ff}
+.cal td.evpos{color:#9be8c0}.cal td.evneg{color:#f3b6b6}
 `;
 
 // ─── renderers ──────────────────────────────────────────────────────────────
@@ -282,6 +317,49 @@ function renderActions(a){
 </div>`;
 }
 
+function renderMacro(m){
+  if (!m) return '';
+  const has = arr => Array.isArray(arr) && arr.length;
+
+  const keyEvents = has(m.keyEvents) ? `<div class="keyev">${m.keyEvents.map(e=>`
+    <div class="kev ${e.tone||''}">
+      ${e.when?`<span class="when ${e.when}">${esc(e.when)}</span>`:''}
+      <div class="kl">${esc(e.label)}</div>
+      <div class="kv">${esc(e.value)}</div>
+      ${e.detail?`<div class="kd">${esc(e.detail)}</div>`:''}
+    </div>`).join('')}</div>` : '';
+
+  const dayRows = rows => (rows||[]).map(x=>`
+    <tr>
+      <td class="tm">${esc(x.time||'')}</td>
+      <td class="${x.tone==='pos'?'evpos':x.tone==='neg'?'evneg':''}"><span class="imp ${x.importance||'low'}"></span>${esc(x.event)}</td>
+      <td class="fp">${x.forecast&&x.forecast!=='—'&&x.forecast!=='n/a'?`f: ${esc(x.forecast)}`:''}${(x.prior&&x.prior!=='—'&&x.prior!=='n/a')?` · p: ${esc(x.prior)}`:''}</td>
+    </tr>`).join('');
+
+  const todayCal = has(m.today) ? `<div class="cal"><h4>📅 Today's Data &amp; Fed</h4>
+    <table>${dayRows(m.today)}</table></div>` : '';
+  const tmrwCal  = has(m.tomorrow) ? `<div class="cal"><h4>⏭️ Tomorrow</h4>
+    <table>${dayRows(m.tomorrow)}</table></div>` : '';
+
+  const weekCal = has(m.week) ? `<div class="cal wk"><h4>🗓️ This Week's Macro Calendar</h4>
+    <table>${m.week.map(x=>`
+      <tr>
+        <td class="tm">${esc(x.date||'')}</td>
+        <td class="${x.tone==='pos'?'evpos':x.tone==='neg'?'evneg':''}"><span class="imp ${x.importance||'low'}"></span>${esc(x.event)}${x.status?`<span class="st ${x.status}">${esc(x.status)}</span>`:''}</td>
+      </tr>`).join('')}</table></div>` : '';
+
+  return `<section class="macro">
+  <div class="mh">
+    <span class="ttl">🏛️ Macro &amp; Economic Calendar</span>
+    ${m.regime?`<span class="regime">${esc((m.regime||'').split('—')[0].trim())}</span>`:''}
+  </div>
+  ${m.headline?`<div class="lede"><b>${esc(m.headline)}</b>${m.regime&&m.regime.includes('—')?` — ${esc(m.regime.split('—').slice(1).join('—').trim())}`:''}</div>`:''}
+  ${keyEvents}
+  <div class="cols">${todayCal}${tmrwCal}</div>
+  ${weekCal?`<div style="margin-top:12px">${weekCal}</div>`:''}
+</section>`;
+}
+
 function renderReport(r){
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>${esc(r.title||'Market Beat')} · ${esc(r.date||'')}</title>
@@ -300,6 +378,8 @@ function renderReport(r){
   ${renderMood(r.mood)}
   ${renderLegend()}
 </header>
+
+${renderMacro(r.macro)}
 
 <h2 class="section">🗞️ News Cards — sorted by priority</h2>
 <div class="grid">${(r.news||[]).map(renderCard).join('')}</div>

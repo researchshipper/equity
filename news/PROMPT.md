@@ -14,7 +14,10 @@ first, then serialize**. Same content, ~30-40% faster, much lower error rate.
 
 ```
 PHASE 1 — Outline in plain text (fast):
-   For each headline, write 6 lines:
+   First, a MACRO line block (brain-dump, no JSON):
+     Regime | Fed=<next FOMC date+stance> | NFP=<date,fcst/prior> | CPI=<date>
+     Today: <time event fcst/prior; …>   Tomorrow: <…>   Week: Mon..Fri <…>
+   Then, for each headline, write 6 lines:
      # HEADLINE | TICKERS:scores | L1 narrative | L2 narrative | L3 narrative | Timeline DWML
    No JSON, no quoting, no escaping. Just brain-dump.
 
@@ -44,6 +47,12 @@ INPUTS (fetch with whatever tool you have):
   - https://www.reuters.com/markets/
   - https://www.marketwatch.com/latest-news
   - https://www.bloomberg.com/markets   (if accessible)
+  MACRO / ECONOMIC CALENDAR (fetch REAL dates & times — never guess):
+  - https://www.kiplinger.com/investing/economy/this-weeks-economic-calendar
+  - https://www.investing.com/economic-calendar/
+  - https://www.newyorkfed.org/research/calendars   (release times, ET)
+  - the NEXT FOMC meeting date + current Fed-chair stance, plus the next
+    CPI, PCE, and Nonfarm-Payrolls (NFP) release dates with forecast/prior.
 
 OUTPUT: write exactly one file to marketbeat/news/report.json that conforms
 to marketbeat/news/report.schema.json. After writing it, run:
@@ -74,6 +83,24 @@ CONTENT REQUIREMENTS:
        - otherStories[]: low-priority headlines compressed into
                          { headline, keyPoint, beneficiaries }
        - mood[]: futures + commodities + crypto + VIX (use today's prints)
+       - macro{}: the economic-calendar block rendered as TOP TILES below the hero.
+                  MANDATORY. Use real, verified dates/times (ET). Shape:
+           macro.headline : one-line summary of today's / this week's macro story
+           macro.regime   : rate/policy regime read; text before an "—" becomes a
+                            pill badge, e.g. "HAWKISH TILT — markets price a hike…"
+           macro.keyEvents[] : 3–5 HEADLINE tiles — ALWAYS include Fed rate
+                            decision (next FOMC), Jobs/NFP, and CPI; add ADP/PCE/
+                            PPI when relevant. Each: { label, value (date/time),
+                            detail (forecast vs prior + why it matters),
+                            when: today|tomorrow|week|ahead, tone: pos|neg|neu }
+           macro.today[]    : today's scheduled releases & Fed speakers
+           macro.tomorrow[] : tomorrow's scheduled releases
+           macro.week[]     : Mon→Fri week-at-a-glance, each with status
+                            done|today|ahead
+           today/tomorrow items: { time, event, importance: high|med|low,
+                                   forecast, prior, tone }. Use "—"/"n/a" to hide
+                                   forecast/prior. importance drives the dot color
+                                   (high=red, med=amber, low=grey).
 
 SCORING RUBRIC (BE STRICT):
   +3 strong direct beneficiary       -3 strong direct victim
@@ -106,9 +133,10 @@ If you already have the analysis context loaded and just want to refresh data:
 
 ```
 Refresh marketbeat/news/report.json with today's headlines from Yahoo Finance.
-Keep the exact same JSON schema. Update: date, mood[], news[] (12–20 cards
-with sentiment dots), leaderboard, otherStories, tickerTable, sectorHeatmap,
-actionSummary. Then run: node marketbeat/news/render.js
+Keep the exact same JSON schema. Update: date, mood[], macro{} (today/
+tomorrow/week + keyEvents: Fed/NFP/CPI with verified dates), news[] (12–20
+cards with sentiment dots), leaderboard, otherStories, tickerTable,
+sectorHeatmap, actionSummary. Then run: node marketbeat/news/render.js
 ```
 
 ---
@@ -177,6 +205,9 @@ console.log('news cards:',r.news?.length);
 console.log('tickers:',  r.tickerTable?.length);
 console.log('all news have L1/L2/L3:',
   r.news.every(n => n.levels?.L1 && n.levels?.L2 && n.levels?.L3));
+console.log('macro keyEvents:', r.macro?.keyEvents?.length, '(want Fed/Jobs/CPI)');
+console.log('macro today/tomorrow/week:',
+  r.macro?.today?.length, r.macro?.tomorrow?.length, r.macro?.week?.length);
 "
 
 # 3. Render
