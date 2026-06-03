@@ -5,9 +5,9 @@
 #   1. Only acts if files under news/ are staged for commit
 #   2. Validates JSON syntax for every staged report*.json
 #   3. Runs lint.js --strict on news/report.json (must exit 0)
-#   4. Re-renders marketbeat_report_<date>.html so it matches report.json
-#   5. Auto-stages the re-rendered HTML + snapshot
-#   6. Verifies scoreboard.jsonl is valid JSONL
+#   4. Re-renders marketbeat_report.html (fixed name) so it matches report.json
+#   5. Auto-stages the re-rendered HTML
+#   6. Verifies scoreboard.jsonl + history.jsonl are valid JSONL
 #
 # Install as a git hook (one-time):
 #     ln -sf ../../news/scripts/precommit.sh .git/hooks/pre-commit
@@ -67,9 +67,9 @@ if [ "$NODE_MAJOR" -lt 20 ]; then
   warn "Node $(node --version) detected — recommend ≥ 20"
 fi
 
-# ─── 2. Validate JSON syntax for every staged report*.json ──────────────────
+# ─── 2. Validate JSON syntax for every staged JSON file ────────────────────
 say "Validating JSON syntax on staged report files…"
-JSON_FILES=$(echo "$STAGED_NEWS" | grep -E '^news/(report\.json|report\.[0-9-]+\.json|diff\.[0-9-]+\.json|report\.schema\.json)$' || true)
+JSON_FILES=$(echo "$STAGED_NEWS" | grep -E '^news/(report\.json|report\.previous\.json|diff\.json|report\.schema\.json)$' || true)
 if [ -n "$JSON_FILES" ]; then
   for f in $JSON_FILES; do
     if [ -f "$REPO_ROOT/$f" ]; then
@@ -84,22 +84,24 @@ else
   ok "no JSON files in staged set"
 fi
 
-# ─── 3. Validate scoreboard.jsonl line-by-line if staged ────────────────────
-if echo "$STAGED_NEWS" | grep -q '^news/scoreboard\.jsonl$'; then
-  say "Validating scoreboard.jsonl (one JSON per line)…"
-  if node -e "
-    const fs = require('fs');
-    const lines = fs.readFileSync('$NEWS_DIR/scoreboard.jsonl','utf8').split('\n').filter(Boolean);
-    let bad = 0;
-    lines.forEach((l, i) => { try { JSON.parse(l); } catch (e) { console.error('  line '+(i+1)+': '+e.message); bad++; } });
-    if (bad) { console.error('  '+bad+' bad lines'); process.exit(1); }
-    console.log('  '+lines.length+' valid lines');
-  "; then
-    ok "scoreboard.jsonl is clean"
-  else
-    die "scoreboard.jsonl has invalid lines"
+# ─── 3. Validate JSONL files line-by-line if staged ────────────────────────
+for JSONL in scoreboard.jsonl history.jsonl; do
+  if echo "$STAGED_NEWS" | grep -q "^news/${JSONL}\$"; then
+    say "Validating ${JSONL} (one JSON per line)…"
+    if node -e "
+      const fs = require('fs');
+      const lines = fs.readFileSync('$NEWS_DIR/${JSONL}','utf8').split('\n').filter(Boolean);
+      let bad = 0;
+      lines.forEach((l, i) => { try { JSON.parse(l); } catch (e) { console.error('  line '+(i+1)+': '+e.message); bad++; } });
+      if (bad) { console.error('  '+bad+' bad lines'); process.exit(1); }
+      console.log('  '+lines.length+' valid lines');
+    "; then
+      ok "${JSONL} is clean"
+    else
+      die "${JSONL} has invalid lines"
+    fi
   fi
-fi
+done
 
 # ─── 4. Lint report.json (must pass --strict) ───────────────────────────────
 if [ -f "$NEWS_DIR/report.json" ]; then
@@ -126,25 +128,19 @@ if [ -f "$NEWS_DIR/report.json" ]; then
   fi
 fi
 
-# ─── 5. Re-render HTML if report.json is staged ─────────────────────────────
+# ─── 5. Re-render HTML if report.json is staged (FIXED NAME) ────────────────
 if echo "$STAGED_NEWS" | grep -q '^news/report\.json$'; then
-  say "Re-rendering HTML so it matches the staged report.json…"
+  say "Re-rendering marketbeat_report.html to match the staged report.json…"
   if [ -f "$NEWS_DIR/render.js" ]; then
     DATE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$NEWS_DIR/report.json','utf8')).date)")
     if [ -z "$DATE" ] || [ "$DATE" = "undefined" ]; then
       die "report.json has no .date field"
     fi
     (cd "$NEWS_DIR" && node render.js report.json > /dev/null)
-    HTML_FILE="news/marketbeat_report_${DATE}.html"
+    HTML_FILE="news/marketbeat_report.html"
     if [ -f "$REPO_ROOT/$HTML_FILE" ]; then
-      ok "rendered $HTML_FILE"
-      # Auto-stage the regenerated HTML
+      ok "rendered $HTML_FILE (date=$DATE inside file)"
       git add "$REPO_ROOT/$HTML_FILE" 2>/dev/null && ok "auto-staged $HTML_FILE" || true
-
-      # Also snapshot to report.<date>.json and stage it
-      SNAP_FILE="news/report.${DATE}.json"
-      cp "$NEWS_DIR/report.json" "$REPO_ROOT/$SNAP_FILE"
-      git add "$REPO_ROOT/$SNAP_FILE" 2>/dev/null && ok "auto-staged $SNAP_FILE (daily snapshot)" || true
     else
       warn "expected $HTML_FILE not produced"
     fi
@@ -153,12 +149,30 @@ if echo "$STAGED_NEWS" | grep -q '^news/report\.json$'; then
   fi
 fi
 
-# ─── 6. Make sure transient files aren't staged ─────────────────────────────
-LEAKED=$(echo "$STAGED_NEWS" | grep -E '^news/(lint\.prompt\.md|enrich\.prompt\.md|enrich\.patch\.json|scoreboard_[0-9]+d\.html)$' || true)
+# ─── 6. Refresh scoreboard_7d.html if scoreboard.jsonl is staged ───────────
+if echo "$STAGED_NEWS" | grep -q '^news/scoreboard\.jsonl$'; then
+  say "Refreshing scoreboard_7d.html to match scoreboard.jsonl…"
+  if [ -f "$NEWS_DIR/scoreboard.js" ]; then
+    (cd "$NEWS_DIR" && node scoreboard.js show --days=7 > /dev/null) || warn "scoreboard show failed"
+    if [ -f "$NEWS_DIR/scoreboard_7d.html" ]; then
+      git add "$REPO_ROOT/news/scoreboard_7d.html" 2>/dev/null && ok "auto-staged news/scoreboard_7d.html" || true
+    fi
+  fi
+fi
+
+# ─── 7. Make sure transient files aren't staged ─────────────────────────────
+# Catches: agent scratch (.prompt.md, .patch.json), legacy date-suffixed files,
+# and any scoreboard_*d.html OTHER than the canonical scoreboard_7d.html.
+LEAKED=$(echo "$STAGED_NEWS" | grep -E '^news/(lint\.prompt\.md|enrich\.prompt\.md|enrich\.patch\.json|report\.[0-9-]+\.json|marketbeat_report_[0-9-]+\.html|marketbeat_diff_[0-9-]+\.html|diff\.[0-9-]+\.json|diff\.json)$' || true)
+# Separate check for non-7d scoreboards (grep -E doesn't do negative lookahead)
+EXTRA_BOARDS=$(echo "$STAGED_NEWS" | grep -E '^news/scoreboard_[0-9]+d\.html$' | grep -v '^news/scoreboard_7d\.html$' || true)
+LEAKED=$(echo -e "$LEAKED\n$EXTRA_BOARDS" | grep -v '^$' || true)
 if [ -n "$LEAKED" ]; then
-  warn "transient files staged (consider unstaging):"
+  warn "transient or legacy date-suffixed files staged (consider unstaging):"
   echo "$LEAKED" | sed 's/^/    /'
-  echo "    ${DIM}→ these are regenerated daily; add them to .gitignore${RESET}"
+  echo "    ${DIM}→ this repo uses FIXED filenames (report.json, report.previous.json,${RESET}"
+  echo "    ${DIM}   marketbeat_report.html, marketbeat_report.previous.html, marketbeat_diff.html).${RESET}"
+  echo "    ${DIM}→ Date-suffixed files are leftovers from the old layout — delete them.${RESET}"
 fi
 
 echo ""
