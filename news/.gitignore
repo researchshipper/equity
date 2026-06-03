@@ -1,15 +1,22 @@
-# Market Beat — transient files (regenerated daily, never source of truth)
+# Market Beat — files that should NEVER be committed.
+#
+# We use FIXED filenames (report.json, report.previous.json,
+# marketbeat_report.html, marketbeat_report.previous.html, marketbeat_diff.html).
+# The patterns below catch transient artifacts and legacy date-suffixed files.
 
-# Scoreboard rollup HTML — regenerate any time with: node scoreboard.js show --days=N
+# Scoreboard rollup HTML — only commit the canonical 7-day view.
+# Other --days=N variants stay local-only (regenerable any time).
 scoreboard_*.html
+!scoreboard_7d.html
 
-# Diff JSON — derivable from any two report.YYYY-MM-DD.json snapshots
-diff.*.json
-
-# Linter & enrichment prompts — agent-loop scratch
+# Linter & enrichment scratchpads — agent reads + discards
 lint.prompt.md
 enrich.prompt.md
 enrich.patch.json
-
-# Archived patches after `enrich.js apply`
 enrich.patch.*.json
+
+# Legacy date-suffixed files (from earlier versions — daily.js auto-migrates them away)
+report.[0-9]*.json
+marketbeat_report_[0-9]*.html
+marketbeat_diff_[0-9]*.html
+diff.[0-9]*.json
