@@ -1,0 +1,201 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Market Beat News Impact Report",
+  "description": "Contract between LLM content generators and the render.js HTML converter. Any conformant report.json will render correctly.",
+  "type": "object",
+  "required": ["date", "title", "sources", "mood", "news"],
+  "properties": {
+    "date":     { "type": "string", "description": "YYYY-MM-DD" },
+    "title":    { "type": "string" },
+    "subtitle": { "type": "string" },
+    "region":   { "type": "string", "enum": ["US","EU","APAC","GLOBAL"], "default": "GLOBAL" },
+    "version":  { "type": "string", "default": "0.2" },
+    "sources":  {
+      "type": "array",
+      "description": "Source labels shown in the header badge.",
+      "items": { "type": "string" }
+    },
+
+    "mood": {
+      "type": "array",
+      "description": "Market mood bar cells (futures, commodities, crypto, etc.). Render in given order.",
+      "items": {
+        "type": "object",
+        "required": ["label","value"],
+        "properties": {
+          "label":  { "type": "string", "description": "e.g. 'S&P 500 (fut)'" },
+          "value":  { "type": "string", "description": "Display value: '7,620', '$94.75'" },
+          "delta":  { "type": "string", "description": "Optional delta string: '-0.04%', 'flat'" },
+          "tone":   { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+        }
+      }
+    },
+
+    "news": {
+      "type": "array",
+      "description": "News cards. Should already be sorted by priority desc by the generator.",
+      "items": {
+        "type": "object",
+        "required": ["id","headline","priority","tickers","levels"],
+        "properties": {
+          "id":         { "type": "integer" },
+          "headline":   { "type": "string" },
+          "source":     { "type": "string", "description": "e.g. 'Yahoo Finance · 2h ago'" },
+          "url":        { "type": "string" },
+          "category":   { "type": "string", "description": "e.g. 'AI · Semis'" },
+          "priority":   { "type": "integer", "minimum": 1, "maximum": 10 },
+          "confidence": { "type": "string", "enum": ["HIGH","MED","LOW"], "default": "MED" },
+          "sentiment":  { "type": "string", "enum": ["bull","bear","mixed","neutral"], "default": "neutral",
+                          "description": "Emoji dot on the headline: bull=🟢 bear=🔴 mixed=🟡 neutral=⚪" },
+
+          "tickers": {
+            "type": "array",
+            "description": "Primary ticker chips shown directly under the headline.",
+            "items": {
+              "type": "object",
+              "required": ["symbol","score"],
+              "properties": {
+                "symbol": { "type": "string" },
+                "score":  { "type": "integer", "minimum": -3, "maximum": 3 },
+                "note":   { "type": "string", "description": "Optional override label, e.g. 'Chinese chip ETFs'" }
+              }
+            }
+          },
+
+          "levels": {
+            "type": "object",
+            "description": "Three depths of impact analysis.",
+            "required": ["L1","L2","L3"],
+            "properties": {
+              "L1": { "$ref": "#/definitions/level" },
+              "L2": { "$ref": "#/definitions/level" },
+              "L3": { "$ref": "#/definitions/level" }
+            }
+          },
+
+          "beneficiaries": { "type": "array", "items": { "type": "string" } },
+          "victims":       { "type": "array", "items": { "type": "string" } },
+
+          "timeline": {
+            "type": "object",
+            "properties": {
+              "D": { "type": "string", "description": "Days" },
+              "W": { "type": "string", "description": "Weeks" },
+              "M": { "type": "string", "description": "Months" },
+              "L": { "type": "string", "description": "Long-term" }
+            }
+          },
+
+          "keyPoints": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+
+    "tickerTable": {
+      "type": "array",
+      "description": "Aggregated ticker reference table at the bottom.",
+      "items": {
+        "type": "object",
+        "required": ["symbol","name","sector","score"],
+        "properties": {
+          "symbol": { "type": "string" },
+          "name":   { "type": "string" },
+          "sector": { "type": "string" },
+          "score":  { "type": "integer", "minimum": -3, "maximum": 3 },
+          "driver": { "type": "string", "description": "Primary news driver / one-liner" }
+        }
+      }
+    },
+
+    "sectorHeatmap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sector","score"],
+        "properties": {
+          "sector": { "type": "string" },
+          "score":  { "type": "integer", "description": "Net signed score across all news" }
+        }
+      }
+    },
+
+    "actionSummary": {
+      "type": "object",
+      "properties": {
+        "buys":      { "type": "array", "items": { "type": "string" } },
+        "sells":     { "type": "array", "items": { "type": "string" } },
+        "watchlist": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "leaderboard": {
+      "type": "object",
+      "description": "🥇🥈🥉 'Bottom line: who wins today' ranked board.",
+      "properties": {
+        "winners": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rank","name","why"],
+            "properties": {
+              "rank": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string" },
+              "why":  { "type": "string" }
+            }
+          }
+        },
+        "losers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rank","name","why"],
+            "properties": {
+              "rank": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string" },
+              "why":  { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "otherStories": {
+      "type": "array",
+      "description": "Compact mini-table of low-priority headlines.",
+      "items": {
+        "type": "object",
+        "required": ["headline","keyPoint"],
+        "properties": {
+          "headline":     { "type": "string" },
+          "keyPoint":     { "type": "string" },
+          "beneficiaries":{ "type": "string", "description": "Comma-separated short list" }
+        }
+      }
+    },
+
+    "footer": { "type": "string" }
+  },
+
+  "definitions": {
+    "level": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text":    { "type": "string", "description": "Narrative paragraph for this level." },
+        "tickers": {
+          "type": "array",
+          "description": "Optional ticker chips rendered inside the level box.",
+          "items": {
+            "type": "object",
+            "required": ["symbol","score"],
+            "properties": {
+              "symbol": { "type": "string" },
+              "score":  { "type": "integer", "minimum": -3, "maximum": 3 },
+              "note":   { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

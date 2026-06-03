@@ -1,0 +1,1649 @@
+{
+  "date": "2026-06-02",
+  "title": "Market Beat — News Impact Analysis",
+  "subtitle": "17 headlines analyzed · 3 levels of impact traced · 48 tickers scored",
+  "region": "GLOBAL",
+  "version": "0.2",
+  "sources": [
+    "Yahoo Finance",
+    "CNBC",
+    "Reuters",
+    "Bloomberg"
+  ],
+  "mood": [
+    {
+      "label": "S&P 500 (fut)",
+      "value": "7,620",
+      "delta": "-0.04%",
+      "tone": "neg"
+    },
+    {
+      "label": "Nasdaq 100 (fut)",
+      "value": "30,676",
+      "delta": "-0.12%",
+      "tone": "neg"
+    },
+    {
+      "label": "Dow (fut)",
+      "value": "51,374",
+      "delta": "-0.05%",
+      "tone": "neg"
+    },
+    {
+      "label": "WTI Crude",
+      "value": "$94.75",
+      "delta": "+1.06%",
+      "tone": "pos"
+    },
+    {
+      "label": "Brent",
+      "value": "$96.10",
+      "delta": "+0.93%",
+      "tone": "pos"
+    },
+    {
+      "label": "Gold",
+      "value": "$4,508",
+      "delta": "-0.26%",
+      "tone": "neg"
+    },
+    {
+      "label": "Bitcoin",
+      "value": "$66,477",
+      "delta": "-6.16%",
+      "tone": "neg"
+    },
+    {
+      "label": "Nikkei 225",
+      "value": "68,452",
+      "delta": "+2.57%",
+      "tone": "pos"
+    },
+    {
+      "label": "10y Yield",
+      "value": "4.21%",
+      "delta": "flat",
+      "tone": "neu"
+    },
+    {
+      "label": "VIX",
+      "value": "17.4",
+      "delta": "-1.2%",
+      "tone": "pos"
+    }
+  ],
+  "news": [
+    {
+      "id": 1,
+      "headline": "Marvell soars +32.5% — Jensen Huang calls it 'the next trillion-dollar company'",
+      "source": "Yahoo Finance · 2h ago",
+      "url": "https://finance.yahoo.com/markets/stocks/article/marvell-stock-soars-as-nvidia-ceo-calls-chipmaker-the-next-trillion-dollar-company-130932917.html",
+      "category": "AI · Semis",
+      "priority": 10,
+      "confidence": "HIGH",
+      "tickers": [
+        {
+          "symbol": "MRVL",
+          "score": 3
+        },
+        {
+          "symbol": "NVDA",
+          "score": 2
+        },
+        {
+          "symbol": "AVGO",
+          "score": 2
+        },
+        {
+          "symbol": "TSM",
+          "score": 1
+        },
+        {
+          "symbol": "MU",
+          "score": 1
+        },
+        {
+          "symbol": "LITE",
+          "score": 1
+        },
+        {
+          "symbol": "INTC",
+          "score": -1
+        },
+        {
+          "symbol": "KWEB",
+          "score": -2,
+          "note": "Chinese chip ETFs"
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Nvidia CEO publicly endorses Marvell at Computex; MRVL +32.5%. Validates Marvell's custom AI accelerator (XPU) + optical-networking business serving MSFT & AMZN. Targets $10B+ custom-silicon revenue by FY29."
+        },
+        "L2": {
+          "text": "Custom-silicon peers (AVGO) and optical-networking suppliers (LITE, COHR, INFN) re-rate. Foundry beneficiary TSM. Memory plays MU / Samsung / SK Hynix get sympathy bid. Data-center REITs EQIX, DLR get demand validation."
+        },
+        "L3": {
+          "text": "Reinforces 'AI infra capex super-cycle'; supports Goldman's Taiwan/Korea overweight call. Pressure on INTC (left behind) and Chinese chip names (US restrictions widen gap). Pulls capital into Asia tech ETFs (EWT, EWY)."
+        }
+      },
+      "beneficiaries": [
+        "MRVL shareholders — massive re-rating, $254B → narrative toward $1T",
+        "NVDA — strengthens partnership/ecosystem moat ($2B MRVL investment)",
+        "AVGO — custom-silicon halo trade",
+        "TSM & ASML — foundry/equipment pull-through",
+        "Optical networking: LITE, COHR, INFN"
+      ],
+      "victims": [
+        "INTC — increasingly absent from AI accelerator conversation",
+        "Chinese semis (SMIC, KWEB exposure) — US tech gap widens",
+        "Generic merchant-silicon vendors — custom XPUs eat their TAM"
+      ],
+      "timeline": {
+        "D": "Momentum chase in MRVL, AVGO, LITE; pair-trade vs INTC.",
+        "W": "Sell-side PTs raised; options skew in MRVL gets crushed.",
+        "M": "FY29 custom-silicon guide becomes consensus baseline.",
+        "L": "Solidifies hyperscaler-custom-silicon model; INTC strategic risk."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 2,
+      "headline": "Palo Alto Networks beats & raises — AI-cyber demand surges",
+      "source": "Reuters · 6h ago",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/palo-alto-raises-annual-forecasts-205221784.html",
+      "category": "Cybersecurity · AI",
+      "priority": 9,
+      "confidence": "HIGH",
+      "tickers": [
+        {
+          "symbol": "PANW",
+          "score": 3
+        },
+        {
+          "symbol": "ZS",
+          "score": 2
+        },
+        {
+          "symbol": "CRWD",
+          "score": 2
+        },
+        {
+          "symbol": "FTNT",
+          "score": 2
+        },
+        {
+          "symbol": "OKTA",
+          "score": 1
+        },
+        {
+          "symbol": "NTSK",
+          "score": 1
+        },
+        {
+          "symbol": "NVDA",
+          "score": 1
+        },
+        {
+          "symbol": "GEN",
+          "score": -1,
+          "note": "Legacy AV vendors"
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Q3 rev $3.0B (+31% YoY), beat $2.94B. FY guide raised: revenue $11.42–11.43B, adj EPS $3.77–3.79. Stock +7.4% AH. Mgmt cites AI-driven threat surface accelerating platform consolidation."
+        },
+        "L2": {
+          "text": "Validates the 'platformization' thesis — sympathy bids in ZS, CRWD, FTNT, OKTA. Pre-IPO/private names (NTSK, Wiz) get implied mark-ups. NVDA + MRVL benefit (security needs more inference compute)."
+        },
+        "L3": {
+          "text": "Enterprise IT budgets prioritize security over discretionary SaaS — pressures CRM/WDAY share-of-wallet. Re-raises M&A risk premium for niche security tools. Confirms cyber as a 'rate-insensitive' growth pocket."
+        }
+      },
+      "beneficiaries": [
+        "PANW — raised guide validates platform strategy",
+        "ZS, CRWD, FTNT — sympathy trade and pricing power",
+        "NTSK / Wiz / Island — private-market mark-ups",
+        "NVDA / MRVL — incremental inference workloads"
+      ],
+      "victims": [
+        "Point-product security vendors (single-feature plays)",
+        "Budget-constrained SMB software (squeezed by sec spend)",
+        "Legacy AV (NortonLifeLock/Gen Digital relative)"
+      ],
+      "timeline": {
+        "D": "Gap-up + analyst PT hikes across security comp set.",
+        "W": "Multiple expansion for ZS/CRWD into earnings.",
+        "M": "NTSK / Wiz IPO chatter accelerates.",
+        "L": "Cyber becomes 'must-own' subsector vs SaaS deceleration."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 3,
+      "headline": "US-Iran talks fragile · Oil rises to one-week high · Netanyahu the wedge",
+      "source": "Reuters / Bloomberg · 3–8h ago",
+      "url": "https://finance.yahoo.com/economy/policy/articles/trump-netanyahu-problem-latest-key-202620111.html",
+      "category": "Geopolitics · Energy",
+      "priority": 9,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "XOM",
+          "score": 3
+        },
+        {
+          "symbol": "CVX",
+          "score": 3
+        },
+        {
+          "symbol": "OXY",
+          "score": 2
+        },
+        {
+          "symbol": "SLB",
+          "score": 2
+        },
+        {
+          "symbol": "HAL",
+          "score": 2
+        },
+        {
+          "symbol": "RTX",
+          "score": 2
+        },
+        {
+          "symbol": "LMT",
+          "score": 2
+        },
+        {
+          "symbol": "USO",
+          "score": 1
+        },
+        {
+          "symbol": "UAL",
+          "score": -2
+        },
+        {
+          "symbol": "DAL",
+          "score": -2
+        },
+        {
+          "symbol": "LUV",
+          "score": -2
+        },
+        {
+          "symbol": "EEM",
+          "score": -1
+        },
+        {
+          "symbol": "INDA",
+          "score": -1
+        },
+        {
+          "symbol": "XLY",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Iran reviewing US proposal, but Israel's Hezbollah campaign threatens a deal. Trump wants nuclear concessions in writing. WTI back above $94, Brent near $96. Strait of Hormuz risk remains the tail-risk."
+        },
+        "L2": {
+          "text": "Airlines and shippers hit by jet-fuel/bunker pass-through. Refiners (VLO, MPC) benefit short-term on crack spreads. Oil-services capex outlook firms (SLB, HAL, BKR). Defense primes bid as Middle East risk premium re-anchors."
+        },
+        "L3": {
+          "text": "Sticky energy = sticky CPI = Fed stays cautious on cuts → USD support, EM oil-importers pressured (India, Indonesia, Turkey). Confirms Goldman's 'energy-shock buffered' rationale for North Asia overweight."
+        }
+      },
+      "beneficiaries": [
+        "US E&Ps: XOM, CVX, OXY, COP, EOG, FANG",
+        "Oilfield services: SLB, HAL, BKR",
+        "Refiners (short-term cracks): VLO, MPC, PSX",
+        "Defense: RTX, LMT, NOC, GD",
+        "USD & US-energy-independence narrative"
+      ],
+      "victims": [
+        "US airlines: UAL, DAL, LUV, AAL",
+        "Cruise/leisure: CCL, RCL (fuel pass-through)",
+        "EM oil-importers: INDA, EIDO, TUR",
+        "Consumer discretionary & gasoline-sensitive retail"
+      ],
+      "timeline": {
+        "D": "Headline-driven crude swings; defense bid on any escalation.",
+        "W": "If talks fail: $100+ WTI scenario re-prices CPI prints.",
+        "M": "Refinery utilization + capex cycle benefits services.",
+        "L": "Reinforces structural US LNG export build (LNG, CQP)."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 4,
+      "headline": "SpaceX prepares record $75B IPO at $1.8T valuation; staff push for VIP terms",
+      "source": "Bloomberg · 11h ago",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/spacex-staffers-prep-multimillion-dollar-161212196.html",
+      "category": "IPO · Aerospace",
+      "priority": 9,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "SPCX",
+          "score": 3
+        },
+        {
+          "symbol": "GS",
+          "score": 2
+        },
+        {
+          "symbol": "MS",
+          "score": 2
+        },
+        {
+          "symbol": "JPM",
+          "score": 2
+        },
+        {
+          "symbol": "BAC",
+          "score": 1
+        },
+        {
+          "symbol": "C",
+          "score": 1
+        },
+        {
+          "symbol": "BA",
+          "score": -2
+        },
+        {
+          "symbol": "LMT",
+          "score": -1
+        },
+        {
+          "symbol": "IRDM",
+          "score": -1
+        },
+        {
+          "symbol": "VSAT",
+          "score": -1
+        },
+        {
+          "symbol": "TSLA",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "$135/share × 555.6M shares = $75B raise — largest IPO ever (2.5× Aramco). Pricing June 11. 1,000+ employees negotiating lower banker fees (<0.5%). Morningstar fair-value points to $780B (-57% vs deal price)."
+        },
+        "L2": {
+          "text": "Underwriter syndicate (GS lead) earns ~$500M even at compressed fees. Starlink ecosystem (antenna OEMs, satellite components) repriced. TSLA potential overhang as Musk-attention dilutes / wealth-rebalance trade."
+        },
+        "L3": {
+          "text": "Largest equity print since Aramco soaks up liquidity — index-rebalancing flows hit smaller new-economy names. Catalyzes IPO window for OpenAI, Anthropic, Databricks. New 'AI infra mega-cap' cohort forms."
+        }
+      },
+      "beneficiaries": [
+        "Lead banks: GS, MS, JPM, BAC, C (fees + cross-sell)",
+        "SpaceX employees with vested RSUs (~1,000 new millionaires)",
+        "IPO/SPAC ecosystem (RNJR, IPO ETF, NYSE/ICE)",
+        "Starlink supply chain (semis, antennas, ground stations)"
+      ],
+      "victims": [
+        "BA — competitive narrative deteriorates further",
+        "Legacy gov-space: LMT, NOC commercial segments",
+        "Satcom incumbents: IRDM, VSAT, GSAT",
+        "TSLA — wealth/attention rebalance overhang",
+        "Retail buyers if Morningstar's $780B FV is right"
+      ],
+      "timeline": {
+        "D": "Marketing kicks off June 4; bank tape squeezes.",
+        "W": "Pricing June 11 → 30-day quiet → first earnings frames thesis.",
+        "M": "Liquidity drain from broader small-cap tech.",
+        "L": "Anchors next leg of AI/space mega-cap formation."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 5,
+      "headline": "Goldman CEO: 'More greed than fear' in AI — warns enterprise adoption will be slower",
+      "source": "Yahoo Finance · 7h ago",
+      "url": "https://finance.yahoo.com/markets/article/more-greed-than-there-is-fear-goldman-sachs-ceo-sounds-off-on-ai-193824909.html",
+      "category": "Macro · AI",
+      "priority": 8,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "GS",
+          "score": 2
+        },
+        {
+          "symbol": "VIX",
+          "score": 1
+        },
+        {
+          "symbol": "SMH",
+          "score": -1
+        },
+        {
+          "symbol": "QQQ",
+          "score": -1
+        },
+        {
+          "symbol": "ARKK",
+          "score": -2,
+          "note": "Pure-AI ETFs"
+        },
+        {
+          "symbol": "NVDA",
+          "score": -1
+        },
+        {
+          "symbol": "SNOW",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Solomon: 'plenty of liquidity… it can turn quickly.' Enterprises will adopt AI slower than consensus. Compute demand 'not a straight line.' Coming from the bank leading the SpaceX IPO + Alphabet $80B raise — measured caution, not bearishness."
+        },
+        "L2": {
+          "text": "Cools richest AI multiples (SNOW already -6.8%, NVDA flat). Rotation toward 'AI-applied' earners (PANW, MRVL with real revenue) vs 'AI-narrative' stocks. Hedge demand → VIX, put spreads in QQQ/SMH."
+        },
+        "L3": {
+          "text": "Pre-positions investors for any AI-capex pause headline. Sets up 'show-me' earnings season for hyperscalers. Banks' IPO pipeline (GS/MS/JPM) becomes the dominant Q3 catalyst."
+        }
+      },
+      "beneficiaries": [
+        "GS — narrative-setter + IPO pipeline fees",
+        "Vol-sellers/hedgers (VIX products)",
+        "AI-monetizers with real revenue (PANW, MRVL, MSFT)"
+      ],
+      "victims": [
+        "High-multiple AI narrative stocks (SNOW, AI, PLTR-extension)",
+        "Late-cycle AI ETFs (BOTZ, ARKK, CHAT)",
+        "Companies that levered up to buy GPUs"
+      ],
+      "timeline": {
+        "D": "Mild de-risking; hedges on.",
+        "W": "Watch hyperscaler capex commentary closely.",
+        "M": "Rotation winners: monetizers vs narrative.",
+        "L": "Quote becomes the 'Solomon top' if cycle rolls over."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 6,
+      "headline": "US sanctions Nobitex — Iran's largest crypto exchange — over IRGC links",
+      "source": "Reuters · 7h ago",
+      "url": "https://finance.yahoo.com/markets/crypto/articles/us-sanctions-irans-largest-crypto-194149017.html",
+      "category": "Crypto · Sanctions",
+      "priority": 7,
+      "confidence": "HIGH",
+      "tickers": [
+        {
+          "symbol": "COIN",
+          "score": 2
+        },
+        {
+          "symbol": "CME",
+          "score": 2
+        },
+        {
+          "symbol": "PYPL",
+          "score": 1
+        },
+        {
+          "symbol": "MA",
+          "score": 1
+        },
+        {
+          "symbol": "V",
+          "score": 1
+        },
+        {
+          "symbol": "BTC",
+          "score": -3
+        },
+        {
+          "symbol": "ETH",
+          "score": -2
+        },
+        {
+          "symbol": "XRP",
+          "score": -2
+        },
+        {
+          "symbol": "MSTR",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Treasury sanctions Nobitex + 3 execs (Kharrazi family). Channels moved 100s of $M for Iran central bank & IRGC. BTC -6%, XRP -5% — broad risk-off in crypto on Middle East spillover."
+        },
+        "L2": {
+          "text": "Compliance-first US exchanges (COIN, CME futures) gain regulatory tailwind/share. Stablecoin issuers face stricter KYC; privacy coins (XMR, ZEC) re-risked. ETFs (IBIT, FBTC) see outflows."
+        },
+        "L3": {
+          "text": "Reinforces US-dollar sanctions architecture even in crypto rails. Iran-economy pressure ↑ → more pressure for nuclear deal OR escalation (links back to Story #3). Long-term bullish for regulated on-ramps."
+        }
+      },
+      "beneficiaries": [
+        "COIN — regulated-exchange premium",
+        "CME — institutional crypto-futures volume",
+        "Stablecoin auditors / compliance-tech",
+        "US Treasury / sanctions-enforcement narrative"
+      ],
+      "victims": [
+        "BTC, ETH, XRP — risk-off cascade",
+        "MSTR — leveraged BTC proxy",
+        "Privacy-coin ecosystem, mixers",
+        "Iranian regime's external finance channels"
+      ],
+      "timeline": {
+        "D": "BTC volatility spike; basis trades unwind.",
+        "W": "Compliance flow share-shift to COIN/Kraken.",
+        "M": "Tighter stablecoin / mixer rules globally.",
+        "L": "Crypto becomes increasingly bifurcated: regulated vs sanctioned."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 7,
+      "headline": "Trump signs hands-off AI cybersecurity executive order",
+      "source": "Bloomberg · 6h ago",
+      "url": "https://finance.yahoo.com/economy/policy/articles/trump-signs-order-ai-security-155027508.html",
+      "category": "Policy · AI",
+      "priority": 7,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "MSFT",
+          "score": 2
+        },
+        {
+          "symbol": "GOOGL",
+          "score": 2
+        },
+        {
+          "symbol": "META",
+          "score": 2
+        },
+        {
+          "symbol": "NVDA",
+          "score": 2
+        },
+        {
+          "symbol": "PANW",
+          "score": 1
+        },
+        {
+          "symbol": "CRWD",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "EO favors voluntary frameworks over mandates for AI-security disclosures — reduces near-term compliance burden on hyperscalers. MSFT -4.17% intraday on other drivers, but policy is net constructive."
+        },
+        "L2": {
+          "text": "Faster model deployment timelines for MSFT (Copilot), GOOGL (Gemini), META (Llama). Slightly slows the 'regulated-only' cyber RFP cycle that helped pure-plays."
+        },
+        "L3": {
+          "text": "Widens US-EU regulatory gap (EU AI Act much stricter) — capital tilt toward US AI build-out. Geopolitical AI race posture vs China hardens."
+        }
+      },
+      "beneficiaries": [
+        "US hyperscalers: MSFT, GOOGL, AMZN, META",
+        "Model-layer: NVDA infra demand sustained",
+        "Platform security: PANW, CRWD (still preferred buyers)"
+      ],
+      "victims": [
+        "EU model providers (Mistral) — regulatory drag widens",
+        "Pure compliance-SaaS vendors"
+      ],
+      "timeline": {
+        "D": "Modest sentiment lift in hyperscaler names.",
+        "W": "Vendor RFPs lean toward platform consolidation.",
+        "M": "US captures share of global AI infra spend.",
+        "L": "Sets US AI-policy doctrine for next admin cycle."
+      },
+      "sentiment": "bull"
+    },
+    {
+      "id": 8,
+      "headline": "Robinhood launches 'agentic' AI credit card",
+      "source": "Yahoo Finance · 5h ago",
+      "url": "https://finance.yahoo.com/personal-finance/credit-cards/article/robinhood-unveiled-an-agentic-credit-card-should-you-trust-ai-to-make-purchases-205346551.html",
+      "category": "Fintech · AI",
+      "priority": 6,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "HOOD",
+          "score": 2
+        },
+        {
+          "symbol": "V",
+          "score": 1
+        },
+        {
+          "symbol": "MA",
+          "score": 1
+        },
+        {
+          "symbol": "COF",
+          "score": -1
+        },
+        {
+          "symbol": "SYF",
+          "score": -1
+        },
+        {
+          "symbol": "DFS",
+          "score": -1
+        },
+        {
+          "symbol": "AXP",
+          "score": -2
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "AI agent can make purchases on the cardholder's behalf — new product wedge for HOOD into payments. Open question on fraud liability and regulator response (CFPB posture matters)."
+        },
+        "L2": {
+          "text": "Network rails (V, MA) ride incremental swipe volume. Card issuers (AXP, COF, SYF, DFS) face long-tail attrition risk among younger users. Affirm/Klarna BNPL also pressured."
+        },
+        "L3": {
+          "text": "First mainstream 'agentic commerce' product — pulls forward agent-payments regulation. If durable, accelerates 'AI shopping' thesis (AMZN, GOOGL agent commerce push)."
+        }
+      },
+      "beneficiaries": [
+        "HOOD — TAM expansion into payments + AI brand",
+        "V, MA — net-new transactions",
+        "AI agent stack vendors"
+      ],
+      "victims": [
+        "AXP — premium card moat eroded over time",
+        "COF, SYF, DFS — issuer competition",
+        "BNPL incumbents (AFRM) — agent commerce sidesteps them"
+      ],
+      "timeline": {
+        "D": "HOOD pop on product launch + media.",
+        "W": "Reg/CFPB headlines drive volatility.",
+        "M": "Active-card adoption metric becomes key KPI.",
+        "L": "Defines agentic-commerce category leader."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 9,
+      "headline": "NBA Finals + World Cup timing supercharges DraftKings & FanDuel",
+      "source": "Yahoo Finance Video · 6h ago",
+      "url": "https://finance.yahoo.com/videos/",
+      "category": "Sports Betting",
+      "priority": 6,
+      "confidence": "HIGH",
+      "tickers": [
+        {
+          "symbol": "DKNG",
+          "score": 3
+        },
+        {
+          "symbol": "FLUT",
+          "score": 2
+        },
+        {
+          "symbol": "PENN",
+          "score": 1
+        },
+        {
+          "symbol": "MGM",
+          "score": 1
+        },
+        {
+          "symbol": "CZR",
+          "score": 1
+        },
+        {
+          "symbol": "GENI",
+          "score": 1
+        },
+        {
+          "symbol": "DIS",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Overlap of NBA Finals + World Cup creates a multi-week handle spike — best calendar for sportsbooks in years. DKNG & FanDuel (FLUT) take the lion's share given share of US handle."
+        },
+        "L2": {
+          "text": "Data/odds providers (GENI, SRAD). Sports media (DIS/ESPN, FOX, WBD). Casino-OPS (MGM, CZR) get incremental cross-sell. Payment processors see handle-volume bump."
+        },
+        "L3": {
+          "text": "Higher handle = higher promo intensity; watch hold % for guidance. State-by-state legalization narrative re-energized into back-half."
+        }
+      },
+      "beneficiaries": [
+        "DKNG, FLUT — handle & new-user spike",
+        "PENN, MGM, CZR — casino + book combo",
+        "GENI, SRAD — data/feed dependency"
+      ],
+      "victims": [
+        "Traditional pay-TV ad inventory (cord-cutting accelerated)",
+        "Smaller regional sportsbooks (promo intensity)"
+      ],
+      "timeline": {
+        "D": "Handle headlines daily; DKNG momentum.",
+        "W": "Finals run + WC group stages = peak.",
+        "M": "Q3 print confirms operating leverage.",
+        "L": "Re-rates DKNG to a 'platform' multiple."
+      },
+      "sentiment": "bull"
+    },
+    {
+      "id": 10,
+      "headline": "Snowflake CEO: 'AI must accelerate the core' — defending against SaaSpocalypse",
+      "source": "Yahoo Finance Video · 13h ago",
+      "url": "https://finance.yahoo.com/video/ai-must-accelerate-core-business-140722316.html",
+      "category": "SaaS · AI",
+      "priority": 6,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "SNOW",
+          "score": -2
+        },
+        {
+          "symbol": "DDOG",
+          "score": 1
+        },
+        {
+          "symbol": "MDB",
+          "score": 1
+        },
+        {
+          "symbol": "PLTR",
+          "score": 1
+        },
+        {
+          "symbol": "CRM",
+          "score": -1
+        },
+        {
+          "symbol": "WDAY",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Ramaswamy says AI must accelerate core SaaS spend. SNOW -6.79% intraday — market wants proof, not narrative."
+        },
+        "L2": {
+          "text": "Bifurcation in data stack: query/runtime leaders (DDOG, MDB) preferred over pure data-warehouse plays. Application-SaaS (CRM, WDAY) caught in same 'show-me' frame."
+        },
+        "L3": {
+          "text": "Confirms the AI-revenue cliff for legacy SaaS — investors will pay premium only for AI-monetizing names. Echoes Goldman's 'more greed than fear' (Story #5)."
+        }
+      },
+      "beneficiaries": [
+        "DDOG, MDB — AI-aligned data plumbing",
+        "PLTR — narrative + execution combo"
+      ],
+      "victims": [
+        "SNOW — needs to prove AI ARR uplift",
+        "CRM, WDAY — discretionary IT pressure"
+      ],
+      "timeline": {
+        "D": "SNOW chops on guidance debate.",
+        "W": "Analyst day catalyst becomes critical.",
+        "M": "FY26 AI-ARR disclosures separate winners.",
+        "L": "SaaS re-rates around AI monetization metric."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 11,
+      "headline": "Trump drops $1.8B 'anti-weaponization' fund (tax-audit immunity remains)",
+      "source": "Bloomberg · 4h ago",
+      "url": "https://finance.yahoo.com/economy/policy/articles/trump-drop-1-8-billion-204024382.html",
+      "category": "Policy · Fiscal",
+      "priority": 5,
+      "confidence": "HIGH",
+      "tickers": [
+        {
+          "symbol": "TLT",
+          "score": 1
+        },
+        {
+          "symbol": "IEF",
+          "score": 1
+        },
+        {
+          "symbol": "NYT",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Acting AG Blanche: 'We are not moving forward with the fund. Period.' Removes a fiscal-spend overhang and a budget-deal obstacle."
+        },
+        "L2": {
+          "text": "Minor positive for Treasuries (less issuance pressure). Reduces tail-risk for budget standoff — XLF marginal positive. Media outlets covering scandal (NYT) lose engagement cycle."
+        },
+        "L3": {
+          "text": "Tax-audit immunity remains — open legal/political risk through midterms."
+        }
+      },
+      "beneficiaries": [
+        "Treasury market (marginal)",
+        "Bipartisan budget deal odds"
+      ],
+      "victims": [
+        "Jan 6 plaintiff network",
+        "Media engagement (NYT)"
+      ],
+      "timeline": {
+        "D": "Minor bid in long-duration bonds.",
+        "W": "Budget-deal headlines.",
+        "M": "Audit-immunity court cases.",
+        "L": "Sets governance precedent."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 12,
+      "headline": "Meta scales back mouse-tracking AI plan — staff pushback",
+      "source": "Reuters · 7h ago",
+      "url": "https://finance.yahoo.com/sectors/technology/articles/exclusive-meta-scales-back-ai-200217489.html",
+      "category": "Tech · Privacy",
+      "priority": 5,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "META",
+          "score": -1
+        },
+        {
+          "symbol": "GOOGL",
+          "score": 1
+        },
+        {
+          "symbol": "AAPL",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "META cuts back a behavioral-signal program after employee privacy concerns. Mild ad-targeting headwind."
+        },
+        "L2": {
+          "text": "Strengthens AAPL's privacy positioning and GOOGL's Privacy Sandbox alternative narrative."
+        },
+        "L3": {
+          "text": "Re-opens debate on AI training data — sets precedent for 'employee-veto' on AI products."
+        }
+      },
+      "beneficiaries": [
+        "AAPL, GOOGL — privacy narrative",
+        "Privacy-focused ad-tech"
+      ],
+      "victims": [
+        "META ad-targeting margin (marginal)"
+      ],
+      "timeline": {
+        "D": "Minor META pressure.",
+        "W": "Privacy-policy headlines.",
+        "M": "Watch ARPU trends.",
+        "L": "AI-data-rights doctrine forms."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 13,
+      "headline": "GoPro on the verge of insolvency — going-concern warning",
+      "source": "Moneywise · 11h ago",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/rise-fall-gopro-says-substantial-161951182.html",
+      "category": "Consumer Tech",
+      "priority": 4,
+      "confidence": "HIGH",
+      "tickers": [
+        {
+          "symbol": "GPRO",
+          "score": -3
+        },
+        {
+          "symbol": "AMBA",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Going-concern doubt; equity holders' tail-risk binary. Bonds/converts in focus."
+        },
+        "L2": {
+          "text": "Share-shift to DJI/Insta360 in action-cam. AMBA (silicon) loses a customer but TAM moves to faster-growing OEMs."
+        },
+        "L3": {
+          "text": "Another example of single-product hardware brands failing to compete with vertically integrated Chinese OEMs."
+        }
+      },
+      "beneficiaries": [
+        "DJI / Insta360 (private)",
+        "Retailers consolidating shelf"
+      ],
+      "victims": [
+        "GPRO equity holders",
+        "Suppliers / co-pack partners"
+      ],
+      "timeline": {
+        "D": "Stock volatility on restructuring news.",
+        "W": "Auditor letter / lender talks.",
+        "M": "Possible Chapter 11.",
+        "L": "Brand-license exit scenario."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 14,
+      "headline": "Judge orders Trump officials to explain tariff-refund holdup",
+      "source": "Yahoo Finance · 11h ago",
+      "url": "https://finance.yahoo.com/economy/policy/article/not-normal-business-judge-orders-trump-officials-to-explain-tariff-refund-holdup-153422434.html",
+      "category": "Trade · Policy",
+      "priority": 4,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "WMT",
+          "score": 1
+        },
+        {
+          "symbol": "TGT",
+          "score": 1
+        },
+        {
+          "symbol": "BBY",
+          "score": 1
+        },
+        {
+          "symbol": "NKE",
+          "score": 1
+        },
+        {
+          "symbol": "UUP",
+          "score": -1,
+          "note": "USD"
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Court demands explanation for delayed tariff refunds — opens path to working-capital release for importers."
+        },
+        "L2": {
+          "text": "Big-box retail and apparel importers (WMT, TGT, BBY, NKE) margin tailwind possibility."
+        },
+        "L3": {
+          "text": "Tests executive-branch trade authority — precedent matters for future tariff cycles."
+        }
+      },
+      "beneficiaries": [
+        "Import-heavy retailers",
+        "Customs brokers"
+      ],
+      "victims": [
+        "USTR posture / negotiating leverage"
+      ],
+      "timeline": {
+        "D": "Court filings drive headlines.",
+        "W": "Possible refund schedule disclosed.",
+        "M": "Working-capital boost flows to FCF.",
+        "L": "Constrains future tariff actions."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 15,
+      "headline": "JPMorgan doubles down on bullish 2026 stock-market call",
+      "source": "TheStreet · 2d ago",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/jpmorgan-doubles-down-stock-market-211700323.html",
+      "category": "Strategy",
+      "priority": 5,
+      "confidence": "MED",
+      "tickers": [
+        {
+          "symbol": "SPY",
+          "score": 2
+        },
+        {
+          "symbol": "QQQ",
+          "score": 2
+        },
+        {
+          "symbol": "JPM",
+          "score": 2
+        },
+        {
+          "symbol": "IWM",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "JPM equity strategy reiterates 2026 upside targets; constructive on US large-cap."
+        },
+        "L2": {
+          "text": "Counterweight to Goldman's 'greed>fear' caution (Story #5). Helps index ETFs."
+        },
+        "L3": {
+          "text": "House-view divergence sets up a tactical pair: long-quality vs short-multiple-stretched names."
+        }
+      },
+      "beneficiaries": [
+        "Index ETFs (SPY, QQQ, IWM)",
+        "JPM (brand/research footprint)"
+      ],
+      "victims": [
+        "Bear-narrative funds / inverse ETFs"
+      ],
+      "timeline": {
+        "D": "Risk-on dip-buying impulse.",
+        "W": "Watch breadth indicators.",
+        "M": "Year-end target revisions.",
+        "L": "Defines sell-side baseline."
+      },
+      "sentiment": "bull"
+    },
+    {
+      "id": 16,
+      "headline": "'SpaceX hype looks like Amazon's dot-com bubble peak' — ex-trader warning",
+      "source": "Stocktwits · 1d ago",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/tsla-stock-slips-overnight-spacex-060842762.html",
+      "category": "IPO · Contrarian",
+      "priority": 5,
+      "confidence": "LOW",
+      "tickers": [
+        {
+          "symbol": "TSLA",
+          "score": -2
+        },
+        {
+          "symbol": "SPCX",
+          "score": -1
+        },
+        {
+          "symbol": "VIX",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Contrarian voice flags blow-off-top dynamics around SpaceX IPO; TSLA slips overnight."
+        },
+        "L2": {
+          "text": "Forces second-thought on stretched Musk-complex valuations. Bid for tail hedges."
+        },
+        "L3": {
+          "text": "If retail piles in at $135 and breaks, could cool the entire AI/space IPO window (cf. Story #4)."
+        }
+      },
+      "beneficiaries": [
+        "Vol-sellers post-IPO if calm holds",
+        "Tail-hedge buyers if it breaks"
+      ],
+      "victims": [
+        "Late-cycle IPO buyers",
+        "TSLA on related-party overhang"
+      ],
+      "timeline": {
+        "D": "Vol bid into pricing.",
+        "W": "Post-IPO break-test.",
+        "M": "Sets tone for OpenAI/Anthropic.",
+        "L": "Reference event for cycle peak debate."
+      },
+      "sentiment": "mixed"
+    },
+    {
+      "id": 17,
+      "headline": "Cramer to investor with 60% NVDA concentration: trim & diversify",
+      "source": "24/7 Wall St. · 1d ago",
+      "url": "https://finance.yahoo.com/markets/stocks/articles/jim-cramer-responds-investor-60-162240533.html",
+      "category": "Sentiment · Retail",
+      "priority": 3,
+      "confidence": "LOW",
+      "tickers": [
+        {
+          "symbol": "NVDA",
+          "score": -1
+        },
+        {
+          "symbol": "SMH",
+          "score": 1
+        },
+        {
+          "symbol": "SPY",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Mainstream 'trim-NVDA' messaging — retail rebalancing impulse. NVDA -0.69% intraday."
+        },
+        "L2": {
+          "text": "Diversification flow → SMH and broad index ETFs."
+        },
+        "L3": {
+          "text": "Coincides with Solomon 'greed>fear' — retail sentiment-top scout signal."
+        }
+      },
+      "beneficiaries": [
+        "SMH / SOXX (diversified semi exposure)",
+        "SPY (broad rotation receiver)"
+      ],
+      "victims": [
+        "NVDA momentum traders"
+      ],
+      "timeline": {
+        "D": "Mild distribution in NVDA.",
+        "W": "Rotation noise.",
+        "M": "Earnings catalysts override.",
+        "L": "Concentration-risk story persists."
+      },
+      "sentiment": "mixed"
+    }
+  ],
+  "tickerTable": [
+    {
+      "symbol": "MRVL",
+      "name": "Marvell Technology",
+      "sector": "AI / Custom Silicon",
+      "score": 3,
+      "driver": "Huang 'next $1T' endorsement"
+    },
+    {
+      "symbol": "PANW",
+      "name": "Palo Alto Networks",
+      "sector": "Cybersecurity",
+      "score": 3,
+      "driver": "Beat & raised guide"
+    },
+    {
+      "symbol": "DKNG",
+      "name": "DraftKings",
+      "sector": "Sports Betting",
+      "score": 3,
+      "driver": "NBA Finals + World Cup overlap"
+    },
+    {
+      "symbol": "XOM",
+      "name": "Exxon Mobil",
+      "sector": "Energy",
+      "score": 3,
+      "driver": "Iran risk premium"
+    },
+    {
+      "symbol": "CVX",
+      "name": "Chevron",
+      "sector": "Energy",
+      "score": 3,
+      "driver": "Iran risk premium"
+    },
+    {
+      "symbol": "SPCX",
+      "name": "SpaceX (IPO)",
+      "sector": "Aerospace",
+      "score": 3,
+      "driver": "$75B IPO at $1.8T"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "Nvidia",
+      "sector": "AI / GPUs",
+      "score": 2,
+      "driver": "MRVL halo + AI policy"
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "sector": "AI / Custom Silicon",
+      "score": 2,
+      "driver": "Custom-silicon halo"
+    },
+    {
+      "symbol": "ZS",
+      "name": "Zscaler",
+      "sector": "Cybersecurity",
+      "score": 2,
+      "driver": "PANW read-through"
+    },
+    {
+      "symbol": "CRWD",
+      "name": "CrowdStrike",
+      "sector": "Cybersecurity",
+      "score": 2,
+      "driver": "PANW read-through"
+    },
+    {
+      "symbol": "FTNT",
+      "name": "Fortinet",
+      "sector": "Cybersecurity",
+      "score": 2,
+      "driver": "PANW read-through"
+    },
+    {
+      "symbol": "OXY",
+      "name": "Occidental",
+      "sector": "Energy",
+      "score": 2,
+      "driver": "Crude bid"
+    },
+    {
+      "symbol": "SLB",
+      "name": "Schlumberger",
+      "sector": "Oilfield Svcs",
+      "score": 2,
+      "driver": "Capex outlook"
+    },
+    {
+      "symbol": "HAL",
+      "name": "Halliburton",
+      "sector": "Oilfield Svcs",
+      "score": 2,
+      "driver": "Capex outlook"
+    },
+    {
+      "symbol": "RTX",
+      "name": "RTX (Raytheon)",
+      "sector": "Defense",
+      "score": 2,
+      "driver": "Geopolitics"
+    },
+    {
+      "symbol": "LMT",
+      "name": "Lockheed Martin",
+      "sector": "Defense",
+      "score": 1,
+      "driver": "Geopolitics net of SpaceX"
+    },
+    {
+      "symbol": "GS",
+      "name": "Goldman Sachs",
+      "sector": "Finance",
+      "score": 2,
+      "driver": "SpaceX lead + AI commentary"
+    },
+    {
+      "symbol": "MS",
+      "name": "Morgan Stanley",
+      "sector": "Finance",
+      "score": 2,
+      "driver": "SpaceX syndicate"
+    },
+    {
+      "symbol": "JPM",
+      "name": "JPMorgan",
+      "sector": "Finance",
+      "score": 2,
+      "driver": "2026 bull call + SpaceX"
+    },
+    {
+      "symbol": "HOOD",
+      "name": "Robinhood",
+      "sector": "Fintech",
+      "score": 2,
+      "driver": "Agentic credit card"
+    },
+    {
+      "symbol": "COIN",
+      "name": "Coinbase",
+      "sector": "Crypto",
+      "score": 2,
+      "driver": "Sanctions favor regulated"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "sector": "AI / Cloud",
+      "score": 2,
+      "driver": "Hands-off AI EO"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet",
+      "sector": "AI / Internet",
+      "score": 2,
+      "driver": "Hands-off AI EO + privacy"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta",
+      "sector": "AI / Social",
+      "score": 1,
+      "driver": "EO + mouse-track pullback (mixed)"
+    },
+    {
+      "symbol": "TSM",
+      "name": "Taiwan Semi",
+      "sector": "Foundry",
+      "score": 1,
+      "driver": "Asia AI overweight"
+    },
+    {
+      "symbol": "MU",
+      "name": "Micron",
+      "sector": "Memory",
+      "score": 1,
+      "driver": "AI memory pull"
+    },
+    {
+      "symbol": "FLUT",
+      "name": "Flutter (FanDuel)",
+      "sector": "Sports Betting",
+      "score": 2,
+      "driver": "NBA + WC overlap"
+    },
+    {
+      "symbol": "V",
+      "name": "Visa",
+      "sector": "Payments",
+      "score": 1,
+      "driver": "Agentic swipe volume"
+    },
+    {
+      "symbol": "MA",
+      "name": "Mastercard",
+      "sector": "Payments",
+      "score": 1,
+      "driver": "Agentic swipe volume"
+    },
+    {
+      "symbol": "SPY",
+      "name": "S&P 500 ETF",
+      "sector": "Index",
+      "score": 1,
+      "driver": "JPM bull call"
+    },
+    {
+      "symbol": "INTC",
+      "name": "Intel",
+      "sector": "Semis",
+      "score": -2,
+      "driver": "Left behind in AI re-rating"
+    },
+    {
+      "symbol": "SNOW",
+      "name": "Snowflake",
+      "sector": "SaaS / Data",
+      "score": -2,
+      "driver": "'Accelerate the core' stress"
+    },
+    {
+      "symbol": "UAL",
+      "name": "United Airlines",
+      "sector": "Airlines",
+      "score": -2,
+      "driver": "Jet-fuel pass-through"
+    },
+    {
+      "symbol": "DAL",
+      "name": "Delta",
+      "sector": "Airlines",
+      "score": -2,
+      "driver": "Jet-fuel pass-through"
+    },
+    {
+      "symbol": "LUV",
+      "name": "Southwest",
+      "sector": "Airlines",
+      "score": -2,
+      "driver": "Jet-fuel pass-through"
+    },
+    {
+      "symbol": "BA",
+      "name": "Boeing",
+      "sector": "Aerospace",
+      "score": -2,
+      "driver": "SpaceX competitive read"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla",
+      "sector": "EV / Tech",
+      "score": -2,
+      "driver": "SpaceX overhang on Musk-complex"
+    },
+    {
+      "symbol": "AXP",
+      "name": "American Express",
+      "sector": "Cards",
+      "score": -2,
+      "driver": "Robinhood agentic CC"
+    },
+    {
+      "symbol": "GPRO",
+      "name": "GoPro",
+      "sector": "Consumer Tech",
+      "score": -3,
+      "driver": "Going-concern warning"
+    },
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "sector": "Crypto",
+      "score": -3,
+      "driver": "Iran sanctions + risk-off"
+    },
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "sector": "Crypto",
+      "score": -2,
+      "driver": "Crypto risk-off"
+    },
+    {
+      "symbol": "MSTR",
+      "name": "MicroStrategy",
+      "sector": "BTC Proxy",
+      "score": -1,
+      "driver": "BTC drawdown"
+    },
+    {
+      "symbol": "CRM",
+      "name": "Salesforce",
+      "sector": "SaaS",
+      "score": -1,
+      "driver": "SaaSpocalypse read"
+    },
+    {
+      "symbol": "WDAY",
+      "name": "Workday",
+      "sector": "SaaS",
+      "score": -1,
+      "driver": "SaaSpocalypse read"
+    },
+    {
+      "symbol": "NYT",
+      "name": "New York Times",
+      "sector": "Media",
+      "score": -1,
+      "driver": "Fund-drop reduces story arc"
+    }
+  ],
+  "sectorHeatmap": [
+    {
+      "sector": "AI / Semiconductors",
+      "score": 12
+    },
+    {
+      "sector": "Cybersecurity",
+      "score": 9
+    },
+    {
+      "sector": "Energy (E&P + Services)",
+      "score": 12
+    },
+    {
+      "sector": "Defense",
+      "score": 3
+    },
+    {
+      "sector": "Investment Banks",
+      "score": 7
+    },
+    {
+      "sector": "Sports Betting",
+      "score": 7
+    },
+    {
+      "sector": "Fintech (HOOD/V/MA)",
+      "score": 4
+    },
+    {
+      "sector": "Crypto-Exchanges (regulated)",
+      "score": 3
+    },
+    {
+      "sector": "Airlines",
+      "score": -6
+    },
+    {
+      "sector": "Consumer Tech (GPRO)",
+      "score": -3
+    },
+    {
+      "sector": "SaaS (CRM/WDAY/SNOW)",
+      "score": -4
+    },
+    {
+      "sector": "Crypto (BTC/ETH/XRP)",
+      "score": -7
+    },
+    {
+      "sector": "Card Issuers (AXP/COF)",
+      "score": -3
+    },
+    {
+      "sector": "Legacy Aerospace (BA)",
+      "score": -2
+    }
+  ],
+  "actionSummary": {
+    "buys": [
+      "MRVL — momentum + thesis validation",
+      "PANW — raised guide, platform leader",
+      "XOM / CVX — sticky oil bid",
+      "DKNG — calendar tailwind",
+      "GS — IPO & capital-markets cycle"
+    ],
+    "sells": [
+      "UAL / DAL / LUV — fuel pass-through",
+      "SNOW — narrative under pressure",
+      "AXP — agentic-CC threat",
+      "BTC — sanctions overhang",
+      "GPRO — going-concern"
+    ],
+    "watchlist": [
+      "SPCX — pricing June 11",
+      "INTC — AI-relevance test",
+      "HOOD — agentic-CC adoption KPIs",
+      "NTSK / Wiz — IPO readouts",
+      "WTI > $100 — CPI re-pricing trigger"
+    ]
+  },
+  "footer": "Sources: Yahoo Finance, Reuters, Bloomberg, CNBC, TheStreet, Moneywise, Stocktwits · Not investment advice. Built with the marketbeat/news workflow.",
+  "leaderboard": {
+    "winners": [
+      {
+        "rank": 1,
+        "name": "AI Custom Silicon — MRVL, AVGO, NVDA",
+        "why": "Huang's 'next $1T' endorsement + $10B FY29 custom-silicon TAM"
+      },
+      {
+        "rank": 2,
+        "name": "AI Cybersecurity — PANW, ZS, CRWD, FTNT",
+        "why": "PANW raised guide validates platform thesis; AI threat surface accelerates spend"
+      },
+      {
+        "rank": 3,
+        "name": "US Energy — XOM, CVX, OXY, SLB, HAL",
+        "why": "Iran talks fragile → WTI back above $94; sticky risk premium"
+      },
+      {
+        "rank": 4,
+        "name": "Investment Banks — GS, MS, JPM",
+        "why": "$75B SpaceX IPO lead + AI capital-markets pipeline"
+      },
+      {
+        "rank": 5,
+        "name": "Sports Betting — DKNG, FLUT",
+        "why": "NBA Finals + World Cup calendar overlap = handle spike"
+      }
+    ],
+    "losers": [
+      {
+        "rank": 1,
+        "name": "Crypto — BTC, ETH, XRP, MSTR",
+        "why": "Iran-Nobitex sanctions + Middle East risk-off; BTC -6%"
+      },
+      {
+        "rank": 2,
+        "name": "US Airlines — UAL, DAL, LUV, AAL",
+        "why": "Jet-fuel pass-through as WTI sticks near $95"
+      },
+      {
+        "rank": 3,
+        "name": "GoPro (GPRO)",
+        "why": "Going-concern doubt; equity-binary tail-risk"
+      },
+      {
+        "rank": 4,
+        "name": "Intel (INTC)",
+        "why": "Left behind in AI-accelerator re-rating; strategic relevance test"
+      },
+      {
+        "rank": 5,
+        "name": "Legacy SaaS — SNOW, CRM, WDAY",
+        "why": "Goldman 'greed>fear' + Snowflake 'accelerate the core' — show-me regime"
+      }
+    ]
+  },
+  "otherStories": [
+    {
+      "headline": "Trump drops $1.8B 'anti-weaponization' fund (tax-audit immunity remains)",
+      "keyPoint": "Acting AG Blanche: 'We are not moving forward with the fund",
+      "beneficiaries": "TLT, IEF"
+    },
+    {
+      "headline": "Meta scales back mouse-tracking AI plan — staff pushback",
+      "keyPoint": "META cuts back a behavioral-signal program after employee privacy concerns",
+      "beneficiaries": "GOOGL, AAPL"
+    },
+    {
+      "headline": "GoPro on the verge of insolvency — going-concern warning",
+      "keyPoint": "Going-concern doubt; equity holders' tail-risk binary",
+      "beneficiaries": "AMBA"
+    },
+    {
+      "headline": "Judge orders Trump officials to explain tariff-refund holdup",
+      "keyPoint": "Court demands explanation for delayed tariff refunds — opens path to working-capital release for importers.",
+      "beneficiaries": "WMT, TGT, BBY, NKE"
+    },
+    {
+      "headline": "JPMorgan doubles down on bullish 2026 stock-market call",
+      "keyPoint": "JPM equity strategy reiterates 2026 upside targets; constructive on US large-cap.",
+      "beneficiaries": "SPY, QQQ, JPM, IWM"
+    },
+    {
+      "headline": "'SpaceX hype looks like Amazon's dot-com bubble peak' — ex-trader warning",
+      "keyPoint": "Contrarian voice flags blow-off-top dynamics around SpaceX IPO; TSLA slips overnight.",
+      "beneficiaries": "VIX"
+    },
+    {
+      "headline": "Cramer to investor with 60% NVDA concentration: trim & diversify",
+      "keyPoint": "Mainstream 'trim-NVDA' messaging — retail rebalancing impulse",
+      "beneficiaries": "SMH, SPY"
+    }
+  ]
+}
