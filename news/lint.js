@@ -99,7 +99,7 @@ function checkTopLevel(r, out){
   if ((lb.winners?.length || 0) < 3 || (lb.losers?.length || 0) < 3)
     out.push({ code:'E009', ...errs(`leaderboard needs ≥ 3 winners and ≥ 3 losers (got ${lb.winners?.length || 0}w / ${lb.losers?.length || 0}l)`, 'leaderboard') });
 
-  // Macro block (mandatory in v0.3+)
+  // Macro block (mandatory since v0.3)
   const m = r.macro;
   if (!m){
     out.push({ code:'E010', ...errs('macro{} block is missing (required: headline, regime, keyEvents[], today[], week[])', 'macro') });
@@ -232,12 +232,304 @@ function checkQuality(r, out){
   // (loose check — sector strings differ in punctuation)
 }
 
+// ─── companion-file checks ─────────────────────────────────────────────────
+// These check the OTHER 7 committed files for integrity. The LLM can corrupt
+// scoreboard.jsonl by appending bad lines, break history.jsonl rolling window,
+// render stale HTML out of sync with report.json, etc.
+//
+// Each check is keyed on a file existing — none of these fire on first run
+// before daily.js has been executed.
+
+const SCOREBOARD_MAX_DAYS = 30;   // must match scoreboard.js cap
+const HISTORY_MAX_DAYS    = 90;   // must match daily.js cap
+const PREV_DATE_BOUND_DAYS = 30;  // sanity bound: previous shouldn't be > 30 days old
+
+function readJsonSafe(p){
+  try { return JSON.parse(fs.readFileSync(p,'utf8')); }
+  catch { return null; }
+}
+function readJsonl(p){
+  if (!fs.existsSync(p)) return null;
+  const lines = fs.readFileSync(p,'utf8').split('\n').filter(Boolean);
+  const parsed = [], errors = [];
+  lines.forEach((l, i) => {
+    try { parsed.push(JSON.parse(l)); }
+    catch (e) { errors.push({ line: i+1, error: e.message, raw: l.slice(0,80) }); }
+  });
+  return { parsed, errors, total: lines.length };
+}
+function daysBetween(a, b){
+  return Math.round((new Date(b) - new Date(a)) / 86400000);
+}
+function today(){ return new Date().toISOString().slice(0,10); }
+
+// ─── companion: report.previous.json (E2xx) ────────────────────────────────
+function checkPrevious(dir, currentReport, out){
+  const p = path.join(dir, 'report.previous.json');
+  if (!fs.existsSync(p)){
+    out.push({ code:'W201', ...warn('report.previous.json not found — normal on first run (diff will be skipped)', 'report.previous.json') });
+    return;
+  }
+  const prev = readJsonSafe(p);
+  if (!prev){
+    out.push({ code:'E202', ...errs('report.previous.json is not valid JSON', 'report.previous.json') });
+    return;
+  }
+  if (!prev.date){
+    out.push({ code:'E203', ...errs('report.previous.json missing .date', 'report.previous.json') });
+    return;
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(prev.date)){
+    out.push({ code:'E204', ...errs(`report.previous.json.date "${prev.date}" not YYYY-MM-DD`, 'report.previous.json') });
+    return;
+  }
+  if (currentReport?.date){
+    // E204: prev should be EARLIER than today.
+    // It's allowed to EQUAL today (same-day re-run state after daily.js finishes,
+    // because daily.js promotes today→previous at the end so tomorrow's diff works).
+    // It must NEVER be AFTER today (genuine rotation bug).
+    if (prev.date > currentReport.date){
+      out.push({ code:'E204', ...errs(`report.previous.json.date (${prev.date}) is AFTER report.json.date (${currentReport.date}). This breaks the diff baseline — check your rotation.`, 'report.previous.json') });
+    } else if (prev.date === currentReport.date){
+      out.push({ code:'W204', ...warn(`report.previous.json.date == report.json.date (${prev.date}). This is the normal post-daily.js state; tomorrow's run will rotate.`, 'report.previous.json') });
+    } else {
+      const gap = daysBetween(prev.date, currentReport.date);
+      if (gap > PREV_DATE_BOUND_DAYS){
+        out.push({ code:'E205', ...warn(`report.previous.json is ${gap} days old (cap suggestion: ${PREV_DATE_BOUND_DAYS}). Diff still works but baseline is stale.`, 'report.previous.json') });
+      }
+    }
+  }
+  // Lightweight schema check — same rules as report.json but as warnings
+  if (!Array.isArray(prev.news) || prev.news.length < 1){
+    out.push({ code:'W203', ...warn('report.previous.json has no news[] cards', 'report.previous.json') });
+  }
+}
+
+// ─── companion: scoreboard.jsonl (E3xx) ────────────────────────────────────
+function checkScoreboard(dir, currentReport, out){
+  const p = path.join(dir, 'scoreboard.jsonl');
+  if (!fs.existsSync(p)){
+    out.push({ code:'E301', ...errs('scoreboard.jsonl is missing — run `node scoreboard.js append report.json`', 'scoreboard.jsonl') });
+    return;
+  }
+  const r = readJsonl(p);
+  if (r.errors.length){
+    for (const e of r.errors.slice(0, 5))
+      out.push({ code:'E302', ...errs(`line ${e.line}: ${e.error}`, 'scoreboard.jsonl') });
+    if (r.errors.length > 5)
+      out.push({ code:'E302', ...errs(`(+${r.errors.length - 5} more bad lines)`, 'scoreboard.jsonl') });
+    return;
+  }
+
+  const dates  = new Set();
+  const pairs  = new Set();
+  let badShape = 0, badScore = 0, futureDate = 0, dupPairs = 0;
+  const t = today();
+
+  for (const row of r.parsed){
+    if (!row.date || !row.symbol || !row.name || row.score == null || !row.sector) badShape++;
+    if (typeof row.score === 'number' && (row.score < -3 || row.score > 3)) badScore++;
+    if (row.date && row.date > t) futureDate++;
+    const key = `${row.date}|${row.symbol}`;
+    if (pairs.has(key)) dupPairs++;
+    pairs.add(key);
+    if (row.date) dates.add(row.date);
+  }
+
+  if (badShape)  out.push({ code:'E303', ...errs(`${badShape} row(s) missing required fields (date/symbol/name/sector/score)`, 'scoreboard.jsonl') });
+  if (badScore)  out.push({ code:'E304', ...errs(`${badScore} row(s) have score outside [-3..3]`, 'scoreboard.jsonl') });
+  if (futureDate) out.push({ code:'E306', ...errs(`${futureDate} row(s) have dates in the future`, 'scoreboard.jsonl') });
+  if (dupPairs)  out.push({ code:'E307', ...errs(`${dupPairs} duplicate (date,symbol) tuple(s) — should be unique per day`, 'scoreboard.jsonl') });
+  if (dates.size > SCOREBOARD_MAX_DAYS){
+    out.push({ code:'E305', ...errs(`scoreboard.jsonl has ${dates.size} unique dates — exceeds ${SCOREBOARD_MAX_DAYS}-day rolling cap. Run \`node scoreboard.js append report.json\` to re-prune.`, 'scoreboard.jsonl') });
+  }
+}
+
+// ─── companion: history.jsonl (E4xx) ───────────────────────────────────────
+function checkHistory(dir, currentReport, out){
+  const p = path.join(dir, 'history.jsonl');
+  if (!fs.existsSync(p)){
+    out.push({ code:'W401', ...warn('history.jsonl not found — will be created on first daily.js run', 'history.jsonl') });
+    return;
+  }
+  const r = readJsonl(p);
+  if (r.errors.length){
+    for (const e of r.errors.slice(0, 5))
+      out.push({ code:'E402', ...errs(`line ${e.line}: ${e.error}`, 'history.jsonl') });
+    return;
+  }
+
+  const dates = [];
+  let badShape = 0, futureDate = 0;
+  const t = today();
+
+  for (const row of r.parsed){
+    if (!row.date || !row.title || row.cards == null || row.tickers == null) badShape++;
+    if (row.date && row.date > t) futureDate++;
+    if (row.date) dates.push(row.date);
+  }
+
+  if (badShape)   out.push({ code:'E403', ...errs(`${badShape} row(s) missing required fields (date/title/cards/tickers)`, 'history.jsonl') });
+  if (futureDate) out.push({ code:'E405', ...errs(`${futureDate} row(s) have dates in the future`, 'history.jsonl') });
+
+  const uniqDates = new Set(dates);
+  if (dates.length !== uniqDates.size){
+    out.push({ code:'E406', ...errs(`history.jsonl has duplicate date entries (one line per day expected)`, 'history.jsonl') });
+  }
+  if (uniqDates.size > HISTORY_MAX_DAYS){
+    out.push({ code:'E404', ...errs(`history.jsonl has ${uniqDates.size} unique dates — exceeds ${HISTORY_MAX_DAYS}-day rolling cap.`, 'history.jsonl') });
+  }
+  if (currentReport?.date && !uniqDates.has(currentReport.date)){
+    out.push({ code:'W407', ...warn(`history.jsonl has no entry for today (${currentReport.date}) — will be added by next daily.js run`, 'history.jsonl') });
+  }
+}
+
+// ─── companion: rendered HTMLs (E5xx, E6xx, E7xx, E8xx) ────────────────────
+function readDateFromHtml(html, kind = 'last'){
+  // For report HTMLs: title is "Market Beat — News Impact Analysis · YYYY-MM-DD"
+  //   → one date, take it (kind='last' = 'first' here, doesn't matter).
+  // For diff HTML: title is "Market Beat Diff · YYYY-MM-DD → YYYY-MM-DD"
+  //   → take the LAST date (the "to" / current date).
+  const all = html.match(/<title>([^<]*)<\/title>/);
+  if (!all) return null;
+  const dates = all[1].match(/\d{4}-\d{2}-\d{2}/g) || [];
+  if (!dates.length) return null;
+  return kind === 'last' ? dates[dates.length - 1] : dates[0];
+}
+
+function checkHtmls(dir, currentReport, out){
+  const checks = [
+    {
+      file: 'marketbeat_report.html', codeBase: 'E5', required: true,
+      expectDate: () => currentReport?.date,
+      extras: (html) => {
+        const issues = [];
+        if (!/class="macro"/.test(html))
+          issues.push({ code:'E503', ...errs('marketbeat_report.html missing macro section (class="macro"). Re-run render.js.', 'marketbeat_report.html') });
+        const cardCount = (html.match(/<article class="news">/g) || []).length;
+        const expected = currentReport?.news?.length || 0;
+        if (expected && cardCount !== expected){
+          issues.push({ code:'E504', ...errs(`marketbeat_report.html has ${cardCount} news cards but report.json has ${expected}. Re-run render.js.`, 'marketbeat_report.html') });
+        }
+        return issues;
+      },
+    },
+    {
+      file: 'marketbeat_report.previous.html', codeBase: 'E6',
+      required: () => fs.existsSync(path.join(dir, 'report.previous.json')),
+      expectDate: () => readJsonSafe(path.join(dir, 'report.previous.json'))?.date,
+    },
+    {
+      file: 'marketbeat_diff.html', codeBase: 'E7',
+      required: () => fs.existsSync(path.join(dir, 'report.previous.json')),
+      expectDate: () => currentReport?.date,
+    },
+    {
+      file: 'scoreboard_7d.html', codeBase: 'E8', required: true,
+    },
+  ];
+
+  for (const c of checks){
+    const fp = path.join(dir, c.file);
+    const isRequired = typeof c.required === 'function' ? c.required() : c.required;
+    if (!fs.existsSync(fp)){
+      if (isRequired){
+        out.push({ code:`${c.codeBase}01`, ...errs(`${c.file} missing — run \`node daily.js\``, c.file) });
+      }
+      continue;
+    }
+    const html = fs.readFileSync(fp,'utf8');
+    if (c.expectDate){
+      const want = c.expectDate();
+      const have = readDateFromHtml(html);
+      if (want && have && want !== have){
+        out.push({ code:`${c.codeBase}02`, ...errs(`${c.file} title shows date ${have} but should be ${want}. Re-run render.js (or daily.js).`, c.file) });
+      }
+    }
+    if (c.extras){
+      for (const e of c.extras(html)) out.push(e);
+    }
+  }
+
+  // E802: scoreboard_7d.html window claim should match scoreboard.jsonl unique dates
+  const sb = path.join(dir, 'scoreboard.jsonl');
+  const sbHtml = path.join(dir, 'scoreboard_7d.html');
+  if (fs.existsSync(sb) && fs.existsSync(sbHtml)){
+    const sbData = readJsonl(sb);
+    const dates = new Set((sbData?.parsed || []).map(r => r.date).filter(Boolean));
+    const html = fs.readFileSync(sbHtml,'utf8');
+    const m = html.match(/last (\d+) day\(s\)/);
+    const claimed = m ? +m[1] : null;
+    if (claimed != null && claimed !== Math.min(7, dates.size)){
+      out.push({ code:'E802', ...warn(`scoreboard_7d.html says "last ${claimed} day(s)" but scoreboard.jsonl has ${dates.size} unique dates. Regenerate with \`node scoreboard.js show --days=7\`.`, 'scoreboard_7d.html') });
+    }
+  }
+}
+
+// ─── cross-file consistency (C9xx) ─────────────────────────────────────────
+function checkCrossFileConsistency(dir, currentReport, out){
+  if (!currentReport?.date) return;
+
+  // C901: report.json.date should equal latest scoreboard.jsonl date
+  const sb = readJsonl(path.join(dir, 'scoreboard.jsonl'));
+  if (sb?.parsed?.length){
+    const latest = sb.parsed.map(r => r.date).filter(Boolean).sort().pop();
+    if (latest && latest !== currentReport.date){
+      out.push({ code:'C901', ...warn(`scoreboard.jsonl latest date (${latest}) ≠ report.json.date (${currentReport.date}). Run \`node scoreboard.js append report.json\`.`, 'consistency') });
+    }
+  }
+
+  // C902: report.json.date should equal latest history.jsonl date
+  const hist = readJsonl(path.join(dir, 'history.jsonl'));
+  if (hist?.parsed?.length){
+    const latest = hist.parsed.map(r => r.date).filter(Boolean).sort().pop();
+    if (latest && latest !== currentReport.date){
+      out.push({ code:'C902', ...warn(`history.jsonl latest date (${latest}) ≠ report.json.date (${currentReport.date}). Run \`node daily.js\` to refresh.`, 'consistency') });
+    }
+  }
+
+  // C903: all tickers in report.json.tickerTable should appear in today's scoreboard rows
+  if (sb?.parsed?.length){
+    const todayRows = sb.parsed.filter(r => r.date === currentReport.date);
+    if (todayRows.length){
+      const sbSyms = new Set(todayRows.map(r => r.symbol));
+      const repSyms = new Set((currentReport.tickerTable || []).map(t => t.symbol));
+      const missing = [...repSyms].filter(s => !sbSyms.has(s));
+      if (missing.length){
+        const sample = missing.slice(0,5).join(', ');
+        out.push({ code:'C903', ...warn(`${missing.length} ticker(s) in report.json.tickerTable missing from today's scoreboard rows (${sample}${missing.length>5?'…':''}). Run \`node scoreboard.js append report.json\`.`, 'consistency') });
+      }
+    }
+  }
+
+  // C904: report.json.title should match today's history.jsonl entry.title
+  if (hist?.parsed?.length){
+    const todayEntry = hist.parsed.find(r => r.date === currentReport.date);
+    if (todayEntry && todayEntry.title !== currentReport.title){
+      out.push({ code:'C904', ...warn(`history.jsonl entry for ${currentReport.date} has different title than report.json.`, 'consistency') });
+    }
+  }
+}
+
 // ─── run ────────────────────────────────────────────────────────────────────
-function lint(report){
+function lint(report, opts = {}){
   const findings = [];
+  const dir = opts.dir || __dirname;
+
+  // primary report
   checkTopLevel(report, findings);
   for(const c of (report.news || [])) checkCard(c, findings);
   checkQuality(report, findings);
+
+  // companion files (skip with opts.skipCompanions for back-compat)
+  if (!opts.skipCompanions){
+    checkPrevious(dir, report, findings);
+    checkScoreboard(dir, report, findings);
+    checkHistory(dir, report, findings);
+    checkHtmls(dir, report, findings);
+    checkCrossFileConsistency(dir, report, findings);
+  }
+
   return findings;
 }
 
@@ -356,7 +648,7 @@ function main(){
   try { report = JSON.parse(fs.readFileSync(filePath, 'utf8')); }
   catch (e){ console.error(`❌ Invalid JSON: ${e.message}`); process.exit(2); }
 
-  const findings = lint(report);
+  const findings = lint(report, { dir: path.dirname(filePath) });
   const sum      = summarize(findings);
 
   if (jsonOnly){

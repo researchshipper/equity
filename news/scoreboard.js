@@ -26,6 +26,11 @@ const path = require('path');
 const LOG  = path.join(__dirname, 'scoreboard.jsonl');
 const HTML = (n) => path.join(__dirname, `scoreboard_${n}d.html`);
 
+// Rolling-window cap: scoreboard.jsonl keeps only the last N days of data.
+// This bounds file size (~60 KB at 30 days × ~45 tickers/day). Older days
+// are dropped on every `append` call. Override with env: SCOREBOARD_MAX_DAYS=90
+const MAX_DAYS = parseInt(process.env.SCOREBOARD_MAX_DAYS, 10) || 30;
+
 const esc = s => String(s ?? '')
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
   .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -89,11 +94,22 @@ function appendReport(reportPath){
     mentions: mentions[t.symbol] || 1,
   }));
 
-  writeLog([...keep, ...newRows]);
-  const dates = [...new Set([...keep, ...newRows].map(r => r.date))].sort();
+  // Rolling-window prune: keep only the last MAX_DAYS unique dates.
+  const combined = [...keep, ...newRows];
+  const allDates = [...new Set(combined.map(x => x.date))].sort();
+  const keepDates = new Set(allDates.slice(-MAX_DAYS));
+  const pruned = combined.filter(x => keepDates.has(x.date));
+  const droppedDays = allDates.length - keepDates.size;
+  const droppedRows = combined.length - pruned.length;
+
+  writeLog(pruned);
+  const dates = [...keepDates].sort();
   console.log(`✅ Appended ${newRows.length} ticker rows for ${r.date}`);
-  console.log(`📚 Log now spans ${dates.length} day(s): ${dates[0]} → ${dates[dates.length-1]}`);
-  console.log(`💾 ${LOG}`);
+  if (droppedRows > 0){
+    console.log(`🧹 Pruned ${droppedRows} row(s) from ${droppedDays} day(s) older than the ${MAX_DAYS}-day window`);
+  }
+  console.log(`📚 Log spans ${dates.length} day(s): ${dates[0]} → ${dates[dates.length-1]}  (cap: ${MAX_DAYS} days)`);
+  console.log(`💾 ${LOG}  (${fs.statSync(LOG).size} bytes)`);
 }
 
 // ─── aggregation ────────────────────────────────────────────────────────────

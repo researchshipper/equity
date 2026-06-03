@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 /**
- * diff.js — Yesterday-vs-today diff for Market Beat reports
+ * diff.js — Previous-vs-current diff for Market Beat reports
  *
- * Compares two report.json files and emits:
- *   - JSON diff: news/diff.<today>.json (machine-readable)
- *   - HTML diff: news/marketbeat_diff_<today>.html (rendered)
+ * Fixed-name strategy: compares
+ *   news/report.previous.json  →  news/report.json
+ * Filenames never change day-to-day. Dates live INSIDE each JSON's `.date`.
+ *
+ * Outputs (also fixed names):
+ *   news/diff.json             — machine-readable diff
+ *   news/marketbeat_diff.html  — rendered diff
  *
  * Shows:
  *   • NEW tickers (today only)
@@ -14,10 +18,13 @@
  *   • NEW headlines that mention previously-tracked tickers
  *   • SECTOR rotation (sector score deltas)
  *
+ * Calendar-gap aware: reads `.date` from each report so the banner correctly
+ * labels Mon-after-Fri, holiday gaps, missed days, etc.
+ *
  * Usage:
- *   node diff.js                                            # auto-find latest two
- *   node diff.js report.2026-06-02.json report.json         # explicit pair
- *   node diff.js --json-only                                # write only the JSON diff
+ *   node diff.js                                       # uses fixed names
+ *   node diff.js report.previous.json report.json      # explicit pair
+ *   node diff.js --json-only                           # write only the JSON diff
  */
 'use strict';
 
@@ -290,57 +297,25 @@ ${sectorRows ? `<table>
 }
 
 // ─── CLI ───────────────────────────────────────────────────────────────────
-// Calendar-aware: finds the latest snapshot STRICTLY BEFORE the current report
-// date, regardless of weekends, holidays, or missed days. Always picks the
-// most-recent prior `report.YYYY-MM-DD.json` (or falls back to the next-best).
-function listSnapshots(dir){
-  return fs.readdirSync(dir)
-    .filter(f => /^report\.\d{4}-\d{2}-\d{2}\.json$/.test(f))
-    .map(f => ({
-      file: f,
-      date: f.replace(/^report\./,'').replace(/\.json$/,''),
-      path: path.join(dir, f),
-    }))
-    .sort((a,b) => a.date.localeCompare(b.date));
-}
-
-function findPrevBefore(snapshots, currDate){
-  // strictly before currDate; pick the latest
-  const before = snapshots.filter(s => s.date < currDate);
-  return before.length ? before[before.length - 1].path : null;
-}
-
+// Fixed-name strategy: diff always compares
+//   report.previous.json  →  report.json
+// The dates live INSIDE those files (in the JSON `.date` field), so the
+// FILENAMES never change day to day. This keeps the repo clean and the
+// LLM unambiguous.
+//
+// Outputs (also fixed names):
+//   diff.json                — machine-readable diff
+//   marketbeat_diff.html     — rendered diff
+//
+// The calendar-gap awareness (Mon-after-Fri, holidays, etc.) still works —
+// it's computed from the .date fields INSIDE each report, not from filenames.
 function readDate(jsonPath){
   try { return JSON.parse(fs.readFileSync(jsonPath,'utf8')).date; }
   catch { return null; }
 }
 
-function findCurrentAndPrev(dir, explicitCurr){
-  const snaps    = listSnapshots(dir);
-  const liveJson = path.join(dir, 'report.json');
-  const liveDate = fs.existsSync(liveJson) ? readDate(liveJson) : null;
-
-  // Decide CURRENT: explicit > report.json > newest snapshot
-  let currPath = explicitCurr;
-  if (!currPath){
-    if (liveDate) currPath = liveJson;
-    else if (snaps.length) currPath = snaps[snaps.length-1].path;
-  }
-  if (!currPath) return [null, null, null];
-
-  const currDate = readDate(currPath);
-  if (!currDate) return [null, currPath, null];
-
-  // Decide PREV: latest snapshot strictly before currDate
-  // If currPath IS a snapshot, exclude it from the candidate set automatically.
-  const candidates = snaps.filter(s => s.path !== currPath);
-  const prevPath = findPrevBefore(candidates, currDate);
-  const prevDate = prevPath ? readDate(prevPath) : null;
-
-  return [prevPath, currPath, { currDate, prevDate }];
-}
-
 function daysBetween(a, b){
+  if (!a || !b) return null;
   const ms = new Date(b) - new Date(a);
   return Math.round(ms / 86400000);
 }
@@ -350,38 +325,43 @@ async function main(){
   const jsonOnly = args.includes('--json-only');
   const positional = args.filter(a => !a.startsWith('--'));
 
-  let prevPath, currPath, meta;
+  // Resolve inputs — defaults are the FIXED filenames.
+  let prevPath, currPath;
   if (positional.length >= 2){
     [prevPath, currPath] = positional.map(p => path.isAbsolute(p) ? p : path.join(__dirname, p));
-    meta = { currDate: readDate(currPath), prevDate: readDate(prevPath) };
   } else if (positional.length === 1){
-    const explicit = path.isAbsolute(positional[0]) ? positional[0] : path.join(__dirname, positional[0]);
-    [prevPath, currPath, meta] = findCurrentAndPrev(__dirname, explicit);
+    prevPath = path.isAbsolute(positional[0]) ? positional[0] : path.join(__dirname, positional[0]);
+    currPath = path.join(__dirname, 'report.json');
   } else {
-    [prevPath, currPath, meta] = findCurrentAndPrev(__dirname);
+    prevPath = path.join(__dirname, 'report.previous.json');
+    currPath = path.join(__dirname, 'report.json');
   }
 
-  if (!currPath || !fs.existsSync(currPath)){
-    console.error(`❌ No "today" report found. Pass it as arg, or ensure report.json / report.YYYY-MM-DD.json exists.`);
+  if (!fs.existsSync(currPath)){
+    console.error(`❌ Current report not found: ${currPath}`);
     process.exit(1);
   }
-  if (!prevPath){
-    console.warn(`⚠️  No prior snapshot found before ${meta?.currDate || '(unknown)'}.`);
-    console.warn(`   This is normal on a first run. Snapshot today's report with:`);
-    console.warn(`     cp report.json report.${meta?.currDate || new Date().toISOString().slice(0,10)}.json`);
-    console.warn(`   Then re-run \`node diff.js\` tomorrow.`);
+  if (!fs.existsSync(prevPath)){
+    console.warn(`⚠️  No prior report found at ${prevPath}.`);
+    console.warn(`   This is normal on a first run.`);
+    console.warn(`   Tomorrow, daily.js will rotate today's report.json into report.previous.json`);
+    console.warn(`   and the diff will work automatically.`);
     process.exit(0);
   }
 
-  // Calendar gap awareness
-  const gap = meta?.prevDate && meta?.currDate ? daysBetween(meta.prevDate, meta.currDate) : null;
+  const currDate = readDate(currPath);
+  const prevDate = readDate(prevPath);
+  const gap = daysBetween(prevDate, currDate);
+
   let gapLabel = '';
   if (gap === 1)      gapLabel = '(consecutive days)';
   else if (gap === 3) gapLabel = '(Mon-after-Fri — weekend skipped)';
-  else if (gap && gap > 1) gapLabel = `(${gap}-day gap — weekend/holiday/missed)`;
+  else if (gap > 1)   gapLabel = `(${gap}-day gap — weekend/holiday/missed)`;
+  else if (gap === 0) gapLabel = '(same date — re-run within same day)';
+  else if (gap < 0)   gapLabel = `(⚠ prior date is AFTER today — check your snapshot rotation)`;
 
-  console.log(`📂 Prior : ${prevPath}  ${meta?.prevDate || ''}`);
-  console.log(`📂 Today : ${currPath}  ${meta?.currDate || ''}  ${gapLabel}`);
+  console.log(`📂 Prior : ${prevPath}  ${prevDate || ''}`);
+  console.log(`📂 Today : ${currPath}  ${currDate || ''}  ${gapLabel}`);
 
   const prev = JSON.parse(fs.readFileSync(prevPath,'utf8'));
   const curr = JSON.parse(fs.readFileSync(currPath,'utf8'));
@@ -390,7 +370,8 @@ async function main(){
   console.log(`\n🔁 Diff summary:`);
   for(const [k,v] of Object.entries(diff.counts)) console.log(`   ${k.padEnd(18)} ${v}`);
 
-  const jsonOut = path.join(__dirname, `diff.${diff.toDate}.json`);
+  // Fixed-name outputs
+  const jsonOut = path.join(__dirname, 'diff.json');
   fs.writeFileSync(jsonOut, JSON.stringify(diff, null, 2));
   console.log(`\n💾 JSON → ${jsonOut}`);
 
@@ -399,7 +380,7 @@ async function main(){
     return;
   }
 
-  const htmlOut = path.join(__dirname, `marketbeat_diff_${diff.toDate}.html`);
+  const htmlOut = path.join(__dirname, 'marketbeat_diff.html');
   fs.writeFileSync(htmlOut, renderDiffHtml(diff));
   console.log(`✅ HTML → ${htmlOut}`);
 }

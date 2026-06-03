@@ -10,40 +10,61 @@
 
 ```
 PHASE 1 — Outline today's news in plain text (fast, no JSON yet)
-PHASE 2 — Serialize the outline into one valid news/report.json
+PHASE 2 — Serialize the outline into news/report.json (FIXED filename — overwrite it)
 PHASE 3 — Lint loop: node news/lint.js --strict --fix-prompt
               if exit ≠ 0 → read news/lint.prompt.md, fix listed errors only,
               re-run lint until exit 0 (max 3 retry passes)
-PHASE 4 — node news/daily.js  (snapshot, render, diff, scoreboard, auto-prune)
+PHASE 4 — node news/daily.js
+              rotates yesterday → previous, renders HTML, runs diff, updates
+              scoreboard & history.jsonl. Always 6 working files in news/.
 ```
 
 Why split content from rendering? An LLM that hand-writes HTML produces
 inconsistent style across runs and across providers. By writing structured
 JSON validated by a schema + linter, **any LLM gives byte-identical HTML**.
 
+Why fixed filenames? Date-suffixed files (`report.2026-06-03.json`, etc.)
+accumulate in the repo and confuse LLMs about which file is "the current one".
+Fixed names = always 6 working files, dates live INSIDE each file, no ambiguity.
+
 ## 🚦 Critical rule: previous-day files are REFERENCES, not inputs
 
-The `news/` folder will contain (at most) ONE previous day's artifacts:
-- `news/marketbeat_report_<yesterday>.html` — the rendered report from yesterday
-- `news/report.<yesterday>.json` — its underlying data (used only by `diff.js`)
+The `news/` folder uses **fixed filenames** that never change day-to-day:
 
-**Read the previous HTML for ONE purpose only:** to see the *visual structure*
-you should match (section ordering, ticker formatting, narrative depth, etc.).
+| File | Role |
+|---|---|
+| `news/report.json` | **Today's content** — you write this |
+| `news/report.previous.json` | Yesterday's content — diff baseline only |
+| `news/marketbeat_report.html` | Today's rendered HTML — `render.js` produces it |
+| `news/marketbeat_report.previous.html` | Yesterday's HTML — **visual style reference** |
+| `news/marketbeat_diff.html` | Day-over-day diff (auto-generated) |
+| `news/scoreboard.jsonl` | Rolling 30-day per-ticker score log (auto-pruned) |
+| `news/history.jsonl` | Rolling 90-day daily summary archive (auto-pruned) |
+
+> **Repo size is capped at ~750 KB forever** — `scoreboard.jsonl` and
+> `history.jsonl` auto-prune older entries on every `daily.js` run. You
+> don't need to manage retention manually.
+
+The date lives **inside** each file (in JSON's `.date` field and the HTML
+`<title>` + header). Filenames stay constant — no confusion about which is
+"current" vs "old".
+
+**Read `marketbeat_report.previous.html` for ONE purpose only:** to see the
+*visual structure* you should match (section ordering, ticker formatting,
+narrative depth, color scoring conventions).
 
 **Never:**
 - copy yesterday's headlines into today's report
 - reuse yesterday's narratives, ticker scores, beneficiaries, or victims
-- treat the previous `report.json` as a starting template — start from blank
+- treat `report.previous.json` as a starting template — start from blank
+- regenerate `report.previous.json` yourself — `daily.js` rotates it
 
 **Always:**
 - fetch TODAY's actual headlines from the source URLs below
-- build today's report from scratch, then let `diff.js` compute movement vs yesterday
+- write `report.json` from scratch, then let `daily.js` handle rotation + diff
 
-The reason: if you copy yesterday's content, the diff is meaningless and the
-report misses today's actual news. The reference HTML is just a style guide.
-
-> The `daily.js` script auto-prunes to keep only YESTERDAY's snapshot. So you'll
-> only ever see ONE previous report file — no temptation to merge across days.
+The reason: if you copy yesterday's content, the diff is meaningless and you
+miss today's actual news. The previous HTML is just a style guide.
 
 ## 🔁 The required lint loop (do NOT skip)
 
@@ -58,10 +79,12 @@ write report.json  →  node lint.js --strict --fix-prompt
                                            tell the user which check is unhappy)
 ```
 
-The linter checks for: macro block (Fed/NFP/CPI tiles), all 3 L1/L2/L3 narratives ≥ 80
-chars with no placeholders, beneficiaries/victims lists, D/W/M/L timeline, valid
-sentiment enum, leaderboard ≥ 3 winners + 3 losers, etc. **Every error must be
-resolved before rendering.**
+The linter validates ALL 8 committed files: `report.json` schema + content
+quality, `report.previous.json` rotation correctness, `scoreboard.jsonl` /
+`history.jsonl` line-by-line + rolling-window caps, all 4 HTMLs date-matched
+to their source JSON, plus cross-file consistency (dates aligned across
+report ↔ scoreboard ↔ history). **Every error must be resolved before
+committing.** Run with `--fix-prompt` to get a remediation list.
 
 ## ✅ Copy-paste prompt (works with Claude / GPT / Gemini / Grok / Kimi / Qwen)
 
@@ -226,14 +249,20 @@ node news/lint.js --strict --fix-prompt
 node news/daily.js   # snapshots, renders, diffs, scoreboard — all guarded
 ```
 
-### What the linter checks (high signal)
+### What the linter checks (all 8 committed data files)
 
-| Code  | Catches |
-|-------|---------|
-| E001-E011 | Top-level: macro block + Fed/NFP/CPI tiles, mood, ticker table, leaderboard |
-| E101-E109 | Each card: valid sentiment/confidence/priority, L1/L2/L3 ≥ 80 chars, no placeholders, beneficiaries/victims present, full D/W/M/L timeline |
-| W201-W209 | Warnings: thin ticker counts, weak L2/L3 narratives, missing categories |
-| Q301-Q303 | Consistency: tickers in news vs tickerTable vs sectorHeatmap |
+| Code | File / area | Catches |
+|---|---|---|
+| **E001–E011** | `report.json` top-level | macro block + Fed/NFP/CPI tiles, mood, ticker table, leaderboard |
+| **E101–E109** | each news card | valid sentiment/confidence/priority, L1/L2/L3 ≥ 80 chars, no placeholders, beneficiaries/victims, full D/W/M/L timeline |
+| **E202–E205** | `report.previous.json` | valid JSON, date strictly earlier (or same after rotation), within 30 days |
+| **E301–E307** | `scoreboard.jsonl` | every line valid JSON, required fields, scores ±3, ≤ 30 unique dates (rolling cap), no future dates, no dupes |
+| **E402–E406** | `history.jsonl` | every line valid JSON, required fields, ≤ 90 unique dates (rolling cap), no duplicates |
+| **E501–E504** | `marketbeat_report.html` | exists, title date matches `report.json.date`, has macro section, card count matches |
+| **E602/E702** | `*.previous.html` / `*_diff.html` | title date matches the right source file |
+| **E802** | `scoreboard_7d.html` | "last N day(s)" matches `scoreboard.jsonl` |
+| **C901–C904** | cross-file consistency | report ↔ scoreboard ↔ history dates all align; tickers in `tickerTable` appear in today's scoreboard |
+| **W201–W209** | warnings (don't block) | thin tickers, weak narratives, missing categories |
 
 ```bash
 # Run modes:

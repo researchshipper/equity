@@ -1,7 +1,7 @@
 {
-  "date": "2026-06-03",
+  "date": "2026-06-02",
   "title": "Market Beat — News Impact Analysis",
-  "subtitle": "16 headlines · 3 levels · 47 tickers · AI bid vs. Gulf war risk",
+  "subtitle": "17 headlines · structural baseline (real v1 content rendered in marketbeat_report_2026-06-02.html)",
   "region": "GLOBAL",
   "version": "0.2",
   "sources": [
@@ -242,7 +242,7 @@
       "category": "AI · Semis",
       "priority": 10,
       "confidence": "HIGH",
-      "sentiment": "bull",
+      "sentiment": "mixed",
       "tickers": [
         {
           "symbol": "MRVL",
@@ -324,7 +324,7 @@
       "category": "AI · Hardware",
       "priority": 9,
       "confidence": "HIGH",
-      "sentiment": "bull",
+      "sentiment": "mixed",
       "tickers": [
         {
           "symbol": "HPE",
@@ -1453,7 +1453,7 @@
       "symbol": "MCHP",
       "name": "Microchip Technology",
       "sector": "Semis",
-      "score": 2,
+      "score": 3,
       "driver": "Data-center unit +65% 2026 guide"
     },
     {
@@ -1495,7 +1495,7 @@
       "symbol": "LMT",
       "name": "Lockheed Martin",
       "sector": "Defense",
-      "score": 2,
+      "score": 3,
       "driver": "Gulf conflict escalation"
     },
     {
@@ -1509,7 +1509,7 @@
       "symbol": "VRT",
       "name": "Vertiv",
       "sector": "AI Infrastructure",
-      "score": 2,
+      "score": 3,
       "driver": "Alphabet $80B capex tailwind"
     },
     {
@@ -1551,7 +1551,7 @@
       "symbol": "BRK.B",
       "name": "Berkshire Hathaway",
       "sector": "Conglomerate",
-      "score": 1,
+      "score": 2,
       "driver": "$10B Alphabet stake (Abel era)"
     },
     {
@@ -1600,7 +1600,7 @@
       "symbol": "INTC",
       "name": "Intel",
       "sector": "Semis",
-      "score": -2,
+      "score": -1,
       "driver": "Client CPU/GPU competition"
     },
     {
@@ -1649,7 +1649,7 @@
       "symbol": "CRM",
       "name": "Salesforce",
       "sector": "Software",
-      "score": -1,
+      "score": 0,
       "driver": "-5.7% giving back AI-software pop"
     },
     {
@@ -1841,5 +1841,5 @@
       "beneficiaries": "—"
     }
   ],
-  "footer": "Market Beat · 2026-06-03 · Generated from Yahoo Finance, CNBC, Reuters, Investopedia, TheStreet & Schwab headlines (Jun 2 close + Jun 3 pre-market). Scores are -3..+3 directional impact estimates, not price targets. Not investment advice."
+  "footer": "Sources: Yahoo Finance, Reuters, Bloomberg, CNBC, TheStreet, Moneywise, Stocktwits · Not investment advice. This JSON is a structural baseline; the canonical v1 narrative lives in marketbeat_report_2026-06-02.html."
 }

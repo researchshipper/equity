@@ -1,0 +1,1435 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Market Beat — News Impact Analysis · 2026-06-02</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#0b1020;--panel:#121935;--ink:#e8ecf8;--muted:#9aa3c7;--line:#243056;
+      --green:#16c784;--green2:#0d8c5d;--red:#ea3943;--red2:#a51e26;--yellow:#f5b21a;--blue:#3b82f6}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14.5px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+a{color:#9ab8ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 20px 80px}
+header.hero{background:linear-gradient(135deg,#1a2454,#0b1020 60%);border:1px solid var(--line);
+  border-radius:14px;padding:22px 24px;margin-bottom:18px}
+.hero h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px}
+.hero .sub{color:var(--muted);font-size:13px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;
+  background:#1f2a55;color:#cfd8ff;margin-right:6px;margin-bottom:4px}
+.mood{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:14px}
+.mood .cell{background:#0e1430;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.mood .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.mood .v{font-size:17px;font-weight:600;margin-top:2px}
+.mood .d{font-size:12px;margin-top:1px}
+.pos{color:var(--green)}.neg{color:var(--red)}.neu{color:var(--yellow)}
+h2.section{margin:26px 0 10px;font-size:18px;border-left:3px solid var(--blue);padding-left:10px}
+.grid{display:grid;gap:14px}
+.news{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.news .top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:8px}
+.news h3{margin:0 0 4px;font-size:16.5px;line-height:1.3}
+.news .meta{font-size:11.5px;color:var(--muted)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:600;margin-right:4px}
+.pill.prio{background:#3b1f3f;color:#f5a8d1}
+.pill.cat{background:#1a2c4a;color:#9ec3ff}
+.pill.conf.hi{background:#15301f;color:#7ee0a8}
+.pill.conf.md{background:#2a2010;color:#f5c97a}
+.pill.conf.lo{background:#3a1a1a;color:#f5a8a8}
+.tk{display:inline-block;padding:2px 7px;border-radius:6px;font-weight:700;font-size:12px;
+  margin:2px 4px 2px 0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.tk.p3{background:var(--green);color:#03210f}
+.tk.p2{background:var(--green2);color:#eafff5}
+.tk.p1{background:#3a4a2a;color:#d6f5a6}
+.tk.n1{background:#4a3a2a;color:#f5d8a6}
+.tk.n2{background:var(--red2);color:#ffeaea}
+.tk.n3{background:var(--red);color:#1a0203}
+.tk.zz{background:#2a3050;color:#cfd8ff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.col{background:#0e1430;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.col h4{margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.7px}
+.col.win h4{color:var(--green)}.col.lose h4{color:var(--red)}
+.col ul{margin:4px 0 0;padding-left:18px}.col li{margin:3px 0;font-size:13px}
+.levels{margin-top:10px;display:grid;gap:8px}
+.level{background:#0e1430;border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.level .lh{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.level .lc{font-size:13px;margin-top:3px}
+.timeline{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tbox{flex:1;min-width:140px;background:#0e1430;border:1px solid var(--line);
+  border-radius:8px;padding:7px 10px;font-size:12px}
+.tbox b{display:block;font-size:11px;color:var(--muted);letter-spacing:.5px}
+.keypoints{margin-top:8px}
+.keypoints ul{margin:4px 0 0;padding-left:18px;font-size:13.3px}
+.keypoints li{margin:3px 0}
+table.ref{width:100%;border-collapse:collapse;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+table.ref th,table.ref td{padding:8px 10px;border-bottom:1px solid #1c2548;text-align:left}
+table.ref th{background:#1a2348;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;color:#cfd8ff}
+table.ref tr:last-child td{border-bottom:none}
+.heat{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.sect{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#0e1430}
+.sect .nm{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.sect .sc{font-size:18px;font-weight:700;margin-top:3px}
+.sect.pos{background:linear-gradient(180deg,#0f3025,#0e1430)}
+.sect.neg{background:linear-gradient(180deg,#301818,#0e1430)}
+footer{margin-top:30px;color:var(--muted);font-size:12px;text-align:center}
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.legend span{font-size:11.5px}
+.action{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.sdot{display:inline-block;margin-right:6px;font-size:13px;line-height:1;vertical-align:middle}
+.leader{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.lbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.lbox h4{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.7px}
+.lbox.win h4{color:var(--green)}
+.lbox.lose h4{color:var(--red)}
+.lbox ol{margin:0;padding-left:20px}
+.lbox li{margin:6px 0;font-size:13.3px}
+.lbox li b{font-size:14px}
+.lbox .medal{font-size:16px;margin-right:4px}
+table.mini{width:100%;border-collapse:collapse;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12.8px}
+table.mini th,table.mini td{padding:6px 10px;border-bottom:1px solid #1c2548;text-align:left;vertical-align:top}
+table.mini th{background:#1a2348;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#cfd8ff}
+table.mini tr:last-child td{border-bottom:none}
+@media (max-width:760px){.two,.action,.leader{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="badge">📰 MARKET BEAT</span>
+    <span class="badge">Yahoo Finance</span><span class="badge">CNBC</span><span class="badge">Reuters</span><span class="badge">Bloomberg</span>
+    <span class="badge">v0.2</span>
+    <span class="badge">Region: GLOBAL</span>
+  </div>
+  <h1>Market Beat — News Impact Analysis — 2026-06-02</h1>
+  <div class="sub">17 headlines analyzed · 3 levels of impact traced · 48 tickers scored</div>
+  <div class="mood">
+    <div class="cell">
+      <div class="k">S&amp;P 500 (fut)</div>
+      <div class="v">7,620</div>
+      <div class="d neg">-0.04%</div>
+    </div>
+    <div class="cell">
+      <div class="k">Nasdaq 100 (fut)</div>
+      <div class="v">30,676</div>
+      <div class="d neg">-0.12%</div>
+    </div>
+    <div class="cell">
+      <div class="k">Dow (fut)</div>
+      <div class="v">51,374</div>
+      <div class="d neg">-0.05%</div>
+    </div>
+    <div class="cell">
+      <div class="k">WTI Crude</div>
+      <div class="v">$94.75</div>
+      <div class="d pos">+1.06%</div>
+    </div>
+    <div class="cell">
+      <div class="k">Brent</div>
+      <div class="v">$96.10</div>
+      <div class="d pos">+0.93%</div>
+    </div>
+    <div class="cell">
+      <div class="k">Gold</div>
+      <div class="v">$4,508</div>
+      <div class="d neg">-0.26%</div>
+    </div>
+    <div class="cell">
+      <div class="k">Bitcoin</div>
+      <div class="v">$66,477</div>
+      <div class="d neg">-6.16%</div>
+    </div>
+    <div class="cell">
+      <div class="k">Nikkei 225</div>
+      <div class="v">68,452</div>
+      <div class="d pos">+2.57%</div>
+    </div>
+    <div class="cell">
+      <div class="k">10y Yield</div>
+      <div class="v">4.21%</div>
+      <div class="d neu">flat</div>
+    </div>
+    <div class="cell">
+      <div class="k">VIX</div>
+      <div class="v">17.4</div>
+      <div class="d pos">-1.2%</div>
+    </div></div>
+  <div class="legend">
+    <span><span class="tk p3">+3</span> strong winner</span>
+    <span><span class="tk p2">+2</span> winner</span>
+    <span><span class="tk p1">+1</span> mild +</span>
+    <span><span class="tk n1">-1</span> mild -</span>
+    <span><span class="tk n2">-2</span> loser</span>
+    <span><span class="tk n3">-3</span> strong loser</span>
+    <span style="margin-left:auto"><b>D</b>=days · <b>W</b>=weeks · <b>M</b>=months · <b>L</b>=long-term</span>
+  </div>
+</header>
+
+<h2 class="section">🗞️ News Cards — sorted by priority</h2>
+<div class="grid"><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>1 · Marvell soars +32.5% — Jensen Huang calls it &#39;the next trillion-dollar company&#39;</h3>
+        <div class="meta">Yahoo Finance · 2h ago · <a href="https://finance.yahoo.com/markets/stocks/article/marvell-stock-soars-as-nvidia-ceo-calls-chipmaker-the-next-trillion-dollar-company-130932917.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 10</span>
+        <span class="pill cat">AI · Semis</span>
+        <span class="pill conf hi">Confidence: HIGH</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p3">MRVL +3</span><span class="tk p2">NVDA +2</span><span class="tk p2">AVGO +2</span><span class="tk p1">TSM +1</span><span class="tk p1">MU +1</span><span class="tk p1">LITE +1</span><span class="tk n1">INTC -1</span><span class="tk n2">Chinese chip ETFs -2</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Nvidia CEO publicly endorses Marvell at Computex; MRVL +32.5%. Validates Marvell&#39;s custom AI accelerator (XPU) + optical-networking business serving MSFT &amp; AMZN. Targets $10B+ custom-silicon revenue by FY29.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Custom-silicon peers (AVGO) and optical-networking suppliers (LITE, COHR, INFN) re-rate. Foundry beneficiary TSM. Memory plays MU / Samsung / SK Hynix get sympathy bid. Data-center REITs EQIX, DLR get demand validation.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Reinforces &#39;AI infra capex super-cycle&#39;; supports Goldman&#39;s Taiwan/Korea overweight call. Pressure on INTC (left behind) and Chinese chip names (US restrictions widen gap). Pulls capital into Asia tech ETFs (EWT, EWY).</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>MRVL shareholders — massive re-rating, $254B → narrative toward $1T</li><li>NVDA — strengthens partnership/ecosystem moat ($2B MRVL investment)</li><li>AVGO — custom-silicon halo trade</li><li>TSM &amp; ASML — foundry/equipment pull-through</li><li>Optical networking: LITE, COHR, INFN</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>INTC — increasingly absent from AI accelerator conversation</li><li>Chinese semis (SMIC, KWEB exposure) — US tech gap widens</li><li>Generic merchant-silicon vendors — custom XPUs eat their TAM</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Momentum chase in MRVL, AVGO, LITE; pair-trade vs INTC.</div>
+      <div class="tbox"><b>Weeks</b>Sell-side PTs raised; options skew in MRVL gets crushed.</div>
+      <div class="tbox"><b>Months</b>FY29 custom-silicon guide becomes consensus baseline.</div>
+      <div class="tbox"><b>Long-term</b>Solidifies hyperscaler-custom-silicon model; INTC strategic risk.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>2 · Palo Alto Networks beats &amp; raises — AI-cyber demand surges</h3>
+        <div class="meta">Reuters · 6h ago · <a href="https://finance.yahoo.com/markets/stocks/articles/palo-alto-raises-annual-forecasts-205221784.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 9</span>
+        <span class="pill cat">Cybersecurity · AI</span>
+        <span class="pill conf hi">Confidence: HIGH</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p3">PANW +3</span><span class="tk p2">ZS +2</span><span class="tk p2">CRWD +2</span><span class="tk p2">FTNT +2</span><span class="tk p1">OKTA +1</span><span class="tk p1">NTSK +1</span><span class="tk p1">NVDA +1</span><span class="tk n1">Legacy AV vendors -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Q3 rev $3.0B (+31% YoY), beat $2.94B. FY guide raised: revenue $11.42–11.43B, adj EPS $3.77–3.79. Stock +7.4% AH. Mgmt cites AI-driven threat surface accelerating platform consolidation.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Validates the &#39;platformization&#39; thesis — sympathy bids in ZS, CRWD, FTNT, OKTA. Pre-IPO/private names (NTSK, Wiz) get implied mark-ups. NVDA + MRVL benefit (security needs more inference compute).</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Enterprise IT budgets prioritize security over discretionary SaaS — pressures CRM/WDAY share-of-wallet. Re-raises M&amp;A risk premium for niche security tools. Confirms cyber as a &#39;rate-insensitive&#39; growth pocket.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>PANW — raised guide validates platform strategy</li><li>ZS, CRWD, FTNT — sympathy trade and pricing power</li><li>NTSK / Wiz / Island — private-market mark-ups</li><li>NVDA / MRVL — incremental inference workloads</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>Point-product security vendors (single-feature plays)</li><li>Budget-constrained SMB software (squeezed by sec spend)</li><li>Legacy AV (NortonLifeLock/Gen Digital relative)</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Gap-up + analyst PT hikes across security comp set.</div>
+      <div class="tbox"><b>Weeks</b>Multiple expansion for ZS/CRWD into earnings.</div>
+      <div class="tbox"><b>Months</b>NTSK / Wiz IPO chatter accelerates.</div>
+      <div class="tbox"><b>Long-term</b>Cyber becomes &#39;must-own&#39; subsector vs SaaS deceleration.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>3 · US-Iran talks fragile · Oil rises to one-week high · Netanyahu the wedge</h3>
+        <div class="meta">Reuters / Bloomberg · 3–8h ago · <a href="https://finance.yahoo.com/economy/policy/articles/trump-netanyahu-problem-latest-key-202620111.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 9</span>
+        <span class="pill cat">Geopolitics · Energy</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p3">XOM +3</span><span class="tk p3">CVX +3</span><span class="tk p2">OXY +2</span><span class="tk p2">SLB +2</span><span class="tk p2">HAL +2</span><span class="tk p2">RTX +2</span><span class="tk p2">LMT +2</span><span class="tk p1">USO +1</span><span class="tk n2">UAL -2</span><span class="tk n2">DAL -2</span><span class="tk n2">LUV -2</span><span class="tk n1">EEM -1</span><span class="tk n1">INDA -1</span><span class="tk n1">XLY -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Iran reviewing US proposal, but Israel&#39;s Hezbollah campaign threatens a deal. Trump wants nuclear concessions in writing. WTI back above $94, Brent near $96. Strait of Hormuz risk remains the tail-risk.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Airlines and shippers hit by jet-fuel/bunker pass-through. Refiners (VLO, MPC) benefit short-term on crack spreads. Oil-services capex outlook firms (SLB, HAL, BKR). Defense primes bid as Middle East risk premium re-anchors.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Sticky energy = sticky CPI = Fed stays cautious on cuts → USD support, EM oil-importers pressured (India, Indonesia, Turkey). Confirms Goldman&#39;s &#39;energy-shock buffered&#39; rationale for North Asia overweight.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>US E&amp;Ps: XOM, CVX, OXY, COP, EOG, FANG</li><li>Oilfield services: SLB, HAL, BKR</li><li>Refiners (short-term cracks): VLO, MPC, PSX</li><li>Defense: RTX, LMT, NOC, GD</li><li>USD &amp; US-energy-independence narrative</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>US airlines: UAL, DAL, LUV, AAL</li><li>Cruise/leisure: CCL, RCL (fuel pass-through)</li><li>EM oil-importers: INDA, EIDO, TUR</li><li>Consumer discretionary &amp; gasoline-sensitive retail</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Headline-driven crude swings; defense bid on any escalation.</div>
+      <div class="tbox"><b>Weeks</b>If talks fail: $100+ WTI scenario re-prices CPI prints.</div>
+      <div class="tbox"><b>Months</b>Refinery utilization + capex cycle benefits services.</div>
+      <div class="tbox"><b>Long-term</b>Reinforces structural US LNG export build (LNG, CQP).</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>4 · SpaceX prepares record $75B IPO at $1.8T valuation; staff push for VIP terms</h3>
+        <div class="meta">Bloomberg · 11h ago · <a href="https://finance.yahoo.com/markets/stocks/articles/spacex-staffers-prep-multimillion-dollar-161212196.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 9</span>
+        <span class="pill cat">IPO · Aerospace</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p3">SPCX +3</span><span class="tk p2">GS +2</span><span class="tk p2">MS +2</span><span class="tk p2">JPM +2</span><span class="tk p1">BAC +1</span><span class="tk p1">C +1</span><span class="tk n2">BA -2</span><span class="tk n1">LMT -1</span><span class="tk n1">IRDM -1</span><span class="tk n1">VSAT -1</span><span class="tk n1">TSLA -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">$135/share × 555.6M shares = $75B raise — largest IPO ever (2.5× Aramco). Pricing June 11. 1,000+ employees negotiating lower banker fees (&lt;0.5%). Morningstar fair-value points to $780B (-57% vs deal price).</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Underwriter syndicate (GS lead) earns ~$500M even at compressed fees. Starlink ecosystem (antenna OEMs, satellite components) repriced. TSLA potential overhang as Musk-attention dilutes / wealth-rebalance trade.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Largest equity print since Aramco soaks up liquidity — index-rebalancing flows hit smaller new-economy names. Catalyzes IPO window for OpenAI, Anthropic, Databricks. New &#39;AI infra mega-cap&#39; cohort forms.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>Lead banks: GS, MS, JPM, BAC, C (fees + cross-sell)</li><li>SpaceX employees with vested RSUs (~1,000 new millionaires)</li><li>IPO/SPAC ecosystem (RNJR, IPO ETF, NYSE/ICE)</li><li>Starlink supply chain (semis, antennas, ground stations)</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>BA — competitive narrative deteriorates further</li><li>Legacy gov-space: LMT, NOC commercial segments</li><li>Satcom incumbents: IRDM, VSAT, GSAT</li><li>TSLA — wealth/attention rebalance overhang</li><li>Retail buyers if Morningstar&#39;s $780B FV is right</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Marketing kicks off June 4; bank tape squeezes.</div>
+      <div class="tbox"><b>Weeks</b>Pricing June 11 → 30-day quiet → first earnings frames thesis.</div>
+      <div class="tbox"><b>Months</b>Liquidity drain from broader small-cap tech.</div>
+      <div class="tbox"><b>Long-term</b>Anchors next leg of AI/space mega-cap formation.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>5 · Goldman CEO: &#39;More greed than fear&#39; in AI — warns enterprise adoption will be slower</h3>
+        <div class="meta">Yahoo Finance · 7h ago · <a href="https://finance.yahoo.com/markets/article/more-greed-than-there-is-fear-goldman-sachs-ceo-sounds-off-on-ai-193824909.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 8</span>
+        <span class="pill cat">Macro · AI</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p2">GS +2</span><span class="tk p1">VIX +1</span><span class="tk n1">SMH -1</span><span class="tk n1">QQQ -1</span><span class="tk n2">Pure-AI ETFs -2</span><span class="tk n1">NVDA -1</span><span class="tk n1">SNOW -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Solomon: &#39;plenty of liquidity… it can turn quickly.&#39; Enterprises will adopt AI slower than consensus. Compute demand &#39;not a straight line.&#39; Coming from the bank leading the SpaceX IPO + Alphabet $80B raise — measured caution, not bearishness.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Cools richest AI multiples (SNOW already -6.8%, NVDA flat). Rotation toward &#39;AI-applied&#39; earners (PANW, MRVL with real revenue) vs &#39;AI-narrative&#39; stocks. Hedge demand → VIX, put spreads in QQQ/SMH.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Pre-positions investors for any AI-capex pause headline. Sets up &#39;show-me&#39; earnings season for hyperscalers. Banks&#39; IPO pipeline (GS/MS/JPM) becomes the dominant Q3 catalyst.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>GS — narrative-setter + IPO pipeline fees</li><li>Vol-sellers/hedgers (VIX products)</li><li>AI-monetizers with real revenue (PANW, MRVL, MSFT)</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>High-multiple AI narrative stocks (SNOW, AI, PLTR-extension)</li><li>Late-cycle AI ETFs (BOTZ, ARKK, CHAT)</li><li>Companies that levered up to buy GPUs</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Mild de-risking; hedges on.</div>
+      <div class="tbox"><b>Weeks</b>Watch hyperscaler capex commentary closely.</div>
+      <div class="tbox"><b>Months</b>Rotation winners: monetizers vs narrative.</div>
+      <div class="tbox"><b>Long-term</b>Quote becomes the &#39;Solomon top&#39; if cycle rolls over.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>6 · US sanctions Nobitex — Iran&#39;s largest crypto exchange — over IRGC links</h3>
+        <div class="meta">Reuters · 7h ago · <a href="https://finance.yahoo.com/markets/crypto/articles/us-sanctions-irans-largest-crypto-194149017.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 7</span>
+        <span class="pill cat">Crypto · Sanctions</span>
+        <span class="pill conf hi">Confidence: HIGH</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p2">COIN +2</span><span class="tk p2">CME +2</span><span class="tk p1">PYPL +1</span><span class="tk p1">MA +1</span><span class="tk p1">V +1</span><span class="tk n3">BTC -3</span><span class="tk n2">ETH -2</span><span class="tk n2">XRP -2</span><span class="tk n1">MSTR -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Treasury sanctions Nobitex + 3 execs (Kharrazi family). Channels moved 100s of $M for Iran central bank &amp; IRGC. BTC -6%, XRP -5% — broad risk-off in crypto on Middle East spillover.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Compliance-first US exchanges (COIN, CME futures) gain regulatory tailwind/share. Stablecoin issuers face stricter KYC; privacy coins (XMR, ZEC) re-risked. ETFs (IBIT, FBTC) see outflows.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Reinforces US-dollar sanctions architecture even in crypto rails. Iran-economy pressure ↑ → more pressure for nuclear deal OR escalation (links back to Story #3). Long-term bullish for regulated on-ramps.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>COIN — regulated-exchange premium</li><li>CME — institutional crypto-futures volume</li><li>Stablecoin auditors / compliance-tech</li><li>US Treasury / sanctions-enforcement narrative</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>BTC, ETH, XRP — risk-off cascade</li><li>MSTR — leveraged BTC proxy</li><li>Privacy-coin ecosystem, mixers</li><li>Iranian regime&#39;s external finance channels</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>BTC volatility spike; basis trades unwind.</div>
+      <div class="tbox"><b>Weeks</b>Compliance flow share-shift to COIN/Kraken.</div>
+      <div class="tbox"><b>Months</b>Tighter stablecoin / mixer rules globally.</div>
+      <div class="tbox"><b>Long-term</b>Crypto becomes increasingly bifurcated: regulated vs sanctioned.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot bull"  title="bullish">🟢</span>7 · Trump signs hands-off AI cybersecurity executive order</h3>
+        <div class="meta">Bloomberg · 6h ago · <a href="https://finance.yahoo.com/economy/policy/articles/trump-signs-order-ai-security-155027508.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 7</span>
+        <span class="pill cat">Policy · AI</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p2">MSFT +2</span><span class="tk p2">GOOGL +2</span><span class="tk p2">META +2</span><span class="tk p2">NVDA +2</span><span class="tk p1">PANW +1</span><span class="tk p1">CRWD +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">EO favors voluntary frameworks over mandates for AI-security disclosures — reduces near-term compliance burden on hyperscalers. MSFT -4.17% intraday on other drivers, but policy is net constructive.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Faster model deployment timelines for MSFT (Copilot), GOOGL (Gemini), META (Llama). Slightly slows the &#39;regulated-only&#39; cyber RFP cycle that helped pure-plays.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Widens US-EU regulatory gap (EU AI Act much stricter) — capital tilt toward US AI build-out. Geopolitical AI race posture vs China hardens.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>US hyperscalers: MSFT, GOOGL, AMZN, META</li><li>Model-layer: NVDA infra demand sustained</li><li>Platform security: PANW, CRWD (still preferred buyers)</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>EU model providers (Mistral) — regulatory drag widens</li><li>Pure compliance-SaaS vendors</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Modest sentiment lift in hyperscaler names.</div>
+      <div class="tbox"><b>Weeks</b>Vendor RFPs lean toward platform consolidation.</div>
+      <div class="tbox"><b>Months</b>US captures share of global AI infra spend.</div>
+      <div class="tbox"><b>Long-term</b>Sets US AI-policy doctrine for next admin cycle.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>8 · Robinhood launches &#39;agentic&#39; AI credit card</h3>
+        <div class="meta">Yahoo Finance · 5h ago · <a href="https://finance.yahoo.com/personal-finance/credit-cards/article/robinhood-unveiled-an-agentic-credit-card-should-you-trust-ai-to-make-purchases-205346551.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 6</span>
+        <span class="pill cat">Fintech · AI</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p2">HOOD +2</span><span class="tk p1">V +1</span><span class="tk p1">MA +1</span><span class="tk n1">COF -1</span><span class="tk n1">SYF -1</span><span class="tk n1">DFS -1</span><span class="tk n2">AXP -2</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">AI agent can make purchases on the cardholder&#39;s behalf — new product wedge for HOOD into payments. Open question on fraud liability and regulator response (CFPB posture matters).</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Network rails (V, MA) ride incremental swipe volume. Card issuers (AXP, COF, SYF, DFS) face long-tail attrition risk among younger users. Affirm/Klarna BNPL also pressured.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">First mainstream &#39;agentic commerce&#39; product — pulls forward agent-payments regulation. If durable, accelerates &#39;AI shopping&#39; thesis (AMZN, GOOGL agent commerce push).</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>HOOD — TAM expansion into payments + AI brand</li><li>V, MA — net-new transactions</li><li>AI agent stack vendors</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>AXP — premium card moat eroded over time</li><li>COF, SYF, DFS — issuer competition</li><li>BNPL incumbents (AFRM) — agent commerce sidesteps them</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>HOOD pop on product launch + media.</div>
+      <div class="tbox"><b>Weeks</b>Reg/CFPB headlines drive volatility.</div>
+      <div class="tbox"><b>Months</b>Active-card adoption metric becomes key KPI.</div>
+      <div class="tbox"><b>Long-term</b>Defines agentic-commerce category leader.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot bull"  title="bullish">🟢</span>9 · NBA Finals + World Cup timing supercharges DraftKings &amp; FanDuel</h3>
+        <div class="meta">Yahoo Finance Video · 6h ago · <a href="https://finance.yahoo.com/videos/" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 6</span>
+        <span class="pill cat">Sports Betting</span>
+        <span class="pill conf hi">Confidence: HIGH</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p3">DKNG +3</span><span class="tk p2">FLUT +2</span><span class="tk p1">PENN +1</span><span class="tk p1">MGM +1</span><span class="tk p1">CZR +1</span><span class="tk p1">GENI +1</span><span class="tk p1">DIS +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Overlap of NBA Finals + World Cup creates a multi-week handle spike — best calendar for sportsbooks in years. DKNG &amp; FanDuel (FLUT) take the lion&#39;s share given share of US handle.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Data/odds providers (GENI, SRAD). Sports media (DIS/ESPN, FOX, WBD). Casino-OPS (MGM, CZR) get incremental cross-sell. Payment processors see handle-volume bump.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Higher handle = higher promo intensity; watch hold % for guidance. State-by-state legalization narrative re-energized into back-half.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>DKNG, FLUT — handle &amp; new-user spike</li><li>PENN, MGM, CZR — casino + book combo</li><li>GENI, SRAD — data/feed dependency</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>Traditional pay-TV ad inventory (cord-cutting accelerated)</li><li>Smaller regional sportsbooks (promo intensity)</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Handle headlines daily; DKNG momentum.</div>
+      <div class="tbox"><b>Weeks</b>Finals run + WC group stages = peak.</div>
+      <div class="tbox"><b>Months</b>Q3 print confirms operating leverage.</div>
+      <div class="tbox"><b>Long-term</b>Re-rates DKNG to a &#39;platform&#39; multiple.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>10 · Snowflake CEO: &#39;AI must accelerate the core&#39; — defending against SaaSpocalypse</h3>
+        <div class="meta">Yahoo Finance Video · 13h ago · <a href="https://finance.yahoo.com/video/ai-must-accelerate-core-business-140722316.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 6</span>
+        <span class="pill cat">SaaS · AI</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk n2">SNOW -2</span><span class="tk p1">DDOG +1</span><span class="tk p1">MDB +1</span><span class="tk p1">PLTR +1</span><span class="tk n1">CRM -1</span><span class="tk n1">WDAY -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Ramaswamy says AI must accelerate core SaaS spend. SNOW -6.79% intraday — market wants proof, not narrative.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Bifurcation in data stack: query/runtime leaders (DDOG, MDB) preferred over pure data-warehouse plays. Application-SaaS (CRM, WDAY) caught in same &#39;show-me&#39; frame.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Confirms the AI-revenue cliff for legacy SaaS — investors will pay premium only for AI-monetizing names. Echoes Goldman&#39;s &#39;more greed than fear&#39; (Story #5).</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>DDOG, MDB — AI-aligned data plumbing</li><li>PLTR — narrative + execution combo</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>SNOW — needs to prove AI ARR uplift</li><li>CRM, WDAY — discretionary IT pressure</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>SNOW chops on guidance debate.</div>
+      <div class="tbox"><b>Weeks</b>Analyst day catalyst becomes critical.</div>
+      <div class="tbox"><b>Months</b>FY26 AI-ARR disclosures separate winners.</div>
+      <div class="tbox"><b>Long-term</b>SaaS re-rates around AI monetization metric.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>11 · Trump drops $1.8B &#39;anti-weaponization&#39; fund (tax-audit immunity remains)</h3>
+        <div class="meta">Bloomberg · 4h ago · <a href="https://finance.yahoo.com/economy/policy/articles/trump-drop-1-8-billion-204024382.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 5</span>
+        <span class="pill cat">Policy · Fiscal</span>
+        <span class="pill conf hi">Confidence: HIGH</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p1">TLT +1</span><span class="tk p1">IEF +1</span><span class="tk n1">NYT -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Acting AG Blanche: &#39;We are not moving forward with the fund. Period.&#39; Removes a fiscal-spend overhang and a budget-deal obstacle.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Minor positive for Treasuries (less issuance pressure). Reduces tail-risk for budget standoff — XLF marginal positive. Media outlets covering scandal (NYT) lose engagement cycle.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Tax-audit immunity remains — open legal/political risk through midterms.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>Treasury market (marginal)</li><li>Bipartisan budget deal odds</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>Jan 6 plaintiff network</li><li>Media engagement (NYT)</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Minor bid in long-duration bonds.</div>
+      <div class="tbox"><b>Weeks</b>Budget-deal headlines.</div>
+      <div class="tbox"><b>Months</b>Audit-immunity court cases.</div>
+      <div class="tbox"><b>Long-term</b>Sets governance precedent.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>12 · Meta scales back mouse-tracking AI plan — staff pushback</h3>
+        <div class="meta">Reuters · 7h ago · <a href="https://finance.yahoo.com/sectors/technology/articles/exclusive-meta-scales-back-ai-200217489.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 5</span>
+        <span class="pill cat">Tech · Privacy</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk n1">META -1</span><span class="tk p1">GOOGL +1</span><span class="tk p1">AAPL +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">META cuts back a behavioral-signal program after employee privacy concerns. Mild ad-targeting headwind.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Strengthens AAPL&#39;s privacy positioning and GOOGL&#39;s Privacy Sandbox alternative narrative.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Re-opens debate on AI training data — sets precedent for &#39;employee-veto&#39; on AI products.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>AAPL, GOOGL — privacy narrative</li><li>Privacy-focused ad-tech</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>META ad-targeting margin (marginal)</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Minor META pressure.</div>
+      <div class="tbox"><b>Weeks</b>Privacy-policy headlines.</div>
+      <div class="tbox"><b>Months</b>Watch ARPU trends.</div>
+      <div class="tbox"><b>Long-term</b>AI-data-rights doctrine forms.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>13 · GoPro on the verge of insolvency — going-concern warning</h3>
+        <div class="meta">Moneywise · 11h ago · <a href="https://finance.yahoo.com/markets/stocks/articles/rise-fall-gopro-says-substantial-161951182.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 4</span>
+        <span class="pill cat">Consumer Tech</span>
+        <span class="pill conf hi">Confidence: HIGH</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk n3">GPRO -3</span><span class="tk p1">AMBA +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Going-concern doubt; equity holders&#39; tail-risk binary. Bonds/converts in focus.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Share-shift to DJI/Insta360 in action-cam. AMBA (silicon) loses a customer but TAM moves to faster-growing OEMs.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Another example of single-product hardware brands failing to compete with vertically integrated Chinese OEMs.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>DJI / Insta360 (private)</li><li>Retailers consolidating shelf</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>GPRO equity holders</li><li>Suppliers / co-pack partners</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Stock volatility on restructuring news.</div>
+      <div class="tbox"><b>Weeks</b>Auditor letter / lender talks.</div>
+      <div class="tbox"><b>Months</b>Possible Chapter 11.</div>
+      <div class="tbox"><b>Long-term</b>Brand-license exit scenario.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>14 · Judge orders Trump officials to explain tariff-refund holdup</h3>
+        <div class="meta">Yahoo Finance · 11h ago · <a href="https://finance.yahoo.com/economy/policy/article/not-normal-business-judge-orders-trump-officials-to-explain-tariff-refund-holdup-153422434.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 4</span>
+        <span class="pill cat">Trade · Policy</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p1">WMT +1</span><span class="tk p1">TGT +1</span><span class="tk p1">BBY +1</span><span class="tk p1">NKE +1</span><span class="tk n1">USD -1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Court demands explanation for delayed tariff refunds — opens path to working-capital release for importers.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Big-box retail and apparel importers (WMT, TGT, BBY, NKE) margin tailwind possibility.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Tests executive-branch trade authority — precedent matters for future tariff cycles.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>Import-heavy retailers</li><li>Customs brokers</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>USTR posture / negotiating leverage</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Court filings drive headlines.</div>
+      <div class="tbox"><b>Weeks</b>Possible refund schedule disclosed.</div>
+      <div class="tbox"><b>Months</b>Working-capital boost flows to FCF.</div>
+      <div class="tbox"><b>Long-term</b>Constrains future tariff actions.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot bull"  title="bullish">🟢</span>15 · JPMorgan doubles down on bullish 2026 stock-market call</h3>
+        <div class="meta">TheStreet · 2d ago · <a href="https://finance.yahoo.com/markets/stocks/articles/jpmorgan-doubles-down-stock-market-211700323.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 5</span>
+        <span class="pill cat">Strategy</span>
+        <span class="pill conf md">Confidence: MED</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk p2">SPY +2</span><span class="tk p2">QQQ +2</span><span class="tk p2">JPM +2</span><span class="tk p1">IWM +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">JPM equity strategy reiterates 2026 upside targets; constructive on US large-cap.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Counterweight to Goldman&#39;s &#39;greed&gt;fear&#39; caution (Story #5). Helps index ETFs.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">House-view divergence sets up a tactical pair: long-quality vs short-multiple-stretched names.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>Index ETFs (SPY, QQQ, IWM)</li><li>JPM (brand/research footprint)</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>Bear-narrative funds / inverse ETFs</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Risk-on dip-buying impulse.</div>
+      <div class="tbox"><b>Weeks</b>Watch breadth indicators.</div>
+      <div class="tbox"><b>Months</b>Year-end target revisions.</div>
+      <div class="tbox"><b>Long-term</b>Defines sell-side baseline.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>16 · &#39;SpaceX hype looks like Amazon&#39;s dot-com bubble peak&#39; — ex-trader warning</h3>
+        <div class="meta">Stocktwits · 1d ago · <a href="https://finance.yahoo.com/markets/stocks/articles/tsla-stock-slips-overnight-spacex-060842762.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 5</span>
+        <span class="pill cat">IPO · Contrarian</span>
+        <span class="pill conf lo">Confidence: LOW</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk n2">TSLA -2</span><span class="tk n1">SPCX -1</span><span class="tk p1">VIX +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Contrarian voice flags blow-off-top dynamics around SpaceX IPO; TSLA slips overnight.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Forces second-thought on stretched Musk-complex valuations. Bid for tail hedges.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">If retail piles in at $135 and breaks, could cool the entire AI/space IPO window (cf. Story #4).</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>Vol-sellers post-IPO if calm holds</li><li>Tail-hedge buyers if it breaks</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>Late-cycle IPO buyers</li><li>TSLA on related-party overhang</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Vol bid into pricing.</div>
+      <div class="tbox"><b>Weeks</b>Post-IPO break-test.</div>
+      <div class="tbox"><b>Months</b>Sets tone for OpenAI/Anthropic.</div>
+      <div class="tbox"><b>Long-term</b>Reference event for cycle peak debate.</div>
+    </div>
+
+    
+  </article><article class="news">
+    <div class="top">
+      <div>
+        <h3><span class="sdot mixed" title="mixed">🟡</span>17 · Cramer to investor with 60% NVDA concentration: trim &amp; diversify</h3>
+        <div class="meta">24/7 Wall St. · 1d ago · <a href="https://finance.yahoo.com/markets/stocks/articles/jim-cramer-responds-investor-60-162240533.html" target="_blank" rel="noopener">source</a></div>
+      </div>
+      <div>
+        <span class="pill prio">PRIORITY 3</span>
+        <span class="pill cat">Sentiment · Retail</span>
+        <span class="pill conf lo">Confidence: LOW</span>
+      </div>
+    </div>
+
+    <div style="margin-top:8px"><span class="tk n1">NVDA -1</span><span class="tk p1">SMH +1</span><span class="tk p1">SPY +1</span></div>
+
+    <div class="levels">
+      <div class="level">
+      <div class="lh">Level 1 · Direct</div>
+      <div class="lc">Mainstream &#39;trim-NVDA&#39; messaging — retail rebalancing impulse. NVDA -0.69% intraday.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 2 · Ecosystem ripple</div>
+      <div class="lc">Diversification flow → SMH and broad index ETFs.</div>
+      
+    </div>
+      <div class="level">
+      <div class="lh">Level 3 · Macro / Structural</div>
+      <div class="lc">Coincides with Solomon &#39;greed&gt;fear&#39; — retail sentiment-top scout signal.</div>
+      
+    </div>
+    </div>
+
+    
+    <div class="two">
+      <div class="col win"><h4>✅ Beneficiaries</h4>
+        <ul><li>SMH / SOXX (diversified semi exposure)</li><li>SPY (broad rotation receiver)</li></ul></div>
+      <div class="col lose"><h4>❌ Victims</h4>
+        <ul><li>NVDA momentum traders</li></ul></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tbox"><b>Days</b>Mild distribution in NVDA.</div>
+      <div class="tbox"><b>Weeks</b>Rotation noise.</div>
+      <div class="tbox"><b>Months</b>Earnings catalysts override.</div>
+      <div class="tbox"><b>Long-term</b>Concentration-risk story persists.</div>
+    </div>
+
+    
+  </article></div>
+
+<h2 class="section">🏆 Bottom Line — Who Wins Today</h2>
+<div class="leader">
+  <div class="lbox win">
+    <h4>✅ Top Winners</h4>
+    <ol><li><span class="medal">🥇</span><b>AI Custom Silicon — MRVL, AVGO, NVDA</b> — Huang&#39;s &#39;next $1T&#39; endorsement + $10B FY29 custom-silicon TAM</li><li><span class="medal">🥈</span><b>AI Cybersecurity — PANW, ZS, CRWD, FTNT</b> — PANW raised guide validates platform thesis; AI threat surface accelerates spend</li><li><span class="medal">🥉</span><b>US Energy — XOM, CVX, OXY, SLB, HAL</b> — Iran talks fragile → WTI back above $94; sticky risk premium</li><li><span class="medal">#4</span><b>Investment Banks — GS, MS, JPM</b> — $75B SpaceX IPO lead + AI capital-markets pipeline</li><li><span class="medal">#5</span><b>Sports Betting — DKNG, FLUT</b> — NBA Finals + World Cup calendar overlap = handle spike</li></ol>
+  </div>
+  <div class="lbox lose">
+    <h4>❌ Biggest Losers</h4>
+    <ol><li><span class="medal">🥇</span><b>Crypto — BTC, ETH, XRP, MSTR</b> — Iran-Nobitex sanctions + Middle East risk-off; BTC -6%</li><li><span class="medal">🥈</span><b>US Airlines — UAL, DAL, LUV, AAL</b> — Jet-fuel pass-through as WTI sticks near $95</li><li><span class="medal">🥉</span><b>GoPro (GPRO)</b> — Going-concern doubt; equity-binary tail-risk</li><li><span class="medal">#4</span><b>Intel (INTC)</b> — Left behind in AI-accelerator re-rating; strategic relevance test</li><li><span class="medal">#5</span><b>Legacy SaaS — SNOW, CRM, WDAY</b> — Goldman &#39;greed&gt;fear&#39; + Snowflake &#39;accelerate the core&#39; — show-me regime</li></ol>
+  </div>
+</div>
+<h2 class="section">📌 Other Stories</h2>
+<table class="mini">
+<thead><tr><th>Headline</th><th>Key Point</th><th>Beneficiaries</th></tr></thead>
+<tbody><tr>
+  <td><b>Trump drops $1.8B &#39;anti-weaponization&#39; fund (tax-audit immunity remains)</b></td>
+  <td>Acting AG Blanche: &#39;We are not moving forward with the fund</td>
+  <td>TLT, IEF</td>
+</tr><tr>
+  <td><b>Meta scales back mouse-tracking AI plan — staff pushback</b></td>
+  <td>META cuts back a behavioral-signal program after employee privacy concerns</td>
+  <td>GOOGL, AAPL</td>
+</tr><tr>
+  <td><b>GoPro on the verge of insolvency — going-concern warning</b></td>
+  <td>Going-concern doubt; equity holders&#39; tail-risk binary</td>
+  <td>AMBA</td>
+</tr><tr>
+  <td><b>Judge orders Trump officials to explain tariff-refund holdup</b></td>
+  <td>Court demands explanation for delayed tariff refunds — opens path to working-capital release for importers.</td>
+  <td>WMT, TGT, BBY, NKE</td>
+</tr><tr>
+  <td><b>JPMorgan doubles down on bullish 2026 stock-market call</b></td>
+  <td>JPM equity strategy reiterates 2026 upside targets; constructive on US large-cap.</td>
+  <td>SPY, QQQ, JPM, IWM</td>
+</tr><tr>
+  <td><b>&#39;SpaceX hype looks like Amazon&#39;s dot-com bubble peak&#39; — ex-trader warning</b></td>
+  <td>Contrarian voice flags blow-off-top dynamics around SpaceX IPO; TSLA slips overnight.</td>
+  <td>VIX</td>
+</tr><tr>
+  <td><b>Cramer to investor with 60% NVDA concentration: trim &amp; diversify</b></td>
+  <td>Mainstream &#39;trim-NVDA&#39; messaging — retail rebalancing impulse</td>
+  <td>SMH, SPY</td>
+</tr></tbody></table>
+<h2 class="section">📊 Ticker Reference Table</h2>
+<table class="ref">
+<thead><tr><th>Ticker</th><th>Name</th><th>Sector</th><th>Score</th><th>Color</th><th>Primary driver</th></tr></thead>
+<tbody><tr>
+  <td><b>MRVL</b></td>
+  <td>Marvell Technology</td>
+  <td>AI / Custom Silicon</td>
+  <td>+3</td>
+  <td><span class="tk p3">+3</span></td>
+  <td>Huang &#39;next $1T&#39; endorsement</td>
+</tr><tr>
+  <td><b>PANW</b></td>
+  <td>Palo Alto Networks</td>
+  <td>Cybersecurity</td>
+  <td>+3</td>
+  <td><span class="tk p3">+3</span></td>
+  <td>Beat &amp; raised guide</td>
+</tr><tr>
+  <td><b>DKNG</b></td>
+  <td>DraftKings</td>
+  <td>Sports Betting</td>
+  <td>+3</td>
+  <td><span class="tk p3">+3</span></td>
+  <td>NBA Finals + World Cup overlap</td>
+</tr><tr>
+  <td><b>XOM</b></td>
+  <td>Exxon Mobil</td>
+  <td>Energy</td>
+  <td>+3</td>
+  <td><span class="tk p3">+3</span></td>
+  <td>Iran risk premium</td>
+</tr><tr>
+  <td><b>CVX</b></td>
+  <td>Chevron</td>
+  <td>Energy</td>
+  <td>+3</td>
+  <td><span class="tk p3">+3</span></td>
+  <td>Iran risk premium</td>
+</tr><tr>
+  <td><b>SPCX</b></td>
+  <td>SpaceX (IPO)</td>
+  <td>Aerospace</td>
+  <td>+3</td>
+  <td><span class="tk p3">+3</span></td>
+  <td>$75B IPO at $1.8T</td>
+</tr><tr>
+  <td><b>NVDA</b></td>
+  <td>Nvidia</td>
+  <td>AI / GPUs</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>MRVL halo + AI policy</td>
+</tr><tr>
+  <td><b>AVGO</b></td>
+  <td>Broadcom</td>
+  <td>AI / Custom Silicon</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Custom-silicon halo</td>
+</tr><tr>
+  <td><b>ZS</b></td>
+  <td>Zscaler</td>
+  <td>Cybersecurity</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>PANW read-through</td>
+</tr><tr>
+  <td><b>CRWD</b></td>
+  <td>CrowdStrike</td>
+  <td>Cybersecurity</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>PANW read-through</td>
+</tr><tr>
+  <td><b>FTNT</b></td>
+  <td>Fortinet</td>
+  <td>Cybersecurity</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>PANW read-through</td>
+</tr><tr>
+  <td><b>OXY</b></td>
+  <td>Occidental</td>
+  <td>Energy</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Crude bid</td>
+</tr><tr>
+  <td><b>SLB</b></td>
+  <td>Schlumberger</td>
+  <td>Oilfield Svcs</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Capex outlook</td>
+</tr><tr>
+  <td><b>HAL</b></td>
+  <td>Halliburton</td>
+  <td>Oilfield Svcs</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Capex outlook</td>
+</tr><tr>
+  <td><b>RTX</b></td>
+  <td>RTX (Raytheon)</td>
+  <td>Defense</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Geopolitics</td>
+</tr><tr>
+  <td><b>LMT</b></td>
+  <td>Lockheed Martin</td>
+  <td>Defense</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>Geopolitics net of SpaceX</td>
+</tr><tr>
+  <td><b>GS</b></td>
+  <td>Goldman Sachs</td>
+  <td>Finance</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>SpaceX lead + AI commentary</td>
+</tr><tr>
+  <td><b>MS</b></td>
+  <td>Morgan Stanley</td>
+  <td>Finance</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>SpaceX syndicate</td>
+</tr><tr>
+  <td><b>JPM</b></td>
+  <td>JPMorgan</td>
+  <td>Finance</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>2026 bull call + SpaceX</td>
+</tr><tr>
+  <td><b>HOOD</b></td>
+  <td>Robinhood</td>
+  <td>Fintech</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Agentic credit card</td>
+</tr><tr>
+  <td><b>COIN</b></td>
+  <td>Coinbase</td>
+  <td>Crypto</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Sanctions favor regulated</td>
+</tr><tr>
+  <td><b>MSFT</b></td>
+  <td>Microsoft</td>
+  <td>AI / Cloud</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Hands-off AI EO</td>
+</tr><tr>
+  <td><b>GOOGL</b></td>
+  <td>Alphabet</td>
+  <td>AI / Internet</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>Hands-off AI EO + privacy</td>
+</tr><tr>
+  <td><b>META</b></td>
+  <td>Meta</td>
+  <td>AI / Social</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>EO + mouse-track pullback (mixed)</td>
+</tr><tr>
+  <td><b>TSM</b></td>
+  <td>Taiwan Semi</td>
+  <td>Foundry</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>Asia AI overweight</td>
+</tr><tr>
+  <td><b>MU</b></td>
+  <td>Micron</td>
+  <td>Memory</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>AI memory pull</td>
+</tr><tr>
+  <td><b>FLUT</b></td>
+  <td>Flutter (FanDuel)</td>
+  <td>Sports Betting</td>
+  <td>+2</td>
+  <td><span class="tk p2">+2</span></td>
+  <td>NBA + WC overlap</td>
+</tr><tr>
+  <td><b>V</b></td>
+  <td>Visa</td>
+  <td>Payments</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>Agentic swipe volume</td>
+</tr><tr>
+  <td><b>MA</b></td>
+  <td>Mastercard</td>
+  <td>Payments</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>Agentic swipe volume</td>
+</tr><tr>
+  <td><b>SPY</b></td>
+  <td>S&amp;P 500 ETF</td>
+  <td>Index</td>
+  <td>+1</td>
+  <td><span class="tk p1">+1</span></td>
+  <td>JPM bull call</td>
+</tr><tr>
+  <td><b>INTC</b></td>
+  <td>Intel</td>
+  <td>Semis</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>Left behind in AI re-rating</td>
+</tr><tr>
+  <td><b>SNOW</b></td>
+  <td>Snowflake</td>
+  <td>SaaS / Data</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>&#39;Accelerate the core&#39; stress</td>
+</tr><tr>
+  <td><b>UAL</b></td>
+  <td>United Airlines</td>
+  <td>Airlines</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>Jet-fuel pass-through</td>
+</tr><tr>
+  <td><b>DAL</b></td>
+  <td>Delta</td>
+  <td>Airlines</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>Jet-fuel pass-through</td>
+</tr><tr>
+  <td><b>LUV</b></td>
+  <td>Southwest</td>
+  <td>Airlines</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>Jet-fuel pass-through</td>
+</tr><tr>
+  <td><b>BA</b></td>
+  <td>Boeing</td>
+  <td>Aerospace</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>SpaceX competitive read</td>
+</tr><tr>
+  <td><b>TSLA</b></td>
+  <td>Tesla</td>
+  <td>EV / Tech</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>SpaceX overhang on Musk-complex</td>
+</tr><tr>
+  <td><b>AXP</b></td>
+  <td>American Express</td>
+  <td>Cards</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>Robinhood agentic CC</td>
+</tr><tr>
+  <td><b>GPRO</b></td>
+  <td>GoPro</td>
+  <td>Consumer Tech</td>
+  <td>-3</td>
+  <td><span class="tk n3">-3</span></td>
+  <td>Going-concern warning</td>
+</tr><tr>
+  <td><b>BTC</b></td>
+  <td>Bitcoin</td>
+  <td>Crypto</td>
+  <td>-3</td>
+  <td><span class="tk n3">-3</span></td>
+  <td>Iran sanctions + risk-off</td>
+</tr><tr>
+  <td><b>ETH</b></td>
+  <td>Ethereum</td>
+  <td>Crypto</td>
+  <td>-2</td>
+  <td><span class="tk n2">-2</span></td>
+  <td>Crypto risk-off</td>
+</tr><tr>
+  <td><b>MSTR</b></td>
+  <td>MicroStrategy</td>
+  <td>BTC Proxy</td>
+  <td>-1</td>
+  <td><span class="tk n1">-1</span></td>
+  <td>BTC drawdown</td>
+</tr><tr>
+  <td><b>CRM</b></td>
+  <td>Salesforce</td>
+  <td>SaaS</td>
+  <td>-1</td>
+  <td><span class="tk n1">-1</span></td>
+  <td>SaaSpocalypse read</td>
+</tr><tr>
+  <td><b>WDAY</b></td>
+  <td>Workday</td>
+  <td>SaaS</td>
+  <td>-1</td>
+  <td><span class="tk n1">-1</span></td>
+  <td>SaaSpocalypse read</td>
+</tr><tr>
+  <td><b>NYT</b></td>
+  <td>New York Times</td>
+  <td>Media</td>
+  <td>-1</td>
+  <td><span class="tk n1">-1</span></td>
+  <td>Fund-drop reduces story arc</td>
+</tr></tbody></table>
+<h2 class="section">🌡️ Sector Heatmap</h2>
+<div class="heat">
+  <div class="sect pos">
+    <div class="nm">AI / Semiconductors</div>
+    <div class="sc pos">+12</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Cybersecurity</div>
+    <div class="sc pos">+9</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Energy (E&amp;P + Services)</div>
+    <div class="sc pos">+12</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Defense</div>
+    <div class="sc pos">+3</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Investment Banks</div>
+    <div class="sc pos">+7</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Sports Betting</div>
+    <div class="sc pos">+7</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Fintech (HOOD/V/MA)</div>
+    <div class="sc pos">+4</div>
+  </div>
+  <div class="sect pos">
+    <div class="nm">Crypto-Exchanges (regulated)</div>
+    <div class="sc pos">+3</div>
+  </div>
+  <div class="sect neg">
+    <div class="nm">Airlines</div>
+    <div class="sc neg">-6</div>
+  </div>
+  <div class="sect neg">
+    <div class="nm">Consumer Tech (GPRO)</div>
+    <div class="sc neg">-3</div>
+  </div>
+  <div class="sect neg">
+    <div class="nm">SaaS (CRM/WDAY/SNOW)</div>
+    <div class="sc neg">-4</div>
+  </div>
+  <div class="sect neg">
+    <div class="nm">Crypto (BTC/ETH/XRP)</div>
+    <div class="sc neg">-7</div>
+  </div>
+  <div class="sect neg">
+    <div class="nm">Card Issuers (AXP/COF)</div>
+    <div class="sc neg">-3</div>
+  </div>
+  <div class="sect neg">
+    <div class="nm">Legacy Aerospace (BA)</div>
+    <div class="sc neg">-2</div>
+  </div></div>
+<h2 class="section">🎯 Action Summary</h2>
+<div class="action">
+  <div class="col win"><h4>Top Buy Signals</h4>
+    <ul><li>MRVL — momentum + thesis validation</li><li>PANW — raised guide, platform leader</li><li>XOM / CVX — sticky oil bid</li><li>DKNG — calendar tailwind</li><li>GS — IPO &amp; capital-markets cycle</li></ul></div>
+  <div class="col lose"><h4>Top Sell / Hedge</h4>
+    <ul><li>UAL / DAL / LUV — fuel pass-through</li><li>SNOW — narrative under pressure</li><li>AXP — agentic-CC threat</li><li>BTC — sanctions overhang</li><li>GPRO — going-concern</li></ul></div>
+  <div class="col "><h4>👀 Watchlist</h4>
+    <ul><li>SPCX — pricing June 11</li><li>INTC — AI-relevance test</li><li>HOOD — agentic-CC adoption KPIs</li><li>NTSK / Wiz — IPO readouts</li><li>WTI &gt; $100 — CPI re-pricing trigger</li></ul></div>
+</div>
+
+<footer>Generated 2026-06-02 · Sources: Yahoo Finance, Reuters, Bloomberg, CNBC, TheStreet, Moneywise, Stocktwits · Not investment advice. Built with the marketbeat/news workflow.</footer>
+</div><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a05bde0d2aa14836',t:'MTc4MDQ2MDAyOA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a05c44119f5d5d0d',t:'MTc4MDQ2NDIwNw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a05c8dbeeec1f784',t:'MTc4MDQ2NzIyNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body></html>

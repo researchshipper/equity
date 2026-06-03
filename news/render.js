@@ -6,7 +6,7 @@
  * self-contained HTML file. No network. No LLM. No npm dependencies.
  *
  * Usage:
- *   node render.js                                          # report.json → marketbeat_report_<date>.html
+ *   node render.js                                          # report.json → marketbeat_report.html (fixed name; date is INSIDE the file)
  *   node render.js path/to/report.json                      # custom input
  *   node render.js path/to/report.json -o out.html          # custom output
  *   node render.js --stdin > out.html                       # pipe JSON in
@@ -428,9 +428,13 @@ async function main(){
   }
 
   const html = renderReport(report);
+  // Default output is the fixed-name file marketbeat_report.html. The date
+  // lives INSIDE the file (in the JSON's `date` field + the rendered <title>),
+  // so the filename never changes day-to-day. This keeps the repo clean and
+  // prevents LLMs from getting confused by an ever-growing filename list.
   const outPath = outArg || path.join(
     path.dirname(useStdin ? __dirname : inputPath),
-    `marketbeat_report_${report.date}.html`
+    `marketbeat_report.html`
   );
 
   if (useStdin && !outArg){
