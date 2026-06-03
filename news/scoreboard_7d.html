@@ -1,0 +1,606 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Market Beat Scoreboard · last 7 days</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#0b1020;--panel:#121935;--ink:#e8ecf8;--muted:#9aa3c7;--line:#243056;
+  --green:#16c784;--green2:#0d8c5d;--red:#ea3943;--red2:#a51e26;--yellow:#f5b21a;--blue:#3b82f6}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+a{color:#9ab8ff;text-decoration:none}a:hover{text-decoration:underline}
+.wrap{max-width:1320px;margin:0 auto;padding:24px 20px 80px}
+header.hero{background:linear-gradient(135deg,#1a2454,#0b1020 60%);border:1px solid var(--line);
+  border-radius:14px;padding:22px 24px;margin-bottom:18px}
+.hero h1{margin:0 0 6px;font-size:24px}.hero .sub{color:var(--muted);font-size:13px}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;
+  background:#1f2a55;color:#cfd8ff;margin-right:6px}
+h2.section{margin:26px 0 10px;font-size:18px;border-left:3px solid var(--blue);padding-left:10px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);
+  border-radius:10px;overflow:hidden;font-size:13px}
+th,td{padding:7px 9px;border-bottom:1px solid #1c2548;text-align:left;vertical-align:middle}
+th{background:#1a2348;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#cfd8ff}
+tr:last-child td{border-bottom:none}
+.cum{font-weight:700;font-size:15px}
+.cum.pos{color:var(--green)} .cum.neg{color:var(--red)} .cum.zz{color:var(--muted)}
+.cell{display:inline-block;width:18px;height:18px;border-radius:3px;margin-right:2px;
+  text-align:center;line-height:18px;font-size:10px;font-weight:700}
+.cell.p3{background:var(--green);color:#03210f}
+.cell.p2{background:var(--green2);color:#eafff5}
+.cell.p1{background:#3a4a2a;color:#d6f5a6}
+.cell.n1{background:#4a3a2a;color:#f5d8a6}
+.cell.n2{background:var(--red2);color:#ffeaea}
+.cell.n3{background:var(--red);color:#1a0203}
+.cell.zz{background:#2a3050;color:#cfd8ff;opacity:.5}
+.cell.empty{background:transparent;border:1px dashed #2a3050;color:#3a4670;opacity:.5}
+.spark{white-space:nowrap}
+.tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:999px;
+  background:#1a2c4a;color:#9ec3ff;margin-left:5px}
+.tag.hot{background:#3a2010;color:#f5c97a}
+footer{margin-top:30px;color:var(--muted);font-size:12px;text-align:center}
+</style></head><body><div class="wrap">
+
+<header class="hero">
+  <div>
+    <span class="badge">📈 SCOREBOARD</span>
+    <span class="badge">last 2 day(s)</span>
+    <span class="badge">2026-06-02 → 2026-06-03</span>
+  </div>
+  <h1>Cumulative Ticker Scoreboard</h1>
+  <div class="sub">69 tickers · 36 sectors · 18 persistent (mentioned in ≥60% of days)</div>
+</header>
+
+<h2 class="section">🟢 Top Cumulative Winners</h2>
+<table>
+  <thead><tr><th>Ticker</th><th>Name</th><th>Sector</th><th>Cum</th><th>Avg</th><th>Days</th><th>Spark</th><th>Last driver</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>TSM</b><span class="tag hot">persistent</span></td>
+      <td>Taiwan Semi</td>
+      <td>FOUNDRY</td>
+      <td class="cum pos">+5</td>
+      <td>+2.5</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p3" title="2026-06-02: +3">+</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Asia AI bid pushes TAIEX to ATH</td>
+    </tr>
+    <tr>
+      <td><b>NVDA</b><span class="tag hot">persistent</span></td>
+      <td>Nvidia</td>
+      <td>AI/CHIPS</td>
+      <td class="cum pos">+5</td>
+      <td>+2.5</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p3" title="2026-06-02: +3">+</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>AI orchestrator across AVGO/MRVL prints</td>
+    </tr>
+    <tr>
+      <td><b>PANW</b><span class="tag hot">persistent</span></td>
+      <td>Palo</td>
+      <td>CYBERSECURITY</td>
+      <td class="cum pos">+4</td>
+      <td>+2</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p2" title="2026-06-02: +2">+</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Beat Tue, +61% YTD</td>
+    </tr>
+    <tr>
+      <td><b>XOM</b><span class="tag hot">persistent</span></td>
+      <td>Exxon</td>
+      <td>ENERGY</td>
+      <td class="cum pos">+4</td>
+      <td>+2</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p3" title="2026-06-03: +3">+</span></td>
+      <td>Gulf escalation lifts WTI to $95</td>
+    </tr>
+    <tr>
+      <td><b>CVX</b><span class="tag hot">persistent</span></td>
+      <td>Chevron</td>
+      <td>ENERGY</td>
+      <td class="cum pos">+4</td>
+      <td>+2</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p3" title="2026-06-03: +3">+</span></td>
+      <td>Permian + Gulf upstream torque</td>
+    </tr>
+    <tr>
+      <td><b>SMH</b></td>
+      <td>Semis ETF</td>
+      <td>SECTOR</td>
+      <td class="cum pos">+3</td>
+      <td>+3</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell p3" title="2026-06-02: +3">+</span><span class="cell empty" title="2026-06-03 (no data)">·</span></td>
+      <td>Broadcom Inc. (AVGO): One of the Premier Stocks to Buy Right</td>
+    </tr>
+    <tr>
+      <td><b>AVGO</b><span class="tag hot">persistent</span></td>
+      <td>Broadcom</td>
+      <td>AI/CHIPS</td>
+      <td class="cum pos">+3</td>
+      <td>+1.5</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Q2 earnings + AI silicon TAM</td>
+    </tr>
+    <tr>
+      <td><b>AAPL</b><span class="tag hot">persistent</span></td>
+      <td>Apple</td>
+      <td>TECH</td>
+      <td class="cum pos">+3</td>
+      <td>+1.5</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>11-week up streak, WWDC catalyst</td>
+    </tr>
+    <tr>
+      <td><b>STM</b></td>
+      <td>STMicroelectronics</td>
+      <td>Semiconductors</td>
+      <td class="cum pos">+3</td>
+      <td>+3</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p3" title="2026-06-03: +3">+</span></td>
+      <td>+15% on AI-content win</td>
+    </tr>
+    <tr>
+      <td><b>CEG</b></td>
+      <td>Constellation Energy</td>
+      <td>Utilities</td>
+      <td class="cum pos">+3</td>
+      <td>+3</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p3" title="2026-06-03: +3">+</span></td>
+      <td>FERC waiver clears TMI restart</td>
+    </tr>
+    <tr>
+      <td><b>GME</b></td>
+      <td>GameStop</td>
+      <td>Specialty Retail</td>
+      <td class="cum pos">+3</td>
+      <td>+3</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p3" title="2026-06-03: +3">+</span></td>
+      <td>Record Q1 + $2B buyback</td>
+    </tr>
+    <tr>
+      <td><b>PLTR</b></td>
+      <td>Palantir</td>
+      <td>AI/DATA</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell p2" title="2026-06-02: +2">+</span><span class="cell empty" title="2026-06-03 (no data)">·</span></td>
+      <td>Palantir Eyes Buy Point As Software Stocks Extend Rally On S</td>
+    </tr>
+    <tr>
+      <td><b>XLE</b></td>
+      <td>Energy ETF</td>
+      <td>SECTOR</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell p2" title="2026-06-02: +2">+</span><span class="cell empty" title="2026-06-03 (no data)">·</span></td>
+      <td>Surge Energy: Should Surge More In High Oil Price Environmen</td>
+    </tr>
+    <tr>
+      <td><b>XLF</b></td>
+      <td>Financials ETF</td>
+      <td>SECTOR</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell p2" title="2026-06-02: +2">+</span><span class="cell empty" title="2026-06-03 (no data)">·</span></td>
+      <td>Russia&#39;s Crude Exports Fairly Stable Despite U.S. Sanctions,</td>
+    </tr>
+    <tr>
+      <td><b>ZS</b><span class="tag hot">persistent</span></td>
+      <td>Zscaler</td>
+      <td>CYBERSECURITY</td>
+      <td class="cum pos">+2</td>
+      <td>+1</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p1" title="2026-06-03: +1">+</span></td>
+      <td>Secure-edge halo</td>
+    </tr>
+    <tr>
+      <td><b>CRWD</b><span class="tag hot">persistent</span></td>
+      <td>CrowdStrike</td>
+      <td>CYBERSECURITY</td>
+      <td class="cum pos">+2</td>
+      <td>+1</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p1" title="2026-06-03: +1">+</span></td>
+      <td>Earnings tonight, high bar</td>
+    </tr>
+    <tr>
+      <td><b>FTNT</b><span class="tag hot">persistent</span></td>
+      <td>Fortinet</td>
+      <td>CYBERSECURITY</td>
+      <td class="cum pos">+2</td>
+      <td>+1</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell p1" title="2026-06-02: +1">+</span><span class="cell p1" title="2026-06-03: +1">+</span></td>
+      <td>Secure-edge sympathy</td>
+    </tr>
+    <tr>
+      <td><b>MS</b><span class="tag hot">persistent</span></td>
+      <td>Morgan</td>
+      <td>FINANCE</td>
+      <td class="cum pos">+2</td>
+      <td>+1</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell zz" title="2026-06-02: 0">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>SpaceX IPO lead underwriter</td>
+    </tr>
+    <tr>
+      <td><b>OXY</b></td>
+      <td>Occidental</td>
+      <td>Energy</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Highest oil-beta US large-cap</td>
+    </tr>
+    <tr>
+      <td><b>COP</b></td>
+      <td>ConocoPhillips</td>
+      <td>Energy</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Pure-play upstream</td>
+    </tr>
+    <tr>
+      <td><b>SLB</b></td>
+      <td>Schlumberger</td>
+      <td>Energy Services</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Global oilfield-services bid</td>
+    </tr>
+    <tr>
+      <td><b>VLO</b></td>
+      <td>Valero</td>
+      <td>Refining</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Refining cracks widen</td>
+    </tr>
+    <tr>
+      <td><b>LMT</b></td>
+      <td>Lockheed Martin</td>
+      <td>Defense</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Missile-defense reload demand</td>
+    </tr>
+    <tr>
+      <td><b>RTX</b></td>
+      <td>RTX Corp</td>
+      <td>Defense</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Patriot/THAAD reload</td>
+    </tr>
+    <tr>
+      <td><b>BRK.B</b></td>
+      <td>Berkshire Hathaway</td>
+      <td>Conglomerate</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>$10B GOOGL sponsored placement</td>
+    </tr>
+    <tr>
+      <td><b>VST</b></td>
+      <td>Vistra</td>
+      <td>Utilities</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Hyperscaler PPA template re-rate</td>
+    </tr>
+    <tr>
+      <td><b>TLN</b></td>
+      <td>Talen Energy</td>
+      <td>Utilities</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>Nuclear PPA peer comp</td>
+    </tr>
+    <tr>
+      <td><b>OKLO</b></td>
+      <td>Oklo</td>
+      <td>SMR Nuclear</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>+10% sympathy bid</td>
+    </tr>
+    <tr>
+      <td><b>SMR</b></td>
+      <td>NuScale</td>
+      <td>SMR Nuclear</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>+8% sympathy bid</td>
+    </tr>
+    <tr>
+      <td><b>CCJ</b></td>
+      <td>Cameco</td>
+      <td>Uranium</td>
+      <td class="cum pos">+2</td>
+      <td>+2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell p2" title="2026-06-03: +2">+</span></td>
+      <td>+7% on fuel-cycle demand pull</td>
+    </tr></tbody>
+</table>
+
+<h2 class="section">🔴 Top Cumulative Losers</h2>
+<table>
+  <thead><tr><th>Ticker</th><th>Name</th><th>Sector</th><th>Cum</th><th>Avg</th><th>Days</th><th>Spark</th><th>Last driver</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>MSTR</b></td>
+      <td>Strategy</td>
+      <td>Crypto Treasury</td>
+      <td class="cum neg">-3</td>
+      <td>-3</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell n3" title="2026-06-03: -3">−</span></td>
+      <td>BTC -5.5% mark-to-market</td>
+    </tr>
+    <tr>
+      <td><b>UAL</b><span class="tag hot">persistent</span></td>
+      <td>United Airlines</td>
+      <td>AIRLINES</td>
+      <td class="cum neg">-2</td>
+      <td>-1</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell zz" title="2026-06-02: 0">·</span><span class="cell n2" title="2026-06-03: -2">−</span></td>
+      <td>Jet-fuel cost shock</td>
+    </tr>
+    <tr>
+      <td><b>DAL</b><span class="tag hot">persistent</span></td>
+      <td>Delta</td>
+      <td>AIRLINES</td>
+      <td class="cum neg">-2</td>
+      <td>-1</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell zz" title="2026-06-02: 0">·</span><span class="cell n2" title="2026-06-03: -2">−</span></td>
+      <td>Jet-fuel cost shock</td>
+    </tr>
+    <tr>
+      <td><b>LUV</b></td>
+      <td>Southwest Airlines</td>
+      <td>Airlines</td>
+      <td class="cum neg">-2</td>
+      <td>-2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell n2" title="2026-06-03: -2">−</span></td>
+      <td>Un-hedged fuel exposure</td>
+    </tr>
+    <tr>
+      <td><b>RKLB</b></td>
+      <td>Rocket Lab</td>
+      <td>Aerospace</td>
+      <td class="cum neg">-2</td>
+      <td>-2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell n2" title="2026-06-03: -2">−</span></td>
+      <td>SpaceX public-comp multiple compression</td>
+    </tr>
+    <tr>
+      <td><b>COIN</b></td>
+      <td>Coinbase</td>
+      <td>Crypto</td>
+      <td class="cum neg">-2</td>
+      <td>-2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell n2" title="2026-06-03: -2">−</span></td>
+      <td>Risk-off volume mix shift</td>
+    </tr>
+    <tr>
+      <td><b>NDAQ</b></td>
+      <td>Nasdaq</td>
+      <td>Exchanges</td>
+      <td class="cum neg">-2</td>
+      <td>-2</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell n2" title="2026-06-03: -2">−</span></td>
+      <td>Perpetual futures listing share loss</td>
+    </tr>
+    <tr>
+      <td><b>AMD</b><span class="tag hot">persistent</span></td>
+      <td>AMD</td>
+      <td>AI/CHIPS</td>
+      <td class="cum neg">-1</td>
+      <td>-0.5</td>
+      <td>2/2</td>
+      <td class="spark"><span class="cell zz" title="2026-06-02: 0">·</span><span class="cell n1" title="2026-06-03: -1">−</span></td>
+      <td>Loses share-of-wallet to ASIC</td>
+    </tr>
+    <tr>
+      <td><b>S</b></td>
+      <td>SentinelOne</td>
+      <td>Cybersecurity</td>
+      <td class="cum neg">-1</td>
+      <td>-1</td>
+      <td>1/2</td>
+      <td class="spark"><span class="cell empty" title="2026-06-02 (no data)">·</span><span class="cell n1" title="2026-06-03: -1">−</span></td>
+      <td>Asymmetric loser to CRWD</td>
+    </tr></tbody>
+</table>
+
+<h2 class="section">🌡️ Sector Totals (window)</h2>
+<table>
+  <thead><tr><th>Sector</th><th>Cumulative score</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>CYBERSECURITY</td>
+      <td class="cum pos">+11</td>
+    </tr>
+    <tr>
+      <td>AI/CHIPS</td>
+      <td class="cum pos">+8</td>
+    </tr>
+    <tr>
+      <td>ENERGY</td>
+      <td class="cum pos">+8</td>
+    </tr>
+    <tr>
+      <td>SECTOR</td>
+      <td class="cum pos">+7</td>
+    </tr>
+    <tr>
+      <td>Utilities</td>
+      <td class="cum pos">+7</td>
+    </tr>
+    <tr>
+      <td>FOUNDRY</td>
+      <td class="cum pos">+5</td>
+    </tr>
+    <tr>
+      <td>FINANCE</td>
+      <td class="cum pos">+5</td>
+    </tr>
+    <tr>
+      <td>AI/DATA</td>
+      <td class="cum pos">+4</td>
+    </tr>
+    <tr>
+      <td>Energy</td>
+      <td class="cum pos">+4</td>
+    </tr>
+    <tr>
+      <td>Defense</td>
+      <td class="cum pos">+4</td>
+    </tr>
+    <tr>
+      <td>SMR Nuclear</td>
+      <td class="cum pos">+4</td>
+    </tr>
+    <tr>
+      <td>Uranium</td>
+      <td class="cum pos">+4</td>
+    </tr>
+    <tr>
+      <td>TECH</td>
+      <td class="cum pos">+3</td>
+    </tr>
+    <tr>
+      <td>Refining</td>
+      <td class="cum pos">+3</td>
+    </tr>
+    <tr>
+      <td>Semiconductors</td>
+      <td class="cum pos">+3</td>
+    </tr>
+    <tr>
+      <td>Specialty Retail</td>
+      <td class="cum pos">+3</td>
+    </tr>
+    <tr>
+      <td>RETAIL</td>
+      <td class="cum pos">+2</td>
+    </tr>
+    <tr>
+      <td>Energy Services</td>
+      <td class="cum pos">+2</td>
+    </tr>
+    <tr>
+      <td>Conglomerate</td>
+      <td class="cum pos">+2</td>
+    </tr>
+    <tr>
+      <td>Autos</td>
+      <td class="cum pos">+2</td>
+    </tr>
+    <tr>
+      <td>AI/OBSERV</td>
+      <td class="cum pos">+1</td>
+    </tr>
+    <tr>
+      <td>MEMORY</td>
+      <td class="cum pos">+1</td>
+    </tr>
+    <tr>
+      <td>AI/INTERNET</td>
+      <td class="cum pos">+1</td>
+    </tr>
+    <tr>
+      <td>SAAS</td>
+      <td class="cum pos">+1</td>
+    </tr>
+    <tr>
+      <td>CARDS</td>
+      <td class="cum pos">+1</td>
+    </tr>
+    <tr>
+      <td>Semi Equipment</td>
+      <td class="cum pos">+1</td>
+    </tr>
+    <tr>
+      <td>AI/CLOUD</td>
+      <td class="cum zz">0</td>
+    </tr>
+    <tr>
+      <td>SEMIS</td>
+      <td class="cum zz">0</td>
+    </tr>
+    <tr>
+      <td>AI/SOCIAL</td>
+      <td class="cum zz">0</td>
+    </tr>
+    <tr>
+      <td>Exchanges</td>
+      <td class="cum zz">0</td>
+    </tr>
+    <tr>
+      <td>Cybersecurity</td>
+      <td class="cum neg">-1</td>
+    </tr>
+    <tr>
+      <td>Airlines</td>
+      <td class="cum neg">-2</td>
+    </tr>
+    <tr>
+      <td>Aerospace</td>
+      <td class="cum neg">-2</td>
+    </tr>
+    <tr>
+      <td>Crypto</td>
+      <td class="cum neg">-2</td>
+    </tr>
+    <tr>
+      <td>AIRLINES</td>
+      <td class="cum neg">-3</td>
+    </tr>
+    <tr>
+      <td>Crypto Treasury</td>
+      <td class="cum neg">-3</td>
+    </tr></tbody>
+</table>
+
+<footer>Generated 2026-06-03 · Log: scoreboard.jsonl · Not investment advice.</footer>
+</div><script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a05c5fe1afb6f284',t:'MTc4MDQ2NTM0Ng=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body></html>

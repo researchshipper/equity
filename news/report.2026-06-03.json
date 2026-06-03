@@ -1,47 +1,47 @@
 {
   "date": "2026-06-03",
   "title": "Market Beat — News Impact Analysis",
-  "subtitle": "16 headlines · 3 levels · 47 tickers · AI bid vs. Gulf war risk",
+  "subtitle": "14 headlines · 3 levels · 42 tickers · Gulf war risk meets ADP & Beige Book; AVGO/CRWD print tonight",
   "region": "GLOBAL",
   "version": "0.2",
   "sources": [
-    "Yahoo Finance",
-    "CNBC",
     "Reuters",
+    "CNBC",
+    "Yahoo Finance",
+    "Bloomberg",
     "MarketWatch",
-    "Investopedia",
-    "TheStreet"
+    "Investing.com"
   ],
   "mood": [
     {
       "label": "S&P 500 (fut)",
-      "value": "7,581",
-      "delta": "-0.42%",
+      "value": "7,587",
+      "delta": "-0.30%",
       "tone": "neg"
     },
     {
       "label": "Nasdaq 100 (fut)",
-      "value": "30,372",
-      "delta": "-0.63%",
+      "value": "30,420",
+      "delta": "-0.50%",
       "tone": "neg"
     },
     {
       "label": "Dow (fut)",
-      "value": "50,898",
-      "delta": "-0.46%",
+      "value": "51,180",
+      "delta": "-0.20%",
       "tone": "neg"
     },
     {
       "label": "S&P 500 (prev close)",
-      "value": "7,609.78",
-      "delta": "+0.13% · ATH",
+      "value": "7,606.35",
+      "delta": "+0.08% · 9-day streak",
       "tone": "pos"
     },
     {
-      "label": "Russell 2000",
-      "value": "+0.90%",
-      "delta": "leader",
-      "tone": "pos"
+      "label": "Nasdaq (prev close)",
+      "value": "27,067",
+      "delta": "-0.07%",
+      "tone": "neu"
     },
     {
       "label": "WTI Crude",
@@ -51,70 +51,77 @@
     },
     {
       "label": "Brent",
-      "value": "~$98",
-      "delta": "Gulf escalation",
+      "value": "$97.05",
+      "delta": "+1.1% · Gulf escalation",
       "tone": "neg"
     },
     {
       "label": "10Y Treasury",
-      "value": "4.46%",
-      "delta": "steady",
+      "value": "4.45%",
+      "delta": "off 4.69% high",
       "tone": "neu"
     },
     {
       "label": "USD/JPY",
-      "value": "159.86",
-      "delta": "near 160 (intervention watch)",
+      "value": "160.0",
+      "delta": "intervention watch",
       "tone": "neu"
     },
     {
       "label": "Bitcoin",
-      "value": "$66,123",
-      "delta": "-10% / 3 sessions · 2-mo low",
+      "value": "$69,400",
+      "delta": "-5.5% (24h) · 2-mo low",
       "tone": "neg"
     },
     {
       "label": "VIX",
       "value": "~16",
-      "delta": "low despite war",
+      "delta": "calm despite war",
       "tone": "neu"
     },
     {
       "label": "Gold",
-      "value": "~$4,486",
-      "delta": "+0.4%",
-      "tone": "pos"
+      "value": "~$4,470",
+      "delta": "flat",
+      "tone": "neu"
     }
   ],
   "macro": {
     "headline": "Jobs Week + Beige Book today; payrolls Friday is the hike-odds swing event under new Chair Warsh",
-    "regime": "HAWKISH TILT — oil-driven inflation has flipped the market from rate cuts to ~70% odds of a hike by year-end; <3% chance of a 2026 cut priced.",
+    "regime": "HAWKISH TILT — Gulf-driven oil shock has lifted year-end hike odds to ~42% (CME FedWatch); virtually zero 2026 cut probability priced.",
     "keyEvents": [
       {
         "label": "Fed (FOMC)",
         "value": "Jun 16-17",
-        "detail": "Warsh's 1st meeting as Chair; decision Jun 17. No Fed speak until then.",
+        "detail": "Warsh's 1st meeting as Chair; ~3.5% chance of a June hike, but markets watch for removal of dovish forward-guidance language.",
         "when": "ahead",
         "tone": "neu"
       },
       {
         "label": "Jobs (NFP)",
         "value": "Fri Jun 5",
-        "detail": "May payrolls fcst ~85-95k (vs +115k); U-rate 4.3%. The week's main event.",
+        "detail": "May payrolls fcst ~95k (vs +115k April); U-rate 4.3%. The week's main event for hike-odds repricing.",
         "when": "week",
         "tone": "neu"
       },
       {
         "label": "CPI",
         "value": "Jun 13",
-        "detail": "May inflation; last print +3.8% YoY, hottest since 2024 on gas/oil.",
+        "detail": "May inflation; last print +3.8% YoY, hottest since 2024 on Gulf-driven gasoline pass-through.",
         "when": "ahead",
         "tone": "neg"
       },
       {
         "label": "ADP Jobs",
         "value": "Today 8:15a",
-        "detail": "May private payrolls fcst +116k (vs +109k). NFP appetizer.",
+        "detail": "May private payrolls fcst +110k (vs +109k April). NFP appetizer — strong print kills the cut narrative outright.",
+        "when": "today",
+        "tone": "neu"
+      },
+      {
+        "label": "Beige Book",
+        "value": "Today 2:00p",
+        "detail": "First Beige Book under Chair Warsh; districts' read on Gulf-shock pass-through to prices is the key signal.",
         "when": "today",
         "tone": "neu"
       }
@@ -124,24 +131,32 @@
         "time": "8:15a ET",
         "event": "ADP National Employment (May)",
         "importance": "high",
-        "forecast": "+116k",
+        "forecast": "+110k",
         "prior": "+109k",
+        "tone": "neu"
+      },
+      {
+        "time": "9:45a ET",
+        "event": "S&P Global Services PMI (final, May)",
+        "importance": "med",
+        "forecast": "—",
+        "prior": "—",
         "tone": "neu"
       },
       {
         "time": "10:00a ET",
         "event": "ISM Services PMI (May)",
         "importance": "high",
-        "forecast": "~52",
-        "prior": "51.6",
+        "forecast": "52.0",
+        "prior": "53.6",
         "tone": "neu"
       },
       {
         "time": "10:00a ET",
         "event": "Factory Orders (Apr)",
         "importance": "med",
-        "forecast": "—",
-        "prior": "—",
+        "forecast": "+3.0%",
+        "prior": "+4.3%",
         "tone": "neu"
       },
       {
@@ -151,17 +166,17 @@
         "forecast": "n/a",
         "prior": "n/a",
         "tone": "neu"
-      },
-      {
-        "time": "9:00a ET",
-        "event": "Fed Gov. Barr speaks",
-        "importance": "med",
-        "forecast": "n/a",
-        "prior": "n/a",
-        "tone": "neu"
       }
     ],
     "tomorrow": [
+      {
+        "time": "7:30a ET",
+        "event": "Challenger Layoffs (May)",
+        "importance": "med",
+        "forecast": "n/a",
+        "prior": "n/a",
+        "tone": "neg"
+      },
       {
         "time": "8:30a ET",
         "event": "Weekly Jobless Claims (wk May 30)",
@@ -179,12 +194,12 @@
         "tone": "neu"
       },
       {
-        "time": "5:30a ET",
-        "event": "Challenger Layoffs (May)",
+        "time": "8:30a ET",
+        "event": "Trade Balance (Apr)",
         "importance": "med",
-        "forecast": "n/a",
-        "prior": "n/a",
-        "tone": "neg"
+        "forecast": "—",
+        "prior": "—",
+        "tone": "neu"
       },
       {
         "time": "10:30a ET",
@@ -198,35 +213,35 @@
     "week": [
       {
         "date": "Mon Jun 1",
-        "event": "ISM Manufacturing (May) — 4-yr high; Construction Spending",
-        "importance": "med",
+        "event": "ISM Manufacturing 54.0 (5-yr high) · Alphabet $80B AI capital raise",
+        "importance": "high",
         "status": "done",
         "tone": "pos"
       },
       {
         "date": "Tue Jun 2",
-        "event": "JOLTS Job Openings (Apr): 7.62M, 2-yr high (vs 6.87M est)",
+        "event": "JOLTS 7.62M (2-yr high); HPE +19.5% on AI servers; PANW & MRVL halo",
         "importance": "high",
         "status": "done",
         "tone": "pos"
       },
       {
         "date": "Wed Jun 3",
-        "event": "ADP (May), ISM Services, Factory Orders, Beige Book 2p",
+        "event": "ADP, ISM Services, Beige Book; AVGO + CRWD + AVGO earnings after bell",
         "importance": "high",
         "status": "today",
         "tone": "neu"
       },
       {
         "date": "Thu Jun 4",
-        "event": "Jobless Claims, Productivity/ULC, Challenger Layoffs",
+        "event": "Claims, Productivity, Challenger Layoffs; Ciena earnings",
         "importance": "med",
         "status": "ahead",
         "tone": "neu"
       },
       {
         "date": "Fri Jun 5",
-        "event": "NONFARM PAYROLLS (May) + Unemployment + AHE; Consumer Credit",
+        "event": "NONFARM PAYROLLS (May) + U-rate + AHE — hike-odds swing event",
         "importance": "high",
         "status": "ahead",
         "tone": "neg"
@@ -236,201 +251,70 @@
   "news": [
     {
       "id": 1,
-      "headline": "Marvell soars +32.5% to record — Huang calls it the 'next trillion-dollar company'",
-      "source": "Reuters · 1d ago",
-      "url": "https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-june-02-2026",
-      "category": "AI · Semis",
-      "priority": 10,
-      "confidence": "HIGH",
-      "sentiment": "bull",
-      "tickers": [
-        {
-          "symbol": "MRVL",
-          "score": 3
-        },
-        {
-          "symbol": "NVDA",
-          "score": 1
-        },
-        {
-          "symbol": "AVGO",
-          "score": 2
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "Marvell ripped +32.5% to a record $290.79 (mkt cap ~$254B) after Nvidia CEO Jensen Huang called it the 'next trillion-dollar company' at Computex Taipei, citing its role in data-center connectivity and custom XPUs. Nvidia invested $2B in MRVL earlier this year; Marvell guides custom-silicon revenue >$10B by FY29. The Philadelphia Semi Index jumped ~6%.",
-          "tickers": [
-            {
-              "symbol": "MRVL",
-              "score": 3
-            }
-          ]
-        },
-        "L2": {
-          "text": "Halo bid across custom-silicon and optical/networking peers. AVGO (reports Wed) is the obvious sympathy beneficiary as the other hyperscaler ASIC franchise; optical/interconnect names CRDO, COHR, LITE, ANET ride the connectivity narrative. NVDA benefits as ecosystem orchestrator, not loser.",
-          "tickers": [
-            {
-              "symbol": "AVGO",
-              "score": 2
-            },
-            {
-              "symbol": "ANET",
-              "score": 1
-            },
-            {
-              "symbol": "CRDO",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Reinforces the 'custom silicon eats merchant GPU share at the margin' structural thesis: hyperscalers (GOOGL TPU, AMZN Trainium, MSFT Maia) increasingly co-design accelerators, and MRVL/AVGO are the arms dealers. Concentration risk rises — MU, NVDA, GOOGL alone drive 40%+ of YTD S&P 2026 EPS revisions (Evercore).",
-          "tickers": [
-            {
-              "symbol": "AMD",
-              "score": -1
-            },
-            {
-              "symbol": "INTC",
-              "score": -1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "MRVL — Huang endorsement + $10B FY29 custom-silicon TAM",
-        "AVGO — peer ASIC re-rate into Wed print",
-        "ANET — interconnect demand",
-        "CRDO — AI connectivity halo",
-        "NVDA — ecosystem orchestrator"
-      ],
-      "victims": [
-        "AMD — merchant-GPU share narrative pressure",
-        "INTC — outside the custom-silicon party"
-      ],
-      "timeline": {
-        "D": "Momentum chase + sell-side PT hikes; watch for profit-taking after a 32% pop.",
-        "W": "AVGO earnings (Wed) becomes the read-through catalyst for the whole ASIC complex.",
-        "M": "Custom-silicon backlog/booking commentary tests the $10B FY29 framing.",
-        "L": "Hyperscaler in-house accelerator model entrenches MRVL/AVGO as core suppliers."
-      }
-    },
-    {
-      "id": 2,
-      "headline": "HPE rockets +19.5% — biggest beat since 2018 as AI servers accelerate financial targets by 2 years",
-      "source": "CNBC · 1d ago",
-      "url": "https://finance.yahoo.com/sectors/technology/live/tech-stocks-today-google-stock-falls-on-plans-to-raise-80-billion-nvidia-ceo-blesses-marvell-stock-100000832.html",
-      "category": "AI · Hardware",
-      "priority": 9,
-      "confidence": "HIGH",
-      "sentiment": "bull",
-      "tickers": [
-        {
-          "symbol": "HPE",
-          "score": 3
-        },
-        {
-          "symbol": "DELL",
-          "score": 2
-        },
-        {
-          "symbol": "SMCI",
-          "score": 1
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "HPE surged +19.5% to $56.15 after fiscal Q2 adjusted EPS of $0.79 (vs $0.53) on $10.68B revenue (vs $9.79B), up 40% YoY — its biggest beat since Feb 2018. The company pulled forward long-term financial targets by two years and added Elliott's Christopher Hsu to the board under a cooperation agreement.",
-          "tickers": [
-            {
-              "symbol": "HPE",
-              "score": 3
-            }
-          ]
-        },
-        "L2": {
-          "text": "Validates the AI-server demand pull echoed by DELL's blowout last week. Read-through to SMCI, networking (ANET, JNPR — which HPE owns via Juniper), and memory (MU) as server attach. Activist (Elliott) board seat adds a capital-return/optimization angle.",
-          "tickers": [
-            {
-              "symbol": "DELL",
-              "score": 2
-            },
-            {
-              "symbol": "MU",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Confirms enterprise + sovereign AI buildout is broadening beyond chips into integrated systems and networking. Supports the 'picks and shovels' trade and the idea that S&P EPS growth (~29% Q1) is being underwritten by capex from a handful of AI spenders.",
-          "tickers": [
-            {
-              "symbol": "ANET",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "HPE — record quarter + accelerated targets",
-        "DELL — AI-server demand confirmation",
-        "SMCI — sympathy on server attach",
-        "MU — memory content per AI server",
-        "ANET — networking pull-through"
-      ],
-      "victims": [
-        "Legacy on-prem-only vendors — share shift to AI-optimized systems"
-      ],
-      "timeline": {
-        "D": "Gap-up holds; analysts raise estimates and PTs.",
-        "W": "Elliott engagement headlines on margins/capital allocation.",
-        "M": "Backlog conversion + Juniper networking synergies in focus.",
-        "L": "HPE re-rated from value telco-gear name toward AI-infrastructure multiple."
-      }
-    },
-    {
-      "id": 3,
-      "headline": "Oil jumps a 3rd day to ~$95 as Iran fires missiles at Kuwait & Bahrain; US strikes Qeshm Island",
+      "headline": "Gulf escalates: Iran fires missiles at Kuwait & Bahrain; U.S. strikes Qeshm; WTI rips +2% to $95",
       "source": "Reuters · 4h ago",
-      "url": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-06-03/",
-      "category": "Macro · Energy · Geopolitics",
+      "url": "https://www.reuters.com/business/energy/oil-prices-rise-new-middle-east-hostilities-flare-talks-stall-2026-06-03/",
+      "category": "Geopolitics · Energy",
       "priority": 10,
       "confidence": "HIGH",
       "sentiment": "bear",
       "tickers": [
         {
           "symbol": "XOM",
-          "score": 2
+          "score": 3
         },
         {
           "symbol": "CVX",
+          "score": 3
+        },
+        {
+          "symbol": "OXY",
+          "score": 2
+        },
+        {
+          "symbol": "COP",
+          "score": 2
+        },
+        {
+          "symbol": "LMT",
+          "score": 2
+        },
+        {
+          "symbol": "RTX",
           "score": 2
         },
         {
           "symbol": "DAL",
           "score": -2
+        },
+        {
+          "symbol": "UAL",
+          "score": -2
         }
       ],
       "levels": {
         "L1": {
-          "text": "WTI rose ~2% to $95.40 (third up day) after US-Iran ceasefire talks stalled and US Central Command said Iran fired missiles at Kuwait and Bahrain (thwarted/failed), prompting US strikes on Iran's Qeshm Island in the Strait of Hormuz. S&P futures dipped -0.42%; the dollar pressed toward 160 yen.",
+          "text": "U.S. Central Command says Iran fired ballistic missiles at Kuwait and Bahrain overnight; both salvos failed or were thwarted, and U.S. forces hit back at Iran's Qeshm Island in the Strait of Hormuz. Brent settled +1.1% at $97.05 while WTI ripped ~2% to $95.40 — both up for a third straight session as US-Iran peace talks stalled. Tanker transits through Hormuz remain well below pre-conflict levels.",
           "tickers": [
             {
               "symbol": "XOM",
-              "score": 2
+              "score": 3
             },
             {
               "symbol": "CVX",
-              "score": 2
+              "score": 3
             }
           ]
         },
         "L2": {
-          "text": "Energy majors and oil-services (SLB, HAL, OXY) are direct beneficiaries; fuel-cost-sensitive airlines (DAL, UAL, AAL) and cruise/transport are direct victims. Defense primes (LMT, RTX, NOC) bid on the escalation. Refiners (VLO, MPC) get a crack-spread tailwind.",
+          "text": "Beneficiaries cascade through the integrated oil chain (XOM, CVX, COP, OXY, EOG), refiners (VLO, PSX, MPC), oil-services peers (SLB, HAL, BKR), and LNG names (LNG, CHK) as Gulf supply risk re-prices. Defense primes LMT/RTX/NOC/GD/LDOS catch a sympathy bid on missile-defense and air-frame demand. Airlines (DAL, UAL, AAL, LUV) and cruise operators (CCL, RCL) bear the jet-fuel cost shock as suppliers raise hedged surcharges.",
           "tickers": [
             {
               "symbol": "SLB",
+              "score": 2
+            },
+            {
+              "symbol": "VLO",
               "score": 2
             },
             {
@@ -438,48 +322,331 @@
               "score": 2
             },
             {
-              "symbol": "UAL",
+              "symbol": "DAL",
               "score": -2
             }
           ]
         },
         "L3": {
-          "text": "Sustained $90-100 crude is stagflationary: it re-anchors inflation expectations, pushes the Fed (under new chair Warsh) toward HIKE odds, and pressures the rate-sensitive complex (housing, REITs, utilities) even as it caps the AI melt-up. Strait of Hormuz risk premium is the key swing factor.",
+          "text": "Crude above $95 for a third session pushes 5y5y inflation breakevens higher and re-prices Fed hike odds — CME FedWatch now shows ~42% probability of a year-end hike, the highest since Warsh took the chair. A sustained Hormuz disruption ($100+ Brent path Goldman flagged) raises stagflation risk: every $10 sustained on Brent adds ~0.4pp to headline CPI and shaves ~0.2pp off G7 GDP. Defensive sectors (staples, utilities, healthcare) outperform; long-duration growth (software/internet) under pressure as discount rates rise.",
           "tickers": [
             {
-              "symbol": "XHB",
-              "score": -1
+              "symbol": "TLT",
+              "score": -2
+            },
+            {
+              "symbol": "XLP",
+              "score": 1
+            },
+            {
+              "symbol": "XLU",
+              "score": 1
             }
           ]
         }
       },
       "beneficiaries": [
-        "XOM — crude leverage",
-        "CVX — crude leverage",
-        "SLB — services capex cycle",
-        "OXY — high-beta oil",
-        "LMT — defense demand",
-        "VLO — refining cracks"
+        "XOM — integrated mega-cap leverage to Brent >$95",
+        "CVX — Permian + Gulf upstream torque",
+        "OXY — highest oil-beta US large-cap",
+        "VLO/PSX — refining cracks widen on Gulf supply fear",
+        "SLB/HAL — global oilfield-services bid",
+        "LMT/RTX — missile-defense reload as Patriots/THAAD intercepts mount"
       ],
       "victims": [
-        "DAL — jet-fuel cost",
-        "UAL — jet-fuel cost",
-        "AAL — jet-fuel cost",
-        "Consumer discretionary — gas-price drag"
+        "DAL/UAL/AAL — jet-fuel cost shock hits Q2/Q3 unit costs",
+        "LUV — un-hedged exposure historically worst in sector",
+        "CCL/RCL — bunker fuel + consumer-sentiment double-hit",
+        "AMZN/WMT logistics — diesel pass-through pressure",
+        "TLT — long-duration Treasuries sold on hike repricing"
       ],
       "timeline": {
-        "D": "Headline-driven oil/defense bid; risk assets choppy.",
-        "W": "Hormuz shipping/insurance premia; refiners outperform.",
-        "M": "Inflation prints reflect energy pass-through; Fed rhetoric hardens.",
-        "L": "Durable risk premium reshapes 2026 rate-cut-to-rate-hike narrative."
+        "D": "Energy ETFs (XLE, OIH) lead tape; defense names gap up at open; airlines/cruise sold.",
+        "W": "EIA inventories Thu + NFP Fri test whether oil-shock is sticky or fades on de-escalation headlines.",
+        "M": "If Brent holds >$95 into June 17 FOMC, Warsh's first decision becomes a live hike debate.",
+        "L": "Persistent Hormuz friction structurally re-rates oil-services capex and LNG export expansion (LNG, TELL, NEXT)."
+      }
+    },
+    {
+      "id": 2,
+      "headline": "SpaceX sets record $75B IPO at $135/share — $1.75T valuation, roadshow Thursday",
+      "source": "Reuters · 8h ago",
+      "url": "https://www.reuters.com/business/media-telecom/spacex-plans-raise-75-billion-ipo-135-per-share-source-says-2026-06-03/",
+      "category": "IPO · Space",
+      "priority": 9,
+      "confidence": "HIGH",
+      "sentiment": "bull",
+      "tickers": [
+        {
+          "symbol": "TSLA",
+          "score": 2
+        },
+        {
+          "symbol": "GS",
+          "score": 2
+        },
+        {
+          "symbol": "MS",
+          "score": 2
+        },
+        {
+          "symbol": "JPM",
+          "score": 1
+        },
+        {
+          "symbol": "RKLB",
+          "score": -2
+        },
+        {
+          "symbol": "LMT",
+          "score": -1
+        },
+        {
+          "symbol": "BA",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Elon Musk's SpaceX plans to fix its IPO price at $135 per share to raise a record-shattering $75B, sources told Reuters — selling 555.6M shares for a $1.75T valuation when the Nasdaq roadshow opens Thursday. The move skips the traditional price-range stage entirely, signaling extraordinary book-build confidence. Prospectus discloses $697M of Tesla Megapack purchases and $131M of Cybertrucks across 2024-25 — and >75% of Q1 capex ($10.1B) was AI-related.",
+          "tickers": [
+            {
+              "symbol": "TSLA",
+              "score": 2
+            }
+          ]
+        },
+        "L2": {
+          "text": "Underwriting bonanza for the bulge-bracket peers (GS, MS, JPM, BAC) — fees on a $75B deal alone could clear $1.5-2B. Smaller listed space peers RKLB, ASTS, IRDM, PL face direct multiple-compression risk as a public SpaceX becomes the comparable; legacy aerospace (LMT, BA, NOC) loses Pentagon launch-share narrative. Tesla benefits via Musk halo + disclosed commercial ties — combined-entity rumors (TSLA + SpaceX) resurface on the prospectus.",
+          "tickers": [
+            {
+              "symbol": "RKLB",
+              "score": -2
+            },
+            {
+              "symbol": "GS",
+              "score": 2
+            }
+          ]
+        },
+        "L3": {
+          "text": "Largest IPO in history reopens the mega-deal window after a 4-year drought — bullish read-through for CART, KLAR, STRP, and the broader AI-private pipeline (OpenAI, Stripe, Databricks). Macro absorbing $75B of equity supply in one week is a real liquidity event — short-end Treasury bills and money-market AUM should see outflows, and IPO ETF (IPO, IPOX) re-rates. Also a confidence vote for the Trump-era deregulatory IPO regime under Atkins SEC.",
+          "tickers": [
+            {
+              "symbol": "IPO",
+              "score": 2
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "GS/MS — lead underwriter fee pool on largest IPO ever",
+        "TSLA — Musk halo + disclosed SpaceX commercial linkages",
+        "IPO ETF — opens the mega-deal window",
+        "NDAQ — listing fees + secondary-market volume",
+        "PLTR — Pentagon launch-services + AI-defense halo"
+      ],
+      "victims": [
+        "RKLB — public-comp multiple compresses against SpaceX",
+        "ASTS — direct-to-cell competition with Starlink reignites",
+        "LMT/BA — Pentagon launch market-share narrative loses",
+        "IRDM — Starlink consumer pull-through pressure"
+      ],
+      "timeline": {
+        "D": "Watch RKLB/ASTS/IRDM action; underwriter bank stocks bid as fee pool firms up.",
+        "W": "Roadshow opens Thu; order-book whisper numbers drive sentiment Mon-Wed next week.",
+        "M": "Pricing likely 2-3 weeks out; aftermarket open prints the new mega-cap comp.",
+        "L": "If priced cleanly, IPO window stays open through Q4 — biggest backlog of private unicorns ever sees a path."
+      }
+    },
+    {
+      "id": 3,
+      "headline": "Broadcom (AVGO) earnings after the bell — record-high stock into $52B AI-revenue test",
+      "source": "CNBC · 6h ago",
+      "url": "https://www.cnbc.com/2026/06/02/wednesdays-big-stock-stories-whats-likely-to-move-the-market.html",
+      "category": "AI · Semis",
+      "priority": 9,
+      "confidence": "HIGH",
+      "sentiment": "mixed",
+      "tickers": [
+        {
+          "symbol": "AVGO",
+          "score": 2
+        },
+        {
+          "symbol": "NVDA",
+          "score": 1
+        },
+        {
+          "symbol": "MRVL",
+          "score": 1
+        },
+        {
+          "symbol": "AMD",
+          "score": -1
+        },
+        {
+          "symbol": "SMH",
+          "score": 1
+        },
+        {
+          "symbol": "CRDO",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Broadcom (AVGO $481.57, +4.7% Tue) prints FQ2 after the close — Street looks for $14.9B revenue (~+18% YoY) and AI-silicon revenue tracking toward a $52B annualized run-rate by FY26 vs the $60-90B FY27 SAM CEO Hock Tan flagged. Stock is up 51% over 3 months and 93% over 12 months but has lagged the SMH (+75% YTD vs AVGO +39%). The whisper is for a custom-ASIC backlog update and clarity on the 4th hyperscaler customer.",
+          "tickers": [
+            {
+              "symbol": "AVGO",
+              "score": 2
+            }
+          ]
+        },
+        "L2": {
+          "text": "Halo or unwind across the custom-silicon and optical complex: MRVL (just +32.5% Mon on Huang endorsement), CRDO, ANET, COHR, LITE all key off ASIC and 1.6T optics commentary. Peer NVDA benefits if AVGO confirms hyperscaler XPU demand is incremental (not cannibalizing GPUs); AMD bears the brunt if ASIC share takes another leg up. Suppliers TSM, MU, ASML get pulled by capex-intensity reads.",
+          "tickers": [
+            {
+              "symbol": "MRVL",
+              "score": 1
+            },
+            {
+              "symbol": "ANET",
+              "score": 1
+            },
+            {
+              "symbol": "AMD",
+              "score": -1
+            }
+          ]
+        },
+        "L3": {
+          "text": "Test of the 'positioning is dangerously one-sided' thesis — BofA Fund Manager Survey shows 73% of allocators are long semis, the most crowded trade on the Street. A clean beat-and-raise extends the rally; any guide-down on China export licenses or hyperscaler backlog visibility cracks the AI cap-ex narrative just as $700B+ of 2026 hyperscaler capex is being committed. Rate-sensitivity is high — long-duration growth re-rates on every basis-point move with Brent at $95.",
+          "tickers": [
+            {
+              "symbol": "SMH",
+              "score": 1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "AVGO — clean print extends the ASIC arms-dealer thesis",
+        "MRVL — confirms custom-silicon TAM expansion narrative",
+        "ANET/CRDO — 1.6T optics + interconnect read-through",
+        "NVDA — incremental, not substitutional, demand read",
+        "TSM — capex absorption per-wafer pricing"
+      ],
+      "victims": [
+        "AMD — merchant GPU loses more share-of-wallet to ASIC",
+        "INTC — outside the custom-silicon halo",
+        "SOXS (bearish ETF) — print typically punishes shorts"
+      ],
+      "timeline": {
+        "D": "After-hours move sets the AM tape for the entire SMH; PT hike cycle starts Thu.",
+        "W": "Read-through to ORCL (Tue) and Adobe (Thu next wk); options vol around $52B AI run-rate target.",
+        "M": "ASIC backlog + 4th hyperscaler disclosure tested by hyperscaler capex prints.",
+        "L": "Confirms or breaks the 'AI silicon eats merchant GPU share at the margin' structural call."
       }
     },
     {
       "id": 4,
-      "headline": "Alphabet to raise $80B for AI build-out — $10B sold to Berkshire; stock dips ~2.8%",
-      "source": "Yahoo Finance · 1d ago",
-      "url": "https://finance.yahoo.com/sectors/technology/live/tech-stocks-today-google-stock-falls-on-plans-to-raise-80-billion-nvidia-ceo-blesses-marvell-stock-100000832.html",
-      "category": "Big Tech · Capital",
+      "headline": "CrowdStrike (CRWD) earnings tonight — record-high stock, guidance bar is the trap",
+      "source": "Yahoo Finance · 5h ago",
+      "url": "https://finance.yahoo.com/",
+      "category": "Cybersecurity · Software",
+      "priority": 8,
+      "confidence": "HIGH",
+      "sentiment": "mixed",
+      "tickers": [
+        {
+          "symbol": "CRWD",
+          "score": 1
+        },
+        {
+          "symbol": "PANW",
+          "score": 2
+        },
+        {
+          "symbol": "ZS",
+          "score": 1
+        },
+        {
+          "symbol": "FTNT",
+          "score": 1
+        },
+        {
+          "symbol": "S",
+          "score": -1
+        },
+        {
+          "symbol": "OKTA",
+          "score": -1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "CrowdStrike reports FQ1 after the bell — Street consensus: revenue +23.5% YoY, EPS +46.6%. Stock hit a fresh ATH Monday after nearly doubling in 3 months on AI-security momentum (Falcon Flex, Charlotte AI). Recent Moody's upgrade to Baa2 and PT raises from Jefferies/Benchmark/Cantor set a high bar — the trap is FY guide and ARR commentary, not the print itself. Last quarter Q2 guide spooked the tape; positioning is heavy.",
+          "tickers": [
+            {
+              "symbol": "CRWD",
+              "score": 1
+            }
+          ]
+        },
+        "L2": {
+          "text": "Read-through to peers PANW (already beat Tue, +61% YTD), ZS, FTNT, S, OKTA, NET — a soft guide hits the entire cybersecurity bid that has been the cleanest software trade of 2026. Suppliers AVGO/SMCI (server pull) and customers in the bank/insurance MFA stack (V, MA, PYPL) all read net-neutral. SentinelOne (S) is the asymmetric loser as the closest pure-play comp.",
+          "tickers": [
+            {
+              "symbol": "PANW",
+              "score": 2
+            },
+            {
+              "symbol": "ZS",
+              "score": 1
+            },
+            {
+              "symbol": "S",
+              "score": -1
+            }
+          ]
+        },
+        "L3": {
+          "text": "Cyber is now ~12% of enterprise software spend (Gartner) and the only enterprise category with 20%+ growth at scale — a CRWD miss would trigger a crowding-unwind across the long-software book just as macro adds rate-hike pressure. Conversely, a beat-and-raise validates the 'AI-security is a separate budget line' narrative that protects opex from the broader IT-budget squeeze hitting CRM/WDAY/NOW share-of-wallet.",
+          "tickers": [
+            {
+              "symbol": "IGV",
+              "score": 1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "CRWD — beat-and-raise extends platform-consolidation thesis",
+        "PANW — peer re-rate on AI-security validation",
+        "ZS — secure-edge halo if Falcon Flex commentary positive",
+        "FTNT — secure-edge sympathy",
+        "AVGO/SMCI — endpoint server pull-through"
+      ],
+      "victims": [
+        "S (SentinelOne) — closest pure-play comp, asymmetric downside",
+        "OKTA — identity narrative loses share if Falcon adds IdP modules",
+        "CRM/WDAY — broader software unwind if guide soft"
+      ],
+      "timeline": {
+        "D": "AH move sets cyber-ETF (HACK, CIBR) direction; positioning is heavy long.",
+        "W": "Read into AVGO + Ciena Thu; PT recalibration cycle through Fri.",
+        "M": "Falcon Flex deal-count vs ARR is the structural metric to watch.",
+        "L": "Test of whether AI-security stays a separate budget line through a slowing IT-spend cycle."
+      }
+    },
+    {
+      "id": 5,
+      "headline": "Alphabet plans $80B AI capital raise; $10B equity placement to Berkshire Hathaway",
+      "source": "CNBC · 1d ago",
+      "url": "https://www.businessstory.org/2026/06/01/alphabet-plans-to-raise-80-billion-from-stock-sales-to-fund-ai-buildout/",
+      "category": "AI · Mega-cap",
       "priority": 9,
       "confidence": "HIGH",
       "sentiment": "mixed",
@@ -489,17 +656,33 @@
           "score": -1
         },
         {
+          "symbol": "GOOG",
+          "score": -1
+        },
+        {
           "symbol": "BRK.B",
-          "score": 1
+          "score": 2
         },
         {
           "symbol": "NVDA",
           "score": 2
+        },
+        {
+          "symbol": "AVGO",
+          "score": 2
+        },
+        {
+          "symbol": "VRT",
+          "score": 2
+        },
+        {
+          "symbol": "ETN",
+          "score": 1
         }
       ],
       "levels": {
         "L1": {
-          "text": "Alphabet fell ~2.8% after announcing it will raise $80B ($30B underwritten offering, $40B to existing A/C holders, $10B placed with Berkshire Hathaway) to fund AI infrastructure. Capex is guided to $180-190B in 2026 and to 'significantly increase' in 2027; demand is 'exceeding available supply.' Dilution + capex intensity spooked holders.",
+          "text": "Alphabet confirmed Monday it will raise ~$80B in equity — $30B public offering + $40B at-the-market program + $10B private placement to Berkshire Hathaway — to fund AI compute capacity that is 'exceeding available supply'. This sits on top of the $180-190B 2026 capex guide announced at Google I/O. GOOGL slipped in after-hours but the stock has more than doubled in 12 months, outperforming all megacap peers.",
           "tickers": [
             {
               "symbol": "GOOGL",
@@ -508,269 +691,524 @@
           ]
         },
         "L2": {
-          "text": "Berkshire's $10B stake is a fresh post-Buffett (Greg Abel) endorsement of mega-cap tech — a notable signal. The capex is jet fuel for the AI supply chain: NVDA, AVGO, MRVL, VRT (power/cooling), and utilities serving data centers all benefit from another $80B of demand.",
+          "text": "Direct AI-supply-chain windfall: NVDA (GPU), AVGO (TPU custom silicon), MRVL (interconnect), TSM (foundry), MU/HBM. Data-center physical layer is the second derivative — VRT (Vertiv), ETN, HUBB, PWR, CSCO, ANET, and cooling/power infrastructure (CEG, VST, TLN, GEV) all benefit as the $700B 2026 hyperscaler capex bucket gets re-confirmed. Berkshire taking equity on Buffett's behalf endorses the AI thesis at the very top.",
           "tickers": [
             {
               "symbol": "NVDA",
               "score": 2
             },
             {
-              "symbol": "VRT",
+              "symbol": "AVGO",
               "score": 2
             },
             {
-              "symbol": "BRK.B",
-              "score": 1
+              "symbol": "VRT",
+              "score": 2
             }
           ]
         },
         "L3": {
-          "text": "Raising equity to fund AI is a regime shift — hyperscalers historically self-funded capex from FCF. It flags both the scale of the AI arms race and a willingness to dilute for compute. Watch whether the market keeps rewarding capex or starts demanding ROI proof.",
+          "text": "$80B of fresh equity supply is real, but small vs the $1B+ daily NVDA flow — bigger signal is that hyperscalers are now diluting equity rather than just issuing debt to fund AI, which compresses near-term FCF/share and raises the bar for AI revenue conversion. Power-grid bottleneck moves to center stage — Pichai's own comment was 'compute, land, power, supply chain' — bullish for utilities with co-location data-center contracts (CEG, VST, TLN) and grid-modernization (GEV, ETN, HUBB).",
           "tickers": [
             {
-              "symbol": "MSFT",
-              "score": -1
+              "symbol": "CEG",
+              "score": 2
+            },
+            {
+              "symbol": "GEV",
+              "score": 2
             }
           ]
         }
       },
       "beneficiaries": [
-        "NVDA — $80B of incremental demand",
-        "VRT — power & cooling content",
-        "AVGO — networking/ASIC",
-        "BRK.B — buys at scale, signals conviction",
-        "Data-center utilities — load growth"
+        "NVDA/AVGO/MRVL — direct AI-silicon spend bucket",
+        "VRT/ETN/HUBB — data-center physical layer",
+        "CEG/VST/TLN — nuclear baseload PPA winners",
+        "GEV — grid-modernization capex pull-forward",
+        "BRK.B — Berkshire gets institutional AI exposure at sponsored price"
       ],
       "victims": [
-        "GOOGL — dilution + capex-intensity worries",
-        "Mega-cap peers — capex-arms-race read-through"
+        "GOOGL — equity dilution + FCF compression near-term",
+        "GOOG — same",
+        "META/MSFT/AMZN — implicit pressure to commit to bigger capex"
       ],
       "timeline": {
-        "D": "Stock digests dilution; arb/flow around the offering.",
-        "W": "Berkshire stake framing supports sentiment.",
-        "M": "Q3 offering execution; capex cadence scrutiny.",
-        "L": "ROI-on-AI-capex becomes the key debate across hyperscalers."
+        "D": "GOOGL tape choppy on dilution; AI-pick-and-shovel basket bid.",
+        "W": "Berkshire 13F watch for confirmation; ATM offering pacing reports.",
+        "M": "Other hyperscalers' next capex guides re-rate higher in sympathy.",
+        "L": "Marks the regime shift from debt-funded to equity-funded AI capex cycle."
       }
     },
     {
-      "id": 5,
-      "headline": "Palo Alto beats & raises — backlog hits $18.4B, NGS ARR +60%; stock volatile after 66% run",
-      "source": "CNBC · 16h ago",
-      "url": "https://www.cnbc.com/2026/06/02/were-upping-our-palo-alto-price-target-after-strong-earnings-vanquish-ai-disruption-fears-.html",
-      "category": "Cybersecurity",
+      "id": 6,
+      "headline": "FERC waiver clears path to restart Three Mile Island for Microsoft AI data centers",
+      "source": "Reuters · 18h ago",
+      "url": "https://www.reuters.com/legal/litigation/us-regulator-grants-waiver-three-mile-island-restart-2026-06-02/",
+      "category": "Power · Nuclear",
       "priority": 8,
       "confidence": "HIGH",
       "sentiment": "bull",
       "tickers": [
         {
-          "symbol": "PANW",
-          "score": 2
-        },
-        {
-          "symbol": "CRWD",
-          "score": 2
-        },
-        {
-          "symbol": "ZS",
-          "score": 2
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "PANW reported fiscal Q3 EPS $0.85 (vs $0.80) on $3.0B revenue (+31% YoY, vs $2.94B). RPO/backlog hit $18.4B (+36% YoY), NGS ARR reached $8.1B (+60%), and management raised FY26 revenue to $11.415-11.425B. Shares were volatile (popped ~10-12% then chopped) given an 83 RSI and ~66% one-month run into the print.",
-          "tickers": [
-            {
-              "symbol": "PANW",
-              "score": 2
-            }
-          ]
-        },
-        "L2": {
-          "text": "Strong peer read-through: CRWD (reports Wed) and ZS rose in sympathy on renewed cybersecurity-spend optimism. The platform-consolidation thesis (customers >$10M ARR +50%) pressures point-solution vendors (FTNT, CYBR — now being integrated by PANW, S/Net).",
-          "tickers": [
-            {
-              "symbol": "CRWD",
-              "score": 2
-            },
-            {
-              "symbol": "ZS",
-              "score": 2
-            },
-            {
-              "symbol": "FTNT",
-              "score": -1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Decisively rebuts the 'agentic AI disrupts security software' fear that hit the group earlier in 2026 — AI expands the attack surface, lifting the security TAM. Reinforces software as a defensive growth pocket; ties to Huang's 'more agents = more tools' SaaS rebuttal.",
-          "tickers": [
-            {
-              "symbol": "S",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "PANW — beat-and-raise, $18.4B backlog",
-        "CRWD — sympathy into its own Wed print",
-        "ZS — sector spend optimism",
-        "CYBR — PANW integration accretion"
-      ],
-      "victims": [
-        "FTNT — platform-consolidation share loss",
-        "Point-solution vendors — displaced by platforms"
-      ],
-      "timeline": {
-        "D": "Post-earnings volatility around the $300 level after a stretched run.",
-        "W": "CRWD earnings (Wed) tests the read-through; implied move ~9.5%.",
-        "M": "CyberArk integration + NGS ARR trajectory into FY27.",
-        "L": "Platform consolidation cements PANW as primary enterprise vendor."
-      }
-    },
-    {
-      "id": 6,
-      "headline": "Victoria's Secret (new ticker VSXY) soars ~35-40% — Q1 EPS nearly doubles, raises FY outlook",
-      "source": "Investopedia · 1d ago",
-      "url": "https://www.investopedia.com/stock-market-today-dow-jones-s-and-p-500-06022026-11988714",
-      "category": "Consumer · Retail",
-      "priority": 7,
-      "confidence": "HIGH",
-      "sentiment": "bull",
-      "tickers": [
-        {
-          "symbol": "VSXY",
+          "symbol": "CEG",
           "score": 3
         },
         {
-          "symbol": "ULTA",
+          "symbol": "MSFT",
+          "score": 1
+        },
+        {
+          "symbol": "VST",
+          "score": 2
+        },
+        {
+          "symbol": "TLN",
+          "score": 2
+        },
+        {
+          "symbol": "UEC",
+          "score": 2
+        },
+        {
+          "symbol": "OKLO",
+          "score": 2
+        },
+        {
+          "symbol": "SMR",
+          "score": 2
+        },
+        {
+          "symbol": "CCJ",
           "score": 2
         }
       ],
       "levels": {
         "L1": {
-          "text": "Victoria's Secret (rebranded ticker VSXY from VSCO) jumped ~35-40% after Q1 adjusted EPS of $0.60 nearly doubled the ~$0.31 consensus; net sales +15% YoY to $1.56B. It raised FY26 sales guide to $7.03-7.13B and operating income to $550-580M, citing lower tariff costs and broad-based category strength.",
+          "text": "FERC granted Constellation Energy (CEG) a waiver to speed up the grid connection of the restarted Three Mile Island (Crane Clean Energy Center) — the 835MW reactor will sell power directly to Microsoft data centers under a 20-year PPA. Constellation had previously warned PJM congestion could delay startup to 2031; the waiver pulls that materially forward. Nuclear and uranium names rallied — UEC +13%, OKLO +10%, SMR +8%, CCJ +7% Tue.",
           "tickers": [
             {
-              "symbol": "VSXY",
+              "symbol": "CEG",
               "score": 3
             }
           ]
         },
         "L2": {
-          "text": "Confirms a healthy higher-income consumer in beauty/apparel — pairs with ULTA's beat (+7% AH, Q1 EPS $7.74 vs $6.86). Tariff-cost relief is a sector-wide tailwind for softlines (GAP, AEO, URBN). Contrasts with pressured low-income cohort (gas prices weighing on QSR/dollar stores).",
+          "text": "Direct beneficiaries: Constellation (operator), competing nuclear restarts at Palisades (Holtec)/Duane Arnold (NEE) get implicit regulatory tailwind. Uranium fuel-cycle peers CCJ, UEC, DNN, NXE, URA ETF re-rate on demand-pull. SMR specialists OKLO, SMR, BWXT, BW catch sympathy bid. Hyperscaler customers (MSFT, GOOGL, AMZN, META) all benefit from the precedent — power-sourcing for data centers is the single biggest gating constraint to 2027 AI buildouts.",
           "tickers": [
             {
-              "symbol": "ULTA",
+              "symbol": "UEC",
+              "score": 2
+            },
+            {
+              "symbol": "CCJ",
+              "score": 2
+            },
+            {
+              "symbol": "OKLO",
               "score": 2
             }
           ]
         },
         "L3": {
-          "text": "Reinforces the K-shaped consumer: premium/beauty resilient, value-end stretched by elevated gas. Lower tariff costs flowing through margins is a quiet positive for discretionary as a whole heading into 2H.",
+          "text": "Confirms the structural 'nuclear is the only baseload that scales with AI' thesis — DOE forecasts data-center load will hit ~10% of US electricity by 2030 vs ~4% today, and only firmable nuclear (or natural gas) can meet 24/7 zero-carbon PPAs. Macro: regulated utility re-rating cycle continues (XLU outperforming year-to-date), and the political consensus around AI infrastructure has rare bipartisan momentum under the Trump-Wright DOE.",
           "tickers": [
             {
-              "symbol": "XRT",
+              "symbol": "XLU",
               "score": 1
+            },
+            {
+              "symbol": "URA",
+              "score": 2
             }
           ]
         }
       },
       "beneficiaries": [
-        "VSXY — earnings beat + raise + tariff relief",
-        "ULTA — strong beauty demand",
-        "Softlines — tariff-cost tailwind"
+        "CEG — direct operator + PJM friction reduced",
+        "VST/TLN — peer comp re-rate on hyperscaler PPA template",
+        "OKLO/SMR/BWXT — SMR demand-pull validation",
+        "CCJ/UEC/DNN — fuel cycle demand acceleration",
+        "MSFT — power-sourcing risk reduced for OpenAI compute"
       ],
       "victims": [
-        "Low-income-exposed retail — gas-price drag"
+        "PJM gas peakers — partial baseload displacement",
+        "Renewables-only IPPs without firm contracts — relative loser"
       ],
       "timeline": {
-        "D": "Short squeeze + guidance re-rate.",
-        "W": "Sell-side upgrades; beauty/softlines bid.",
-        "M": "Holiday product pipeline + tariff path validate the raise.",
-        "L": "Brand-relevance turnaround vs. structural mall headwinds."
+        "D": "Uranium ETF (URA) leads; small-cap nuclear (UEC, UUUU) momentum chase.",
+        "W": "Read-through to Holtec/Palisades licensing milestones; NEE Duane Arnold update.",
+        "M": "Tests whether PJM capacity-auction price clears reflect data-center demand.",
+        "L": "Cements nuclear-baseload PPA as the standard hyperscaler power template through 2030."
       }
     },
     {
       "id": 7,
-      "headline": "Ulta Beauty +7% — Q1 EPS $7.74 crushes $6.86 estimate, lifts full-year guidance",
-      "source": "CNBC · 16h ago",
-      "url": "https://www.cnbc.com/amp/2026/06/02/stock-market-today-live-updates.html",
-      "category": "Consumer · Retail",
-      "priority": 6,
+      "headline": "GameStop +9% after-hours: record Q1 EPS, revenue beat, new $2B buyback through 2029",
+      "source": "Stocktwits · 14h ago",
+      "url": "https://stocktwits.com/news-articles/markets/equity/game-stop-earnings-beat-record-profit-2-billion-buyback-after-hours-rally-gme/cZ00hZAReDm",
+      "category": "Retail · Meme",
+      "priority": 7,
       "confidence": "HIGH",
       "sentiment": "bull",
       "tickers": [
         {
-          "symbol": "ULTA",
-          "score": 2
+          "symbol": "GME",
+          "score": 3
         },
         {
-          "symbol": "ELF",
+          "symbol": "AMC",
+          "score": 1
+        },
+        {
+          "symbol": "BBBYQ",
+          "score": 1
+        },
+        {
+          "symbol": "FNKO",
+          "score": 1
+        },
+        {
+          "symbol": "IBIT",
           "score": 1
         }
       ],
       "levels": {
         "L1": {
-          "text": "Ulta rose ~7% after hours on Q1 EPS of $7.74 (vs $6.86) and revenue of $3.16B (vs $3.10B), and lifted the upper end of its full-year EPS guidance. Beauty demand stayed resilient across prestige and mass.",
+          "text": "GameStop reported Q1 adj. EPS $0.30 vs $0.16 consensus (nearly 2x), revenue $835.3M vs $766.6M est (vs $732.4M YoY) — record quarterly net income of $389.6M and record Q1 operating income of $143.3M. SG&A fell to $201.6M from $228.1M. Cash + securities + digital assets hit $9.7B. Board authorized a new $2B share buyback through 2029, replacing the 2019 authorization. Stock +9% AH.",
           "tickers": [
             {
-              "symbol": "ULTA",
-              "score": 2
+              "symbol": "GME",
+              "score": 3
             }
           ]
         },
         "L2": {
-          "text": "Bullish read-through to beauty suppliers and peers — ELF, EL (Estee Lauder turnaround), COTY — and to VSXY's beauty segment. Confirms the premium-consumer strength theme.",
+          "text": "Collectibles segment (peer FNKO read-through) drove growth, not consoles — supplier impact for the new console cycle remains weak. Meme-trade peers AMC, BBBYQ get sympathy bid on the buyback headline; Bitcoin treasury thesis (since GME holds digital assets) brings IBIT/MSTR halo back into focus. Larger retailers (BBY, TGT) lose narrative as GME proves the niche specialty model can flex margins via SG&A discipline.",
           "tickers": [
             {
-              "symbol": "ELF",
+              "symbol": "AMC",
               "score": 1
             },
             {
-              "symbol": "EL",
+              "symbol": "FNKO",
               "score": 1
             }
           ]
         },
         "L3": {
-          "text": "Beauty remains a recession-resilient 'lipstick effect' category; supports staples-adjacent discretionary as a hiding place if the Gulf war pressures broader risk appetite.",
+          "text": "$9.7B cash horde at a $14B market cap turns GME into a quasi-closed-end fund with optionality — at current treasury yields ($9.7B × 4.5% = ~$430M of annual interest income alone), the business has become a yield-plus-collectibles entity rather than a video-game retailer. Macro: with the consumer wallet under pressure from $95 oil and looming hike risk, defensive specialty retail with strong cash conversion stands out.",
           "tickers": [
             {
-              "symbol": "EL",
+              "symbol": "MSTR",
               "score": 1
             }
           ]
         }
       },
       "beneficiaries": [
-        "ULTA — beat-and-raise",
-        "ELF — mass-beauty momentum",
-        "EL — category demand read-through"
+        "GME — buyback floor + record beat",
+        "FNKO — collectibles read-through to specialty retail",
+        "AMC — meme-cohort sympathy",
+        "MSTR/IBIT — digital-asset treasury narrative reinforced",
+        "Specialty retail watchlist — proof SG&A discipline can compound"
       ],
       "victims": [
-        "—"
+        "BBY — niche specialty model gaining narrative share",
+        "Short interest (GME ~20% of float) — squeeze pressure into open"
       ],
       "timeline": {
-        "D": "Gap up on guidance lift.",
-        "W": "Analyst PT hikes across beauty.",
-        "M": "Loyalty + new-brand pipeline drive comps.",
-        "L": "Beauty share gains vs. broad discretionary."
+        "D": "Open gap +8-12%; squeeze risk on heavy short interest.",
+        "W": "Options vol spikes; $2B buyback program ramp gets disclosed weekly.",
+        "M": "Capital allocation pivot to active buybacks vs ATM offerings is the structural watch.",
+        "L": "Tests whether the cash-flush meme-stock model can compound vs degrade."
       }
     },
     {
       "id": 8,
-      "headline": "Bitcoin tumbles ~10% in 3 sessions to 2-month low of $66,123 as war risk hits crypto",
-      "source": "Reuters · 4h ago",
-      "url": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-06-03/",
-      "category": "Crypto · Risk",
-      "priority": 8,
+      "headline": "Yen pierces 160 vs dollar — MoF intervention watch hits the highest alert in 2 years",
+      "source": "Reuters · 7h ago",
+      "url": "https://www.reuters.com/world/asia-pacific/yen-slips-key-160-level-gulf-hostilities-boost-dollar-2026-06-03/",
+      "category": "FX · Macro",
+      "priority": 7,
       "confidence": "HIGH",
       "sentiment": "bear",
       "tickers": [
         {
-          "symbol": "COIN",
+          "symbol": "FXY",
+          "score": -2
+        },
+        {
+          "symbol": "UUP",
+          "score": 2
+        },
+        {
+          "symbol": "EWJ",
+          "score": -1
+        },
+        {
+          "symbol": "MUFG",
+          "score": 1
+        },
+        {
+          "symbol": "SMFG",
+          "score": 1
+        },
+        {
+          "symbol": "TM",
+          "score": 1
+        },
+        {
+          "symbol": "SONY",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "USD/JPY traded right up to 160.00 overnight before pausing on intervention-risk caution — the level breached for the first time since BoJ/MoF jawboning in 2024. The move is driven by the Gulf-shock dollar bid combined with US-Japan yield spread widening as hike odds in the US re-rate up while BoJ Ueda remains cautious. Japan's MoF Kanda-san has signaled 'we will respond to excessive moves'.",
+          "tickers": [
+            {
+              "symbol": "FXY",
+              "score": -2
+            }
+          ]
+        },
+        "L2": {
+          "text": "Direct read: Japanese exporters TM (Toyota), SONY, HMC, NTDOY, Nikkei225 ETF EWJ benefit from competitive devaluation but face intervention-snapback risk. Japanese mega-banks MUFG, SMFG, MFG benefit as JGB yields rise on intervention talk. US importers from Japan (auto OEMs F, GM via component costs) face mixed signal — input cheaper but consumer pricing pressure if F/X intervenes. Carry-trade pairs (AUD/JPY, MXN/JPY) at extreme stretch.",
+          "tickers": [
+            {
+              "symbol": "TM",
+              "score": 1
+            },
+            {
+              "symbol": "MUFG",
+              "score": 1
+            }
+          ]
+        },
+        "L3": {
+          "text": "If MoF intervenes, expect a 2-3 yen snap-back JPY rally that ripples into gold, Treasuries (TLT bid as carry unwinds), and EM FX volatility. Without intervention, USD/JPY toward 162-165 reopens the Q3 2024 'global vol shock' template. This is the single biggest cross-asset volatility transmission channel right now — VIX at 16 is materially under-pricing the tail.",
+          "tickers": [
+            {
+              "symbol": "VIX",
+              "score": 2
+            },
+            {
+              "symbol": "TLT",
+              "score": 1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "MUFG/SMFG — JGB yield curve steepens",
+        "TM/SONY/NTDOY — earnings translation tailwind",
+        "UUP — dollar bid as safe-haven + carry magnet",
+        "VIX — under-priced tail re-rates if intervention hits"
+      ],
+      "victims": [
+        "FXY — direct yen short exposure",
+        "Carry-trade ETFs (DBV) — sharp risk-off potential",
+        "EM FX (KRW, IDR, INR) — sympathy weakness"
+      ],
+      "timeline": {
+        "D": "Intervention watch active during Tokyo/London close hours.",
+        "W": "If 160 holds, BoJ rate-policy revision discussion accelerates.",
+        "M": "Sets the tone for July BoJ + July FOMC interaction.",
+        "L": "Tests whether US-Japan rate divergence can persist without policy escalation."
+      }
+    },
+    {
+      "id": 9,
+      "headline": "Macy's Q1 earnings before the bell — consumer-pulse read into a stretched tape",
+      "source": "Business Wire · 12h ago",
+      "url": "https://www.businesswire.com/news/home/20260518066861/en/Macys-Inc.-to-Report-First-Quarter-2026-Results-on-June-3-2026",
+      "category": "Retail · Consumer",
+      "priority": 6,
+      "confidence": "MED",
+      "sentiment": "mixed",
+      "tickers": [
+        {
+          "symbol": "M",
+          "score": 1
+        },
+        {
+          "symbol": "KSS",
+          "score": -1
+        },
+        {
+          "symbol": "JWN",
+          "score": -1
+        },
+        {
+          "symbol": "TJX",
+          "score": 1
+        },
+        {
+          "symbol": "ROST",
+          "score": 1
+        },
+        {
+          "symbol": "DG",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Macy's reports Q1 sales and EPS at 8:00a ET — CEO Tony Spring's third quarter post-Bold-New-Chapter restructure. Shares are down ~2% YTD but have gained 15% since the last print; the bar is comp-sales sequencing in Bloomingdale's/Bluemercury and any margin commentary on tariff-driven inventory pass-through. With WTI at $95 and gas-pump prices rising again, low/mid-end consumer wallet visibility is the macro question.",
+          "tickers": [
+            {
+              "symbol": "M",
+              "score": 0
+            }
+          ]
+        },
+        "L2": {
+          "text": "Read-through to department-store peers KSS, JWN, NORD — all losing share to off-price (TJX, ROST, BURL) and dollar channel (DG, DLTR). Suppliers PVH, RL, TPR, LULU rely on department-store sell-in disclosure for FY guides. Mall REITs SPG, MAC have direct AUO exposure to Macy's anchor-store strategy.",
+          "tickers": [
+            {
+              "symbol": "KSS",
+              "score": -1
+            },
+            {
+              "symbol": "TJX",
+              "score": 1
+            }
+          ]
+        },
+        "L3": {
+          "text": "Consumer-discretionary divergence theme — premium/affluent (RH, Williams-Sonoma) holding up vs middle-income (M, KSS) compressing — is the structural read of every retail print this quarter. Macro lens: with hike odds rising and oil shock layering on, consumer-credit delinquencies (already at cycle highs at DFS/COF/SYF) are the next leg of the consumer-pulse story.",
+          "tickers": [
+            {
+              "symbol": "XRT",
+              "score": -1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "TJX/ROST — share-shift to off-price continues",
+        "DG/DLTR — trade-down beneficiary on oil-shock consumer hit",
+        "M (if beat) — relief rally on stretched short positioning"
+      ],
+      "victims": [
+        "KSS/JWN — sympathy weakness on any Macy's guide-down",
+        "PVH/RL — apparel sell-in pressure",
+        "SPG/MAC — mall anchor narrative pressure"
+      ],
+      "timeline": {
+        "D": "Pre-market move sets retail-sector tape; XRT direction.",
+        "W": "Read into Lululemon, Five Below earnings later this week.",
+        "M": "Q2 comp guide is the structural FY26 reset moment.",
+        "L": "Bold New Chapter execution timeline tested vs off-price share-take."
+      }
+    },
+    {
+      "id": 10,
+      "headline": "AI bull-run lifts Asia: Taiwan & Japan equity indexes hit fresh record highs",
+      "source": "Reuters · 7h ago",
+      "url": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-06-03/",
+      "category": "APAC · Semis",
+      "priority": 6,
+      "confidence": "HIGH",
+      "sentiment": "bull",
+      "tickers": [
+        {
+          "symbol": "TSM",
+          "score": 2
+        },
+        {
+          "symbol": "EWT",
+          "score": 2
+        },
+        {
+          "symbol": "EWJ",
+          "score": 1
+        },
+        {
+          "symbol": "STM",
+          "score": 3
+        },
+        {
+          "symbol": "ASML",
+          "score": 1
+        },
+        {
+          "symbol": "SMH",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Taiwan TAIEX and Japan Topix both hit fresh record highs overnight as the AI bid stayed dominant despite Gulf-shock crude jumping 2% and S&P 500 futures down 0.3%. TSM (Taipei) and Tokyo Electron led; STM (STMicro) ADR jumped +15.2% in late US trade on a separate AI-content win disclosed at investor day. South Korea closed for elections.",
+          "tickers": [
+            {
+              "symbol": "TSM",
+              "score": 2
+            },
+            {
+              "symbol": "STM",
+              "score": 3
+            }
+          ]
+        },
+        "L2": {
+          "text": "Wafer-foundry and lithography supply chain bid: TSM (foundry leader), ASML (EUV monopoly), Tokyo Electron (etch/cleaning), Lam, AMAT. Direct customers NVDA, AVGO, MRVL, AMD ride the supply-chain readiness narrative. Japanese mega-tech (SONY, NEC, Hitachi) levered to AI infrastructure; Korean memory (SK Hynix, Samsung) blocked from today's print but next bid candidates.",
+          "tickers": [
+            {
+              "symbol": "ASML",
+              "score": 1
+            },
+            {
+              "symbol": "AMAT",
+              "score": 1
+            }
+          ]
+        },
+        "L3": {
+          "text": "Decoupling of Asian semi tape from US war-risk overlay shows AI investment thesis has reached escape-velocity status across global allocators — Tokyo and Taipei now setting price for global semi marginal demand. Macro: with yen at 160 and Taiwan dollar managed, currency translation is a tailwind for ADR-listed names.",
+          "tickers": [
+            {
+              "symbol": "SMH",
+              "score": 1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "TSM — foundry monopoly margin set",
+        "STM — analog/embedded AI content disclosure",
+        "ASML — EUV booking visibility",
+        "EWT/EWJ — country-ETF momentum",
+        "SMH — basket flow"
+      ],
+      "victims": [
+        "EWY — South Korea closed, lags on reopen catch-up risk",
+        "FXI — China underperforms as APAC rotation favors AI-leaders"
+      ],
+      "timeline": {
+        "D": "ADR opens follow Tokyo/Taipei strength; SMH at the open.",
+        "W": "TSM monthly revenue print Thu next wk; AVGO tonight is the read.",
+        "M": "September quarter book-to-bill at ASML defines 2027 capex trajectory.",
+        "L": "Structural shift of AI demand-setting from US to Asian fabs entrenched."
+      }
+    },
+    {
+      "id": 11,
+      "headline": "Bitcoin breaks $70K — drops -5.5% in 24h to two-month low as Gulf risk hits crypto",
+      "source": "Economic Times · 6h ago",
+      "url": "https://economictimes.indiatimes.com/markets/cryptocurrency",
+      "category": "Crypto · Macro",
+      "priority": 6,
+      "confidence": "HIGH",
+      "sentiment": "bear",
+      "tickers": [
+        {
+          "symbol": "IBIT",
+          "score": -2
+        },
+        {
+          "symbol": "FBTC",
           "score": -2
         },
         {
@@ -778,1068 +1216,805 @@
           "score": -3
         },
         {
+          "symbol": "COIN",
+          "score": -2
+        },
+        {
           "symbol": "MARA",
           "score": -2
+        },
+        {
+          "symbol": "RIOT",
+          "score": -2
+        },
+        {
+          "symbol": "HOOD",
+          "score": -1
         }
       ],
       "levels": {
         "L1": {
-          "text": "Bitcoin fell nearly 10% over three sessions to a two-month low of $66,123 as Gulf escalation, a surging dollar (toward 160 yen) and higher rates drained risk appetite. Crypto traded as the high-beta liquidity barometer, not the 'digital gold' hedge.",
+          "text": "Bitcoin slid -5.5% in 24 hours to ~$69,400, a two-month low; Ether -5.25%, BNB -5%. The unwind is driven by hike-odds repricing (CME FedWatch ~42% Dec hike) plus risk-off USD bid from Gulf hostilities. ETF outflows from IBIT and FBTC accelerated Tuesday, and leveraged-perpetual liquidations on the SEC-approved CME-cleared perpetual futures complex amplified the move.",
           "tickers": [
             {
-              "symbol": "MSTR",
-              "score": -3
+              "symbol": "IBIT",
+              "score": -2
             }
           ]
         },
         "L2": {
-          "text": "Direct hit to crypto-levered equities: COIN (volume/price beta), miners MARA/RIOT/CLSK, and MSTR (leveraged BTC proxy, a midday loser June 2). Brokerages with crypto exposure (HOOD) and crypto-adjacent fintech also de-rate.",
+          "text": "Direct pressure on miner equities (MARA, RIOT, CLSK, HUT, IREN) facing oil-driven power cost surge AND BTC weakness — worst combination. Exchanges (COIN, HOOD) face volume-mix pressure as risk-off compresses retail flow. Treasury-bitcoin balance-sheet names (MSTR, MTPLF, Tesla via Musk-X-SpaceX linkages disclosed in S-1) carry mark-to-market vol. Stablecoin issuers (CRCL via Circle) face indirect AUM pressure.",
           "tickers": [
+            {
+              "symbol": "MSTR",
+              "score": -3
+            },
             {
               "symbol": "COIN",
               "score": -2
             },
             {
-              "symbol": "RIOT",
-              "score": -2
-            },
-            {
-              "symbol": "HOOD",
-              "score": -1
-            }
-          ]
-        },
-        "L3": {
-          "text": "BTC's failure to act as a safe haven during a geopolitical shock undercuts the macro-hedge thesis and reaffirms its correlation to liquidity/real-rates. Gold (+0.4%) reclaimed the haven role. A stronger-for-longer USD is the broader headwind.",
-          "tickers": [
-            {
-              "symbol": "GLD",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "GLD — reclaims haven flows",
-        "USD-asset holders — dollar strength"
-      ],
-      "victims": [
-        "MSTR — leveraged BTC proxy",
-        "COIN — volume/price beta",
-        "MARA — miner economics",
-        "RIOT — miner economics",
-        "HOOD — crypto-trading exposure"
-      ],
-      "timeline": {
-        "D": "Liquidation/deleveraging continues if war headlines worsen.",
-        "W": "Watch $66k support; miner margins under pressure at lower BTC.",
-        "M": "Correlation to rates/USD dominates; ETF flows the swing factor.",
-        "L": "Safe-haven thesis credibility dented for this cycle."
-      }
-    },
-    {
-      "id": 9,
-      "headline": "Microchip +12% — data-center unit revenue to grow ~65% in 2026; STMicro +10% on $1B DC goal",
-      "source": "CNBC · 1d ago",
-      "url": "https://www.cnbc.com/2026/06/02/stocks-making-the-biggest-moves-premarket-mrvl-hpe-vsxy.html",
-      "category": "Semis",
-      "priority": 6,
-      "confidence": "MED",
-      "sentiment": "bull",
-      "tickers": [
-        {
-          "symbol": "MCHP",
-          "score": 2
-        },
-        {
-          "symbol": "STM",
-          "score": 2
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "Microchip popped ~12% after disclosing its data-center unit generated $302.7M in 2025 and is guided to grow ~65% in 2026 (Q ending Mar +62.9% YoY). STMicroelectronics rose >10% after lifting its data-center revenue ambition to ~$1B in 2026 (from 'nicely above $500M').",
-          "tickers": [
-            {
-              "symbol": "MCHP",
-              "score": 2
-            },
-            {
-              "symbol": "STM",
-              "score": 2
-            }
-          ]
-        },
-        "L2": {
-          "text": "Broadens the AI-semis bid beyond GPUs/ASICs into analog/embedded and power players levered to data-center content (ADI, TXN, ON, NXPI). Confirms the 'everything plugged into a data center inflects' theme.",
-          "tickers": [
-            {
-              "symbol": "ADI",
-              "score": 1
-            },
-            {
-              "symbol": "ON",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Signals the AI capex cycle is spilling into the previously-cyclical analog/MCU segment, lifting estimates for the broad SOX. Supports the view that semis EPS revisions remain the engine of index strength.",
-          "tickers": [
-            {
-              "symbol": "TXN",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "MCHP — DC unit +65% guide",
-        "STM — $1B DC ambition",
-        "ADI — analog DC content",
-        "ON — power semis"
-      ],
-      "victims": [
-        "—"
-      ],
-      "timeline": {
-        "D": "Sympathy bid across analog/embedded.",
-        "W": "Sell-side DC-content upgrades.",
-        "M": "Order trends confirm the 65% trajectory.",
-        "L": "Analog re-rated toward AI-content multiple."
-      }
-    },
-    {
-      "id": 10,
-      "headline": "GitLab tumbles ~5% — cuts ~14% of workforce, exits 22 countries despite Q1 beat",
-      "source": "CNBC · 16h ago",
-      "url": "https://www.cnbc.com/amp/2026/06/02/stock-market-today-live-updates.html",
-      "category": "Software",
-      "priority": 6,
-      "confidence": "MED",
-      "sentiment": "bear",
-      "tickers": [
-        {
-          "symbol": "GTLB",
-          "score": -2
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "GitLab fell ~5% in initial reaction after guiding current-quarter EPS to $0.17-0.18 (vs $0.19 consensus) and announcing a ~14% headcount cut (~350 roles), exiting 22 countries, with $30-35M of restructuring charges — even though Q1 EPS/revenue beat. (Some after-hours feeds later showed a bounce on FY27 guidance.)",
-          "tickers": [
-            {
-              "symbol": "GTLB",
+              "symbol": "MARA",
               "score": -2
             }
           ]
         },
-        "L2": {
-          "text": "Adds to the 'is AI commoditizing dev tooling?' worry that periodically hits the software group; read-through to GitHub (MSFT), TEAM (Atlassian), and AI-coding disruptors. Restructuring signals margin discipline but soft near-term demand.",
-          "tickers": [
-            {
-              "symbol": "TEAM",
-              "score": -1
-            },
-            {
-              "symbol": "MSFT",
-              "score": -1
-            }
-          ]
-        },
         "L3": {
-          "text": "Counterpoint to Huang's SaaS-bull narrative — agentic AI cuts both ways for dev-tooling. The layoffs echo a broader tech-cost-discipline wave that Thursday's layoffs data may confirm.",
+          "text": "Reuters noted that the SEC-approved CME perpetual futures launch is itself unnerving — perpetuals re-introduce 24/7 leverage that historically amplified down-moves. Macro: BTC correlation with NDX is back at 0.7+ on the 30-day rolling; the risk-asset crowding trade unwinds together. Long-duration crypto bulls (Saylor) get tested through hike-cycle persistence.",
           "tickers": [
             {
-              "symbol": "IGV",
+              "symbol": "QQQ",
               "score": -1
             }
           ]
         }
       },
       "beneficiaries": [
-        "AI-coding disruptors — share-shift narrative",
-        "GTLB margins — restructuring (longer term)"
+        "Short-BTC ETFs (BITI) — direct exposure",
+        "GLD — risk-off rotation",
+        "TLT — duration bid if hike-narrative cools"
       ],
       "victims": [
-        "GTLB — soft guide + layoffs",
-        "Dev-tooling SaaS — AI-disruption overhang"
+        "MSTR — most levered BTC-treasury proxy",
+        "COIN — exchange volume mix shift",
+        "MARA/RIOT/CLSK — miner cash-flow squeeze",
+        "IBIT/FBTC — direct spot exposure"
       ],
       "timeline": {
-        "D": "Volatile post-print; guidance vs. layoffs tug-of-war.",
-        "W": "Sell-side debates AI cannibalization vs. margin reset.",
-        "M": "Cost cuts flow to FCF; demand stabilization is the tell.",
-        "L": "Dev-tooling value accrual in an agentic-AI world stays contested."
-      }
-    },
-    {
-      "id": 11,
-      "headline": "Anthropic files confidentially for IPO — beats OpenAI to the punch at ~$965B valuation",
-      "source": "Yahoo Finance · 1d ago",
-      "url": "https://www.investopedia.com/stock-market-today-dow-jones-s-and-p-500-06022026-11988714",
-      "category": "AI · IPO",
-      "priority": 7,
-      "confidence": "HIGH",
-      "sentiment": "bull",
-      "tickers": [
-        {
-          "symbol": "AMZN",
-          "score": 1
-        },
-        {
-          "symbol": "GOOGL",
-          "score": 1
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "Anthropic (Claude) filed confidential IPO paperwork with the SEC, racing ahead of OpenAI. It comes days after a $65B raise at a ~$965B valuation, eclipsing OpenAI's last $852B mark. Pricing/size TBD; listing depends on market conditions.",
-          "tickers": []
-        },
-        "L2": {
-          "text": "Big winners are strategic backers AMZN and GOOGL (cloud + equity stakes). Adds to a historic IPO pipeline alongside SpaceX (raising up to $75B, ~$1.25T) and a coming OpenAI filing — a windfall for IPO underwriters (GS, MS, JPM).",
-          "tickers": [
-            {
-              "symbol": "AMZN",
-              "score": 1
-            },
-            {
-              "symbol": "GS",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Wedbush calls it 'opening the floodgates' for a dormant IPO market. Three ~$1T AI/space listings in one year would absorb meaningful capital and could rotate flows within tech — and stress-test public-market appetite for unprofitable AI at scale.",
-          "tickers": [
-            {
-              "symbol": "MS",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "AMZN — Anthropic backer/cloud",
-        "GOOGL — Anthropic backer/cloud",
-        "GS — underwriting fees",
-        "MS — underwriting fees",
-        "JPM — underwriting fees"
-      ],
-      "victims": [
-        "Public AI capital — crowding from mega-IPO supply"
-      ],
-      "timeline": {
-        "D": "Sentiment positive for AI-IPO ecosystem.",
-        "W": "SpaceX roadshow (Jun 4) / June 12 debut sets the tone.",
-        "M": "Pricing dynamics reveal public appetite for AI labs.",
-        "L": "Public-market AI valuations get a real-time benchmark."
+        "D": "Watch $68K support; liquidation cascade risk on break.",
+        "W": "ETF flow data Mon-Wed shows whether outflow accelerates.",
+        "M": "BTC needs ADP miss + soft CPI to reclaim cycle highs.",
+        "L": "Tests the post-halving cycle thesis through real risk-off period."
       }
     },
     {
       "id": 12,
-      "headline": "Nvidia debuts RTX Spark superchip for Windows laptops — takes aim at Intel & AMD",
-      "source": "Yahoo Finance · 1d ago",
-      "url": "https://finance.yahoo.com/sectors/technology/live/tech-stocks-today-google-stock-falls-on-plans-to-raise-80-billion-nvidia-ceo-blesses-marvell-stock-100000832.html",
-      "category": "AI · PC",
-      "priority": 7,
-      "confidence": "HIGH",
-      "sentiment": "mixed",
-      "tickers": [
-        {
-          "symbol": "NVDA",
-          "score": 2
-        },
-        {
-          "symbol": "INTC",
-          "score": -2
-        },
-        {
-          "symbol": "AMD",
-          "score": -2
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "At Computex, Nvidia unveiled the RTX Spark superchip (Blackwell GPU + Grace CPU, up to 128GB memory) for Windows laptops/small desktops shipping this fall, with ASUS, Dell, HP and Microsoft as OEMs — a direct push into PC client silicon historically owned by Intel and AMD. QCOM and PC chipmakers sold off on the news.",
-          "tickers": [
-            {
-              "symbol": "NVDA",
-              "score": 2
-            },
-            {
-              "symbol": "QCOM",
-              "score": -2
-            }
-          ]
-        },
-        "L2": {
-          "text": "OEM beneficiaries DELL, HPQ, MSFT (Surface) get a marquee AI-PC silicon option; INTC and AMD face a credible new client-CPU/GPU rival; QCOM's Windows-on-Arm ambitions get challenged. The MSFT-Nvidia 3-year co-design partnership deepens.",
-          "tickers": [
-            {
-              "symbol": "DELL",
-              "score": 1
-            },
-            {
-              "symbol": "MSFT",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Reframes the AI-PC refresh cycle: Nvidia extends its data-center dominance toward the edge/client, pressuring x86 incumbents. Long-term, it widens Nvidia's TAM and tightens its grip on the AI stack from cloud to laptop.",
-          "tickers": [
-            {
-              "symbol": "INTC",
-              "score": -1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "NVDA — TAM expansion into PC client",
-        "DELL — AI-PC OEM",
-        "HPQ — AI-PC OEM",
-        "MSFT — Surface + co-design"
-      ],
-      "victims": [
-        "INTC — client-CPU competition",
-        "AMD — client GPU/CPU competition",
-        "QCOM — Windows-on-Arm challenged"
-      ],
-      "timeline": {
-        "D": "PC-chip names underperform; OEMs catch a bid.",
-        "W": "OEM design-win commentary; pricing details.",
-        "M": "Fall launch demand signal for the AI-PC cycle.",
-        "L": "Nvidia entrenches across cloud-to-edge AI compute."
-      }
-    },
-    {
-      "id": 13,
-      "headline": "Dollar General tops estimates, lifts FY profit forecast; shares +4.5% pre-bell",
-      "source": "Investopedia · 1d ago",
-      "url": "https://www.investopedia.com/stock-market-today-dow-jones-s-and-p-500-06022026-11988714",
-      "category": "Consumer · Retail",
-      "priority": 5,
-      "confidence": "MED",
-      "sentiment": "bull",
-      "tickers": [
-        {
-          "symbol": "DG",
-          "score": 2
-        },
-        {
-          "symbol": "DLTR",
-          "score": 1
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "Dollar General earned $2.00/share in Q1 (12c ahead of consensus) on $10.8B sales (in line); 2% same-store sales met estimates and it raised its full-year profit forecast. Shares rose ~4.5% before the bell.",
-          "tickers": [
-            {
-              "symbol": "DG",
-              "score": 2
-            }
-          ]
-        },
-        "L2": {
-          "text": "Positive read-through for deep-value retail (DLTR) and a sign the pressured low-income consumer is being captured by trade-down, even as gas prices bite. Contrasts with discretionary strength at the premium end (VSXY/ULTA).",
-          "tickers": [
-            {
-              "symbol": "DLTR",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "Trade-down resilience supports the K-shaped-consumer framework; a hedge if rising oil/gas squeezes household budgets further into 2H.",
-          "tickers": [
-            {
-              "symbol": "WMT",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "DG — beat + raise",
-        "DLTR — value-retail read-through",
-        "WMT — trade-down winner"
-      ],
-      "victims": [
-        "—"
-      ],
-      "timeline": {
-        "D": "Gap up on the raise.",
-        "W": "Value-retail group re-rates modestly.",
-        "M": "Gas-price path drives trade-down magnitude.",
-        "L": "Channel-shift to value persists if consumer stays bifurcated."
-      }
-    },
-    {
-      "id": 14,
-      "headline": "SpaceX sets $75B IPO — 555.6M shares at ~$135; roadshow Jun 4, Nasdaq debut Jun 12",
-      "source": "Reuters · 4h ago",
-      "url": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-06-03/",
-      "category": "IPO · Space",
-      "priority": 6,
-      "confidence": "MED",
-      "sentiment": "mixed",
-      "tickers": [
-        {
-          "symbol": "GS",
-          "score": 1
-        },
-        {
-          "symbol": "TSLA",
-          "score": -1
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "SpaceX plans to raise ~$75B by selling 555.6M shares at a ~$135 target, with a roadshow starting Jun 4 and a Nasdaq debut slated for Jun 12 — likely the largest IPO ever. Morningstar values it at $780B, less than half the reported ~$1.25T target, flagging unproven xAI/Starlink economics.",
-          "tickers": []
-        },
-        "L2": {
-          "text": "Underwriters (GS, MS, JPM) win fees; index providers scramble to make room. Potential funding-attention overhang for TSLA given Musk's split focus and xAI being folded into SpaceX. Satellite/defense names (RKLB, defense primes) get a sentiment read.",
-          "tickers": [
-            {
-              "symbol": "GS",
-              "score": 1
-            },
-            {
-              "symbol": "RKLB",
-              "score": 1
-            }
-          ]
-        },
-        "L3": {
-          "text": "A $75B raise is a major liquidity draw; bullish for IPO-window reopening but a near-term flow headwind. Morningstar's caution ('overvalued, buy after IPO') tempers the Wedbush 'watershed moment' bull case.",
-          "tickers": [
-            {
-              "symbol": "MS",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "GS — lead underwriting",
-        "MS — underwriting",
-        "RKLB — space-sector halo",
-        "Index/ETF providers — inclusion flows"
-      ],
-      "victims": [
-        "TSLA — Musk attention/funding overhang",
-        "Public AI/space capital — crowding"
-      ],
-      "timeline": {
-        "D": "Headline-driven space/IPO sentiment.",
-        "W": "Roadshow demand sets pricing tone (Jun 4).",
-        "M": "Jun 12 debut + index-inclusion mechanics.",
-        "L": "Public benchmark for space/AI mega-cap valuation."
-      }
-    },
-    {
-      "id": 15,
-      "headline": "Jobs week building to Friday payrolls — Fed under Warsh tilts toward HIKE on inflation/oil",
-      "source": "Schwab · 1d ago",
-      "url": "https://www.schwab.com/learn/story/stock-market-update-open",
-      "category": "Macro · Rates",
-      "priority": 8,
-      "confidence": "MED",
-      "sentiment": "mixed",
-      "tickers": [
-        {
-          "symbol": "XLF",
-          "score": 1
-        },
-        {
-          "symbol": "TLT",
-          "score": -1
-        }
-      ],
-      "levels": {
-        "L1": {
-          "text": "May nonfarm payrolls (Fri) are seen at ~96k (down from 115k), unemployment ~4.3%. With oil at $95 stoking inflation, markets have priced ~18bp of rate HIKES this year and ~70% odds of a quarter-point hike before year-end — Kevin Warsh's debut as Fed chair this month is the focal point. JOLTS, ADP and layoffs data precede Friday.",
-          "tickers": [
-            {
-              "symbol": "TLT",
-              "score": -1
-            }
-          ]
-        },
-        "L2": {
-          "text": "Higher-for-longer rates favor banks (XLF, JPM, BAC) on net-interest margin but pressure long-duration growth, REITs (rate-sensitive), utilities and homebuilders (XHB). A strong print + hawkish Fed lifts USD (DXY) and pressures gold/EM.",
-          "tickers": [
-            {
-              "symbol": "JPM",
-              "score": 1
-            },
-            {
-              "symbol": "XHB",
-              "score": -1
-            }
-          ]
-        },
-        "L3": {
-          "text": "The macro regime has flipped from 'cuts' to 'possible hikes' — an unusual late-cycle setup driven by war-fueled inflation rather than demand strength. AI-EPS concentration is the offset keeping indices at record highs despite a hawkish tilt and Gulf risk.",
-          "tickers": [
-            {
-              "symbol": "DXY",
-              "score": 1
-            }
-          ]
-        }
-      },
-      "beneficiaries": [
-        "JPM — NIM on higher rates",
-        "BAC — NIM on higher rates",
-        "XLF — rate tailwind",
-        "DXY — hawkish Fed"
-      ],
-      "victims": [
-        "TLT — duration",
-        "XHB — mortgage rates ~6.6%",
-        "Utilities/REITs — rate sensitivity",
-        "GLD — if real rates rise"
-      ],
-      "timeline": {
-        "D": "Positioning into JOLTS/ADP; yields and USD twitchy.",
-        "W": "Friday payrolls is the week's swing event for rate odds.",
-        "M": "Warsh's first meeting frames the hike-or-hold path.",
-        "L": "Inflation vs. growth tug-of-war defines 2026 rate regime."
-      }
-    },
-    {
-      "id": 16,
-      "headline": "Nu Holdings sinks ~8% on volume spike; Salesforce -5.7% gives back AI-software pop",
-      "source": "Morningstar / TheStreet · 1d ago",
-      "url": "https://www.morningstar.com/markets/movers",
-      "category": "Fintech · Software",
+      "headline": "US exchanges extend selloff as SEC approves perpetual futures — NDAQ, ICE under pressure",
+      "source": "Reuters · 18h ago",
+      "url": "https://www.reuters.com/business/us-exchanges-extend-selloff-perpetual-futures-approval-unnerves-investors-2026-06-02/",
+      "category": "Exchanges · Regulation",
       "priority": 5,
       "confidence": "MED",
       "sentiment": "bear",
       "tickers": [
         {
-          "symbol": "NU",
+          "symbol": "NDAQ",
           "score": -2
         },
         {
-          "symbol": "CRM",
+          "symbol": "ICE",
+          "score": -2
+        },
+        {
+          "symbol": "CBOE",
+          "score": -1
+        },
+        {
+          "symbol": "CME",
+          "score": 2
+        },
+        {
+          "symbol": "COIN",
+          "score": -1
+        },
+        {
+          "symbol": "HOOD",
           "score": -1
         }
       ],
       "levels": {
         "L1": {
-          "text": "Nu Holdings (NU) fell ~8.2% to $11.93 on heavy volume (183M vs 50M avg), and Salesforce (CRM) dropped ~5.7% on June 2, reversing the prior session's Huang-driven software pop. Intuit (INTU) and MSTR were also among the day's large-cap laggards.",
+          "text": "Listed-exchange equities extended their selloff Tuesday after the SEC approved perpetual futures contracts — a product structure that allows 24/7 leveraged trading and historically captures meaningful volume share from spot/futures venues. NDAQ and ICE underperformed; CME caught a relative bid as the most likely incumbent venue. Coincidentally, CME also reported record May volume of 33.2M contracts (+15% YoY).",
           "tickers": [
             {
-              "symbol": "NU",
+              "symbol": "NDAQ",
               "score": -2
             },
             {
-              "symbol": "CRM",
-              "score": -1
+              "symbol": "CME",
+              "score": 2
             }
           ]
         },
         "L2": {
-          "text": "NU weakness pressures LatAm fintech/EM sentiment (MELI, StoneCo) amid a strong dollar. CRM/INTU giving back gains shows the software bounce is fragile and rotation-driven; watch IGV's 200-DMA reclaim for durability.",
+          "text": "Direct beneficiaries: CME (likely listing venue for cleared perpetuals), retail brokers HOOD/SCHW/IBKR (new product to monetize), market makers CBOE/Citadel/Virtu (VIRT) on volume bid. Crypto exchanges (COIN, KRKN private) face partial displacement — perpetuals have been their highest-revenue product offshore. Clearing houses (DTCC, OCC) gain volume.",
           "tickers": [
             {
-              "symbol": "INTU",
-              "score": -1
+              "symbol": "VIRT",
+              "score": 1
             },
             {
-              "symbol": "MELI",
-              "score": -1
+              "symbol": "IBKR",
+              "score": 1
             }
           ]
         },
         "L3": {
-          "text": "EM/fintech is the funding-cost casualty of a stronger USD and higher-for-longer rates; mega-cap-AI software remains the relative haven within tech, underscoring narrow leadership.",
+          "text": "Regulatory liberalization narrative continues under Atkins SEC — perpetuals, spot ETHE 19b-4, looser short-sale reporting all part of an Atkins-led pro-volume framework. Macro lens: more leverage in retail tape = higher VIX-realized historically, supporting vol-of-vol products (VXX). Could become a meaningful flow rotation through Q3.",
           "tickers": [
             {
-              "symbol": "EEM",
-              "score": -1
+              "symbol": "VXX",
+              "score": 1
             }
           ]
         }
       },
       "beneficiaries": [
-        "USD-funded assets — dollar strength"
+        "CME — venue concentration on cleared perpetuals",
+        "VIRT — market-maker volume share",
+        "IBKR/HOOD — retail product monetization"
       ],
       "victims": [
-        "NU — EM/fintech derate on strong USD",
-        "CRM — software pop fades",
-        "INTU — large-cap laggard",
-        "MELI — LatAm sympathy"
+        "NDAQ — listing revenue compression",
+        "ICE — futures volume share loss",
+        "COIN — partial displacement of perpetual revenue line"
       ],
       "timeline": {
-        "D": "Profit-taking + EM-FX pressure.",
-        "W": "Software durability tied to rates/USD path.",
-        "M": "EM fintech hinges on Fed trajectory.",
-        "L": "Narrow AI leadership vs. broadening remains the key debate."
+        "D": "NDAQ/ICE relative weakness; CME catches bid.",
+        "W": "Atkins SEC commentary on rollout timeline.",
+        "M": "First volume-share data from new perpetual venues.",
+        "L": "Tests whether retail leverage cycle re-prices broader VIX regime."
+      }
+    },
+    {
+      "id": 13,
+      "headline": "Apple closes at record — 11th straight up-week, longest streak since 2004",
+      "source": "CNBC · 1d ago",
+      "url": "https://www.cnbc.com/2026/06/02/wednesdays-big-stock-stories-whats-likely-to-move-the-market.html",
+      "category": "Mega-cap · Hardware",
+      "priority": 5,
+      "confidence": "MED",
+      "sentiment": "bull",
+      "tickers": [
+        {
+          "symbol": "AAPL",
+          "score": 2
+        },
+        {
+          "symbol": "QQQ",
+          "score": 1
+        },
+        {
+          "symbol": "TSM",
+          "score": 1
+        },
+        {
+          "symbol": "SWKS",
+          "score": 1
+        },
+        {
+          "symbol": "AVGO",
+          "score": 1
+        },
+        {
+          "symbol": "QCOM",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "Apple closed at a fresh record Tuesday, on pace for an 11th consecutive up-week — the longest streak since 2004. Shares are now +16% YTD, second-best in the Magnificent Seven behind NVDA, after a sluggish start. WWDC (Jun 9) is the next catalyst with on-device Apple Intelligence Gemini integration disclosure widely expected. Recent Needham downgrade to Hold has been completely ignored by the tape.",
+          "tickers": [
+            {
+              "symbol": "AAPL",
+              "score": 2
+            }
+          ]
+        },
+        "L2": {
+          "text": "Direct supply-chain beneficiaries: TSM (A-series foundry), SWKS, QRVO (RF), AVGO (RF + custom silicon), QCOM (modem during transition), STX/WDC (memory). Service-bundle peers SPOT, NFLX, GOOGL all read mildly negative if Apple Intelligence + Search deal reshapes traffic. Suppliers Foxconn (HNHPF), Luxshare get pulled.",
+          "tickers": [
+            {
+              "symbol": "TSM",
+              "score": 1
+            },
+            {
+              "symbol": "SWKS",
+              "score": 1
+            }
+          ]
+        },
+        "L3": {
+          "text": "Apple has quietly become the 2026 'AI is real but defensible' trade — buybacks ($110B+ FY24 authorization remaining) + WWDC AI bundle vs valuation re-rate to ~30x FY26 EPS. Macro lens: even with hike risk rising, AAPL's 'consumer subscription + buyback' model is defensively valued vs Nasdaq long-duration names. Mega-cap rotation favoring AAPL/META over MSFT continues.",
+          "tickers": [
+            {
+              "symbol": "QQQ",
+              "score": 1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "AAPL — momentum + WWDC catalyst",
+        "TSM/SWKS/QRVO/QCOM/AVGO — supply chain",
+        "QQQ — index weight matters"
+      ],
+      "victims": [
+        "MSFT — relative mag-7 underperformer (down 8% YTD)",
+        "META — relative laggard YTD",
+        "Needham (sell-side credibility — downgrade ignored)"
+      ],
+      "timeline": {
+        "D": "Streak watch; profit-taking risk if breaks 11-week run.",
+        "W": "WWDC keynote Mon Jun 9 is the event.",
+        "M": "iPhone 17 Pro launch cycle commentary at WWDC.",
+        "L": "Tests whether on-device AI moat justifies P/E re-rate vs MSFT."
+      }
+    },
+    {
+      "id": 14,
+      "headline": "CME Group reports record May volume — 33.2M contracts/day, +15% YoY",
+      "source": "StockTitan · 12h ago",
+      "url": "https://www.stocktitan.net/news/2026-06-02/",
+      "category": "Exchanges · Volume",
+      "priority": 5,
+      "confidence": "HIGH",
+      "sentiment": "bull",
+      "tickers": [
+        {
+          "symbol": "CME",
+          "score": 2
+        },
+        {
+          "symbol": "ICE",
+          "score": -1
+        },
+        {
+          "symbol": "NDAQ",
+          "score": -1
+        },
+        {
+          "symbol": "VIRT",
+          "score": 1
+        }
+      ],
+      "levels": {
+        "L1": {
+          "text": "CME Group reported record May volume of 33.2M contracts/day (+15% YoY), driven by interest-rate complex (record SOFR/Fed Funds futures volume on hike-odds repricing) and energy futures (Gulf-shock crude/Brent). Open interest hit records across rates and energy. Adds upside earnings revision pressure into July print.",
+          "tickers": [
+            {
+              "symbol": "CME",
+              "score": 2
+            }
+          ]
+        },
+        "L2": {
+          "text": "Direct beneficiary CME; market-maker peers VIRT, FLOW, Citadel benefit from volume. Competing futures venues ICE (energy), NDAQ (rates) lose share. Buy-side users (hedge funds, asset managers) face higher rebate-pass-through cost.",
+          "tickers": [
+            {
+              "symbol": "VIRT",
+              "score": 1
+            },
+            {
+              "symbol": "ICE",
+              "score": -1
+            }
+          ]
+        },
+        "L3": {
+          "text": "Volume surge is a structural validation that the macro-volatility regime has shifted — when oil + rates + currency are all moving, futures volumes step up structurally. With Gulf war risk overlaid on the Warsh-Fed transition + hike-odds repricing, this regime is likely persistent through Q3, supporting CME's earnings revision cycle.",
+          "tickers": [
+            {
+              "symbol": "VIX",
+              "score": 1
+            }
+          ]
+        }
+      },
+      "beneficiaries": [
+        "CME — direct fee + clearing capture",
+        "VIRT — market-maker volume",
+        "FCM brokers (IBKR) — pass-through"
+      ],
+      "victims": [
+        "ICE — energy futures share competition",
+        "NDAQ — rate-futures share competition"
+      ],
+      "timeline": {
+        "D": "CME relative outperformance vs exchange peers.",
+        "W": "Sell-side EPS revision cycle next two weeks.",
+        "M": "June monthly volume print likely beats again.",
+        "L": "Tests whether vol regime shift becomes the multi-year tailwind."
       }
     }
   ],
   "tickerTable": [
     {
-      "symbol": "MRVL",
-      "name": "Marvell Technology",
-      "sector": "AI / Custom Silicon",
-      "score": 3,
-      "driver": "Huang 'next $1T' endorsement; +32.5% record"
-    },
-    {
-      "symbol": "HPE",
-      "name": "Hewlett Packard Enterprise",
-      "sector": "AI / Hardware",
-      "score": 3,
-      "driver": "Biggest beat since 2018; targets pulled forward 2yrs"
-    },
-    {
-      "symbol": "VSXY",
-      "name": "Victoria's Secret",
-      "sector": "Consumer / Retail",
-      "score": 3,
-      "driver": "Q1 EPS nearly doubled; FY raise on tariff relief"
-    },
-    {
-      "symbol": "NVDA",
-      "name": "NVIDIA",
-      "sector": "AI / Semis",
-      "score": 2,
-      "driver": "RTX Spark PC chip; ecosystem orchestrator"
-    },
-    {
-      "symbol": "AVGO",
-      "name": "Broadcom",
-      "sector": "AI / Semis",
-      "score": 2,
-      "driver": "ASIC peer halo; reports Wed"
-    },
-    {
-      "symbol": "DELL",
-      "name": "Dell Technologies",
-      "sector": "AI / Hardware",
-      "score": 2,
-      "driver": "AI-server demand confirmed; RTX Spark OEM"
-    },
-    {
-      "symbol": "PANW",
-      "name": "Palo Alto Networks",
-      "sector": "Cybersecurity",
-      "score": 2,
-      "driver": "Beat-and-raise; $18.4B backlog, NGS ARR +60%"
-    },
-    {
-      "symbol": "CRWD",
-      "name": "CrowdStrike",
-      "sector": "Cybersecurity",
-      "score": 2,
-      "driver": "Sympathy bid into Wed earnings"
-    },
-    {
-      "symbol": "ZS",
-      "name": "Zscaler",
-      "sector": "Cybersecurity",
-      "score": 2,
-      "driver": "Security-spend optimism"
-    },
-    {
-      "symbol": "MCHP",
-      "name": "Microchip Technology",
-      "sector": "Semis",
-      "score": 2,
-      "driver": "Data-center unit +65% 2026 guide"
-    },
-    {
-      "symbol": "STM",
-      "name": "STMicroelectronics",
-      "sector": "Semis",
-      "score": 2,
-      "driver": "Raised DC ambition to ~$1B 2026"
-    },
-    {
-      "symbol": "ULTA",
-      "name": "Ulta Beauty",
-      "sector": "Consumer / Retail",
-      "score": 2,
-      "driver": "Q1 beat $7.74 vs $6.86; FY raise"
-    },
-    {
       "symbol": "XOM",
-      "name": "Exxon Mobil",
+      "name": "ExxonMobil",
       "sector": "Energy",
-      "score": 2,
-      "driver": "Oil +2% on Gulf escalation"
+      "score": 3,
+      "driver": "Gulf escalation lifts WTI to $95"
     },
     {
       "symbol": "CVX",
       "name": "Chevron",
       "sector": "Energy",
+      "score": 3,
+      "driver": "Permian + Gulf upstream torque"
+    },
+    {
+      "symbol": "OXY",
+      "name": "Occidental",
+      "sector": "Energy",
       "score": 2,
-      "driver": "Crude leverage"
+      "driver": "Highest oil-beta US large-cap"
+    },
+    {
+      "symbol": "COP",
+      "name": "ConocoPhillips",
+      "sector": "Energy",
+      "score": 2,
+      "driver": "Pure-play upstream"
     },
     {
       "symbol": "SLB",
-      "name": "SLB (Schlumberger)",
+      "name": "Schlumberger",
       "sector": "Energy Services",
       "score": 2,
-      "driver": "Services capex on higher oil"
+      "driver": "Global oilfield-services bid"
+    },
+    {
+      "symbol": "VLO",
+      "name": "Valero",
+      "sector": "Refining",
+      "score": 2,
+      "driver": "Refining cracks widen"
+    },
+    {
+      "symbol": "PSX",
+      "name": "Phillips 66",
+      "sector": "Refining",
+      "score": 1,
+      "driver": "Refining cracks"
     },
     {
       "symbol": "LMT",
       "name": "Lockheed Martin",
       "sector": "Defense",
       "score": 2,
-      "driver": "Gulf conflict escalation"
+      "driver": "Missile-defense reload demand"
     },
     {
-      "symbol": "DG",
-      "name": "Dollar General",
-      "sector": "Consumer / Retail",
+      "symbol": "RTX",
+      "name": "RTX Corp",
+      "sector": "Defense",
       "score": 2,
-      "driver": "Beat + FY profit raise"
-    },
-    {
-      "symbol": "VRT",
-      "name": "Vertiv",
-      "sector": "AI Infrastructure",
-      "score": 2,
-      "driver": "Alphabet $80B capex tailwind"
-    },
-    {
-      "symbol": "ANET",
-      "name": "Arista Networks",
-      "sector": "Networking",
-      "score": 1,
-      "driver": "AI interconnect demand"
-    },
-    {
-      "symbol": "CRDO",
-      "name": "Credo Technology",
-      "sector": "AI Connectivity",
-      "score": 1,
-      "driver": "Optical/cabling halo (beat, choppy)"
-    },
-    {
-      "symbol": "ELF",
-      "name": "e.l.f. Beauty",
-      "sector": "Consumer / Beauty",
-      "score": 1,
-      "driver": "Beauty demand read-through"
-    },
-    {
-      "symbol": "GS",
-      "name": "Goldman Sachs",
-      "sector": "Financials",
-      "score": 1,
-      "driver": "Mega-IPO underwriting (Anthropic/SpaceX)"
-    },
-    {
-      "symbol": "JPM",
-      "name": "JPMorgan",
-      "sector": "Financials",
-      "score": 1,
-      "driver": "NIM on higher-for-longer rates"
-    },
-    {
-      "symbol": "BRK.B",
-      "name": "Berkshire Hathaway",
-      "sector": "Conglomerate",
-      "score": 1,
-      "driver": "$10B Alphabet stake (Abel era)"
-    },
-    {
-      "symbol": "AMZN",
-      "name": "Amazon",
-      "sector": "Big Tech",
-      "score": 1,
-      "driver": "Anthropic backer/cloud"
-    },
-    {
-      "symbol": "GLD",
-      "name": "SPDR Gold",
-      "sector": "Commodity",
-      "score": 1,
-      "driver": "Reclaims haven role vs. BTC"
-    },
-    {
-      "symbol": "GOOGL",
-      "name": "Alphabet",
-      "sector": "Big Tech",
-      "score": -1,
-      "driver": "$80B raise dilution / capex intensity"
-    },
-    {
-      "symbol": "GTLB",
-      "name": "GitLab",
-      "sector": "Software",
-      "score": -2,
-      "driver": "14% layoffs; soft guide"
-    },
-    {
-      "symbol": "AMD",
-      "name": "Advanced Micro Devices",
-      "sector": "Semis",
-      "score": -2,
-      "driver": "RTX Spark client competition"
-    },
-    {
-      "symbol": "QCOM",
-      "name": "Qualcomm",
-      "sector": "Semis",
-      "score": -2,
-      "driver": "Windows-on-Arm challenged by RTX Spark"
-    },
-    {
-      "symbol": "INTC",
-      "name": "Intel",
-      "sector": "Semis",
-      "score": -2,
-      "driver": "Client CPU/GPU competition"
+      "driver": "Patriot/THAAD reload"
     },
     {
       "symbol": "DAL",
       "name": "Delta Air Lines",
       "sector": "Airlines",
       "score": -2,
-      "driver": "Jet-fuel cost on oil spike"
+      "driver": "Jet-fuel cost shock"
     },
     {
       "symbol": "UAL",
       "name": "United Airlines",
       "sector": "Airlines",
       "score": -2,
-      "driver": "Jet-fuel cost"
+      "driver": "Jet-fuel cost shock"
+    },
+    {
+      "symbol": "LUV",
+      "name": "Southwest Airlines",
+      "sector": "Airlines",
+      "score": -2,
+      "driver": "Un-hedged fuel exposure"
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom",
+      "sector": "Semiconductors",
+      "score": 2,
+      "driver": "Q2 earnings + AI silicon TAM"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "sector": "Semiconductors",
+      "score": 2,
+      "driver": "AI orchestrator across AVGO/MRVL prints"
+    },
+    {
+      "symbol": "MRVL",
+      "name": "Marvell",
+      "sector": "Semiconductors",
+      "score": 1,
+      "driver": "Huang endorsement halo carries"
+    },
+    {
+      "symbol": "AMD",
+      "name": "AMD",
+      "sector": "Semiconductors",
+      "score": -1,
+      "driver": "Loses share-of-wallet to ASIC"
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC",
+      "sector": "Semiconductors",
+      "score": 2,
+      "driver": "Asia AI bid pushes TAIEX to ATH"
+    },
+    {
+      "symbol": "ASML",
+      "name": "ASML",
+      "sector": "Semi Equipment",
+      "score": 1,
+      "driver": "EUV booking visibility"
+    },
+    {
+      "symbol": "STM",
+      "name": "STMicroelectronics",
+      "sector": "Semiconductors",
+      "score": 3,
+      "driver": "+15% on AI-content win"
+    },
+    {
+      "symbol": "CRWD",
+      "name": "CrowdStrike",
+      "sector": "Cybersecurity",
+      "score": 1,
+      "driver": "Earnings tonight, high bar"
+    },
+    {
+      "symbol": "PANW",
+      "name": "Palo Alto Networks",
+      "sector": "Cybersecurity",
+      "score": 2,
+      "driver": "Beat Tue, +61% YTD"
+    },
+    {
+      "symbol": "ZS",
+      "name": "Zscaler",
+      "sector": "Cybersecurity",
+      "score": 1,
+      "driver": "Secure-edge halo"
+    },
+    {
+      "symbol": "FTNT",
+      "name": "Fortinet",
+      "sector": "Cybersecurity",
+      "score": 1,
+      "driver": "Secure-edge sympathy"
+    },
+    {
+      "symbol": "S",
+      "name": "SentinelOne",
+      "sector": "Cybersecurity",
+      "score": -1,
+      "driver": "Asymmetric loser to CRWD"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet",
+      "sector": "Mega-cap Internet",
+      "score": -1,
+      "driver": "$80B equity raise = dilution"
+    },
+    {
+      "symbol": "BRK.B",
+      "name": "Berkshire Hathaway",
+      "sector": "Conglomerate",
+      "score": 2,
+      "driver": "$10B GOOGL sponsored placement"
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple",
+      "sector": "Mega-cap Hardware",
+      "score": 2,
+      "driver": "11-week up streak, WWDC catalyst"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "sector": "Mega-cap Software",
+      "score": -1,
+      "driver": "Worst day since Feb; AI coding model unveil"
+    },
+    {
+      "symbol": "CEG",
+      "name": "Constellation Energy",
+      "sector": "Utilities",
+      "score": 3,
+      "driver": "FERC waiver clears TMI restart"
+    },
+    {
+      "symbol": "VST",
+      "name": "Vistra",
+      "sector": "Utilities",
+      "score": 2,
+      "driver": "Hyperscaler PPA template re-rate"
+    },
+    {
+      "symbol": "TLN",
+      "name": "Talen Energy",
+      "sector": "Utilities",
+      "score": 2,
+      "driver": "Nuclear PPA peer comp"
+    },
+    {
+      "symbol": "OKLO",
+      "name": "Oklo",
+      "sector": "SMR Nuclear",
+      "score": 2,
+      "driver": "+10% sympathy bid"
+    },
+    {
+      "symbol": "SMR",
+      "name": "NuScale",
+      "sector": "SMR Nuclear",
+      "score": 2,
+      "driver": "+8% sympathy bid"
+    },
+    {
+      "symbol": "CCJ",
+      "name": "Cameco",
+      "sector": "Uranium",
+      "score": 2,
+      "driver": "+7% on fuel-cycle demand pull"
+    },
+    {
+      "symbol": "UEC",
+      "name": "Uranium Energy",
+      "sector": "Uranium",
+      "score": 2,
+      "driver": "+13% Tue"
+    },
+    {
+      "symbol": "GME",
+      "name": "GameStop",
+      "sector": "Specialty Retail",
+      "score": 3,
+      "driver": "Record Q1 + $2B buyback"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla",
+      "sector": "Autos",
+      "score": 2,
+      "driver": "SpaceX prospectus discloses commercial ties"
+    },
+    {
+      "symbol": "GS",
+      "name": "Goldman Sachs",
+      "sector": "Banks",
+      "score": 2,
+      "driver": "SpaceX IPO lead underwriter"
+    },
+    {
+      "symbol": "MS",
+      "name": "Morgan Stanley",
+      "sector": "Banks",
+      "score": 2,
+      "driver": "SpaceX IPO lead underwriter"
+    },
+    {
+      "symbol": "RKLB",
+      "name": "Rocket Lab",
+      "sector": "Aerospace",
+      "score": -2,
+      "driver": "SpaceX public-comp multiple compression"
+    },
+    {
+      "symbol": "MSTR",
+      "name": "Strategy",
+      "sector": "Crypto Treasury",
+      "score": -3,
+      "driver": "BTC -5.5% mark-to-market"
     },
     {
       "symbol": "COIN",
       "name": "Coinbase",
       "sector": "Crypto",
       "score": -2,
-      "driver": "BTC -10% / risk-off"
+      "driver": "Risk-off volume mix shift"
     },
     {
-      "symbol": "MARA",
-      "name": "MARA Holdings",
-      "sector": "Crypto Miners",
+      "symbol": "CME",
+      "name": "CME Group",
+      "sector": "Exchanges",
+      "score": 2,
+      "driver": "Record May volume + perpetual venue"
+    },
+    {
+      "symbol": "NDAQ",
+      "name": "Nasdaq",
+      "sector": "Exchanges",
       "score": -2,
-      "driver": "Miner economics on BTC drop"
-    },
-    {
-      "symbol": "NU",
-      "name": "Nu Holdings",
-      "sector": "EM Fintech",
-      "score": -2,
-      "driver": "-8% on volume; strong USD"
-    },
-    {
-      "symbol": "MSTR",
-      "name": "Strategy (MicroStrategy)",
-      "sector": "Crypto",
-      "score": -3,
-      "driver": "Leveraged BTC proxy; 2-mo low"
-    },
-    {
-      "symbol": "CRM",
-      "name": "Salesforce",
-      "sector": "Software",
-      "score": -1,
-      "driver": "-5.7% giving back AI-software pop"
-    },
-    {
-      "symbol": "TLT",
-      "name": "iShares 20+ Yr Treasury",
-      "sector": "Rates",
-      "score": -1,
-      "driver": "Hike odds / oil-driven inflation"
-    },
-    {
-      "symbol": "TSLA",
-      "name": "Tesla",
-      "sector": "Auto / Tech",
-      "score": -1,
-      "driver": "SpaceX IPO Musk-attention overhang"
-    },
-    {
-      "symbol": "XHB",
-      "name": "Homebuilders ETF",
-      "sector": "Housing",
-      "score": -1,
-      "driver": "Mortgage rates ~6.6%"
+      "driver": "Perpetual futures listing share loss"
     }
   ],
   "sectorHeatmap": [
     {
-      "sector": "AI / Semiconductors",
-      "score": 11
-    },
-    {
-      "sector": "AI Hardware / Infrastructure",
-      "score": 8
-    },
-    {
-      "sector": "Cybersecurity",
-      "score": 6
-    },
-    {
       "sector": "Energy",
-      "score": 6
+      "score": 13
+    },
+    {
+      "sector": "Utilities/Nuclear",
+      "score": 11
     },
     {
       "sector": "Defense",
       "score": 4
     },
     {
-      "sector": "Consumer / Retail",
+      "sector": "Semiconductors",
+      "score": 9
+    },
+    {
+      "sector": "Cybersecurity",
+      "score": 4
+    },
+    {
+      "sector": "Banks",
       "score": 5
     },
     {
-      "sector": "Financials",
-      "score": 2
+      "sector": "Mega-cap Software",
+      "score": 1
     },
     {
-      "sector": "Big Tech",
-      "score": -1
+      "sector": "Specialty Retail",
+      "score": 3
     },
     {
-      "sector": "Software",
-      "score": -3
-    },
-    {
-      "sector": "Airlines",
-      "score": -4
-    },
-    {
-      "sector": "EM Fintech",
-      "score": -3
+      "sector": "Exchanges",
+      "score": 0
     },
     {
       "sector": "Crypto",
       "score": -9
     },
     {
-      "sector": "Rates-Sensitive (Housing/REITs/Utes)",
-      "score": -4
+      "sector": "Airlines",
+      "score": -6
+    },
+    {
+      "sector": "Mega-cap Internet",
+      "score": -1
     }
   ],
   "actionSummary": {
     "buys": [
-      "MRVL — Huang halo; AVGO read-through into Wed print",
-      "HPE — record beat + 2-yr accelerated targets",
-      "PANW — beat-and-raise; AI-security TAM intact (watch overbought)",
-      "XOM / CVX / SLB — oil hedge as Gulf risk premium builds",
-      "LMT / RTX — defense on escalation",
-      "VSXY / ULTA — premium-consumer + tariff-cost relief"
+      "XOM/CVX — long Brent >$95 bid; Gulf risk persists",
+      "CEG/VST/TLN — TMI restart + hyperscaler PPA template",
+      "AVGO — into earnings with custom-silicon TAM upgrade",
+      "LMT/RTX — defense reload as missile intercepts mount",
+      "CME — record May volume + structural vol regime",
+      "GS/MS — SpaceX $75B fee bonanza",
+      "TSM/ASML — Asia AI bid escape velocity"
     ],
     "sells": [
-      "MSTR / COIN / MARA — BTC -10% risk-off, no haven bid",
-      "QCOM / AMD / INTC — RTX Spark client-silicon threat",
-      "DAL / UAL / AAL — jet-fuel cost from $95 oil",
-      "GTLB — layoffs + soft guide; AI-disruption overhang",
-      "TLT / XHB — higher-for-longer + oil-driven inflation"
+      "DAL/UAL/LUV — jet-fuel margin compression",
+      "MSTR — most levered to BTC drawdown",
+      "RKLB — SpaceX public-comp compression",
+      "NDAQ — perpetual futures listing share loss",
+      "GOOGL — $80B equity dilution overhang"
     ],
     "watchlist": [
-      "AVGO — Wed earnings: the ASIC-complex read-through",
-      "CRWD — Wed earnings; implied move ~9.5%",
-      "GOOGL — $80B raise execution; Berkshire stake signal",
-      "Friday NFL payrolls — hike-odds swing event under Chair Warsh",
-      "SpaceX IPO — Jun 4 roadshow / Jun 12 debut; $75B liquidity draw",
-      "Strait of Hormuz — oil/shipping risk premium"
+      "ADP print 8:15a — strong = kills cut narrative outright",
+      "ISM Services 10a — sub-50 would be the first contraction in 3 months",
+      "Beige Book 2p — Warsh-Fed signal on Gulf-pass-through",
+      "AVGO + CRWD AH — sets cyber + semi tape for Thu",
+      "USD/JPY 160 break — MoF intervention cross-asset transmission",
+      "Iran response to Qeshm strike — overnight headline risk"
     ]
   },
   "leaderboard": {
     "winners": [
       {
         "rank": 1,
-        "name": "AI Custom Silicon — MRVL, AVGO, NVDA",
-        "why": "Huang's 'next $1T' nod + SOX +6%; data-center connectivity thesis"
+        "name": "Energy Complex (XOM, CVX, OXY)",
+        "why": "Brent +1.1% to $97, WTI +2% to $95.40 on Iran-Kuwait-Bahrain missile salvo + Qeshm strike; third straight up-day for crude."
       },
       {
         "rank": 2,
-        "name": "AI Hardware — HPE, DELL",
-        "why": "HPE biggest beat since 2018; AI-server demand confirmed"
+        "name": "Constellation Energy (CEG)",
+        "why": "FERC waiver clears Three Mile Island restart to serve Microsoft data centers — pulled forward from a 2031 PJM-congestion delay."
       },
       {
         "rank": 3,
-        "name": "Energy & Defense — XOM, CVX, LMT",
-        "why": "Oil 3rd day to $95; Gulf escalation lifts the war trade"
+        "name": "GameStop (GME)",
+        "why": "Record Q1 net income ($389.6M), nearly 2x EPS beat ($0.30 vs $0.16), new $2B buyback through 2029; +9% AH."
       },
       {
         "rank": 4,
-        "name": "Cybersecurity — PANW, CRWD, ZS",
-        "why": "PANW beat-and-raise; $18.4B backlog rebuts AI-disruption fear"
+        "name": "STMicroelectronics (STM)",
+        "why": "+15.2% on disclosed AI-content win; Asian AI bid pushes TAIEX and Topix to fresh records."
       },
       {
         "rank": 5,
-        "name": "Premium Consumer — VSXY, ULTA, DG",
-        "why": "Earnings beats + tariff-cost relief across the K-shaped consumer"
+        "name": "CME Group (CME)",
+        "why": "Record May volume 33.2M contracts/day +15% YoY on rates + energy futures surge; sole big winner of SEC perpetual approval."
       }
     ],
     "losers": [
       {
         "rank": 1,
-        "name": "Crypto — MSTR, COIN, MARA",
-        "why": "BTC -10% to $66k 2-mo low; failed as a haven amid war"
+        "name": "Strategy (MSTR)",
+        "why": "BTC -5.5% to ~$69,400 (2-month low) on Gulf risk-off + hike-odds repricing; most levered crypto-treasury proxy in the tape."
       },
       {
         "rank": 2,
-        "name": "x86 / PC Chips — QCOM, AMD, INTC",
-        "why": "Nvidia RTX Spark invades client silicon"
+        "name": "Airlines (DAL, UAL, LUV)",
+        "why": "Jet-fuel cost shock from WTI $95 hits Q2/Q3 unit costs; LUV's traditionally un-hedged book is the worst exposed."
       },
       {
         "rank": 3,
-        "name": "Airlines — DAL, UAL, AAL",
-        "why": "Jet-fuel cost shock from $95 crude"
+        "name": "Rocket Lab (RKLB)",
+        "why": "SpaceX $75B IPO at $1.75T sets a public comp that immediately compresses RKLB's small-cap launch multiple."
       },
       {
         "rank": 4,
-        "name": "Rate-Sensitives — TLT, XHB, utilities",
-        "why": "Hike odds rise on oil-driven inflation; mortgages ~6.6%"
+        "name": "Nasdaq (NDAQ)",
+        "why": "Perpetual futures SEC approval threatens listing/volume share; underperformed listed-exchange peers Tuesday into the decision."
       },
       {
         "rank": 5,
-        "name": "Software/EM Fintech — GTLB, NU, CRM",
-        "why": "GitLab layoffs; NU -8% on strong USD; software pop fades"
+        "name": "Alphabet (GOOGL)",
+        "why": "$80B equity raise (including $30B public offering + $40B ATM program) creates near-term dilution overhang despite the Berkshire endorsement."
       }
     ]
   },
   "otherStories": [
     {
-      "headline": "Credo Technology choppy after Q4 double-beat",
-      "keyPoint": "Beat EPS $1.16 & rev $437M with strong Q1 guide, but shares swung from +/- on stretched expectations.",
-      "beneficiaries": "CRDO, AI-connectivity peers"
+      "headline": "Tenaya Therapeutics (TNYA) — MyPEAK-1 Phase 1b/2 interim data on TN-201 for MYBPC3 HCM",
+      "keyPoint": "Near-term gene-therapy biomarker readout drives single-stock vol in cardiomyopathy.",
+      "beneficiaries": "TNYA, peer BMY (mavacamten franchise read-through), CRSP/NTLA on gene-therapy delivery validation"
     },
     {
-      "headline": "Cisco +5.1%, Caterpillar +4.6% anchor the Dow",
-      "keyPoint": "Industrials/networking led the Dow's +0.45% record day as AI/infrastructure breadth improved.",
-      "beneficiaries": "CSCO, CAT"
+      "headline": "Quobly (private) raises $133M Series B for quantum-computing platform",
+      "keyPoint": "Confirms quantum funding bid even as crypto/risk asset wobble; pulls QBTS/RGTI/IONQ momentum.",
+      "beneficiaries": "QBTS, IONQ, RGTI, QUBT"
     },
     {
-      "headline": "Russell 2000 +0.90% — small caps lead",
-      "keyPoint": "Broadening rally on AI-tech earnings, industrials and utilities; 1,023 of 1,895 names green.",
-      "beneficiaries": "IWM, small-cap industrials"
+      "headline": "Australia Q1 GDP +0.3% — softest growth since 2023 lockdown period",
+      "keyPoint": "Reinforces RBA dovish framing despite global hike risk; AUD pressure.",
+      "beneficiaries": "BHP-NA, RIO-NA (USD-translated; weaker AUD-positive)"
     },
     {
-      "headline": "Nike -4.7% reverses prior-day gains",
-      "keyPoint": "Consumer discretionary giant gave back gains; gas-price drag on lower-income spend a theme.",
-      "beneficiaries": "—"
+      "headline": "Applied Aerospace & Defense raises $650M in US IPO (Bloomberg)",
+      "keyPoint": "Defense IPO pricing window opens alongside SpaceX — sympathy bid for defense privates.",
+      "beneficiaries": "AXON, KTOS, LDOS, BWXT (defense-tech sympathy)"
     },
     {
-      "headline": "Morningstar values SpaceX at $780B — half the IPO target",
-      "keyPoint": "Flags unproven xAI/Starlink economics; 'buy after IPO at better levels.'",
-      "beneficiaries": "Cautious IPO buyers"
+      "headline": "Microsoft kicks off Build, unveils first AI coding model — MSFT -4.17% on the day",
+      "keyPoint": "Worst MSFT day since February despite the launch; positioning + GOOGL$80B overhang weighs.",
+      "beneficiaries": "GTLB, MDB (coding agents); negative: GOOGL Gemini Code Assist competitive pressure"
     },
     {
-      "headline": "Barclays: Trump Accounts won't move Robinhood earnings soon",
-      "keyPoint": "Cuts HOOD PT to $82; P&L impact 'de minimis' near-term despite 5.5M signups.",
-      "beneficiaries": "—"
+      "headline": "UK Bank Note redesign — foxes, sharks, puffins replace historic figures",
+      "keyPoint": "Symbolic but watched as a confidence/political signal for GBP; sterling sideways.",
+      "beneficiaries": "GBP-cross plays; n/a equity impact"
+    },
+    {
+      "headline": "Bayer (BAYRY) — no plans to restructure despite litigation threat",
+      "keyPoint": "Removes near-term spin/breakup catalyst; relief rally limited.",
+      "beneficiaries": "BAYRY (relative); negative: short interest"
     }
-  ],
-  "footer": "Market Beat · 2026-06-03 · Generated from Yahoo Finance, CNBC, Reuters, Investopedia, TheStreet & Schwab headlines (Jun 2 close + Jun 3 pre-market). Scores are -3..+3 directional impact estimates, not price targets. Not investment advice."
+  ]
 }
