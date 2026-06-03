@@ -26,9 +26,24 @@ const fs   = require('fs');
 const path = require('path');
 const { renderReport } = require('./render.js');
 
+// Optional RSS+HTML source registry (sources.js). If present, we use the full
+// 20+ feed registry; otherwise fall back to the small CONFIG.sources list.
+let SOURCES_REGISTRY = null, fetchAllSources = null, dedupeSources = null;
+try {
+  const s = require('./sources.js');
+  SOURCES_REGISTRY = s.SOURCES;
+  fetchAllSources  = s.fetchAll;
+  dedupeSources    = s.dedupe;
+} catch (_) { /* sources.js not present — fall back to legacy fetch */ }
+
 // ─── CONFIG ─────────────────────────────────────────────────────────────────
 const CONFIG = {
-  sources: [
+  // sources can be:
+  //   null  → use the full sources.js registry (20+ RSS+HTML feeds)
+  //   array → use just these (HTML-only legacy mode)
+  sources: null,
+  // legacy fallback list when sources.js isn't available:
+  legacySources: [
     { name: 'Yahoo Finance',   url: 'https://finance.yahoo.com/',                            weight: 3 },
     { name: 'Yahoo Markets',   url: 'https://finance.yahoo.com/topic/stock-market-news/',    weight: 3 },
     { name: 'CNBC',            url: 'https://www.cnbc.com/finance/',                         weight: 2 },
@@ -351,21 +366,33 @@ async function main(){
   const outArg = (args.find(a => a.startsWith('--out=')) || '').split('=')[1];
   const date = today(dateArg);
 
+  // Choose source set: explicit CONFIG.sources > sources.js registry > legacy list
+  const useSources = CONFIG.sources || SOURCES_REGISTRY || CONFIG.legacySources;
+  const useRssRegistry = !CONFIG.sources && SOURCES_REGISTRY && fetchAllSources;
+
   console.log(`📰 Market Beat — running for ${date}`);
-  console.log(`🌐 Fetching ${CONFIG.sources.length} sources…`);
+  console.log(`🌐 Fetching ${useSources.length} source(s) ${useRssRegistry ? '(RSS + HTML, parallel)' : '(HTML legacy)'}…\n`);
 
-  const all=[];
-  for(const src of CONFIG.sources){
-    console.log(`  • ${src.name}: ${src.url}`);
-    const html = await fetchText(src.url);
-    if(!html) continue;
-    const anchors = extractAnchors(html);
-    anchors.forEach(a => all.push({...a, source: src.name, weight: src.weight}));
+  let all = [];
+  if (useRssRegistry){
+    // Use the rich sources.js fetcher (RSS parser, 6-way concurrency, atom support).
+    all = await fetchAllSources(useSources, { verbose: true });
+  } else {
+    // Legacy HTML-only mode — kept for back-compat if sources.js isn't present.
+    for (const src of useSources){
+      console.log(`  • ${src.name}: ${src.url}`);
+      const html = await fetchText(src.url);
+      if (!html) continue;
+      const anchors = extractAnchors(html);
+      anchors.forEach(a => all.push({ ...a, source: src.name, weight: src.weight }));
+    }
   }
-  console.log(`  → ${all.length} raw anchors`);
+  console.log(`\n  → ${all.length} raw headlines`);
 
-  const filtered = dedupe(all).filter(a =>
-    /article|news|stocks|markets|economy|finance|crypto|policy/i.test(a.href)
+  const dedupeFn = dedupeSources || dedupe;
+  const filtered = dedupeFn(all).filter(a =>
+    // keep RSS items (no path filter needed) + news-like HTML hrefs
+    !a.href || /article|news|stocks|markets|economy|finance|crypto|policy|story|business|companies/i.test(a.href)
   );
   console.log(`  → ${filtered.length} after dedupe`);
 
@@ -378,7 +405,7 @@ async function main(){
   console.log(`  → ${cards.length} cards kept`);
 
   // 1. Write report.json (the slow LLM step's deliverable shape)
-  const report = buildReport(cards, { date, sources: CONFIG.sources.map(s=>s.name) });
+  const report = buildReport(cards, { date, sources: useSources.map(s=>s.name) });
   const jsonPath = outArg || path.join(CONFIG.outputDir, `report.${date}.json`);
   fs.writeFileSync(jsonPath, JSON.stringify(report, null, 2));
   console.log(`💾 report.json → ${jsonPath}`);
