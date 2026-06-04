@@ -1,0 +1,284 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Market Beat News Impact Report",
+  "description": "Contract between LLM content generators and the render.js HTML converter. Any conformant report.json will render correctly.",
+  "type": "object",
+  "required": ["date", "title", "sources", "mood", "news"],
+  "properties": {
+    "date":     { "type": "string", "description": "YYYY-MM-DD" },
+    "time":     { "type": "string", "description": "Human report time WITH timezone, e.g. '9:35a ET' or '14:05 ET'. Lets multiple same-day runs be told apart at a glance." },
+    "generatedAt": { "type": "string", "description": "Machine timestamp, ISO-8601 e.g. '2026-06-03T14:05:22Z'. Set this to the moment you finalize the report." },
+    "title":    { "type": "string" },
+    "subtitle": { "type": "string" },
+    "region":   { "type": "string", "enum": ["US","EU","APAC","GLOBAL"], "default": "GLOBAL" },
+    "version":  { "type": "string", "default": "0.2" },
+    "sources":  {
+      "type": "array",
+      "description": "Source labels shown in the header badge.",
+      "items": { "type": "string" }
+    },
+
+    "mood": {
+      "type": "array",
+      "description": "Market mood bar cells (futures, commodities, crypto, etc.). Render in given order.",
+      "items": {
+        "type": "object",
+        "required": ["label","value"],
+        "properties": {
+          "label":  { "type": "string", "description": "e.g. 'S&P 500 (fut)'" },
+          "value":  { "type": "string", "description": "Display value: '7,620', '$94.75'" },
+          "delta":  { "type": "string", "description": "Optional delta string: '-0.04%', 'flat'" },
+          "tone":   { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+        }
+      }
+    },
+
+    "macro": {
+      "type": "object",
+      "description": "Macro / economic-calendar block rendered as top tiles below the hero. Covers what happened/is happening today, what to expect tomorrow and the rest of the week, plus headline 'key event' tiles (Fed rate decision, CPI, Jobs, etc.).",
+      "properties": {
+        "headline": { "type": "string", "description": "One-line summary of the macro day/week." },
+        "regime":   { "type": "string", "description": "Current rate/policy regime read, e.g. 'HAWKISH TILT — markets pricing a hike...'. Text before an em-dash is shown as a pill badge." },
+        "keyEvents": {
+          "type": "array",
+          "description": "Headline macro tiles (Fed rate decision, CPI, Jobs/NFP, ADP, PCE, etc.). 3-5 recommended.",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label":  { "type": "string", "description": "e.g. 'Fed (FOMC)', 'Jobs (NFP)', 'CPI'" },
+              "value":  { "type": "string", "description": "e.g. 'Jun 16-17', 'Fri Jun 5', 'Today 8:15a'" },
+              "detail": { "type": "string", "description": "1-line context: forecast/prior, significance" },
+              "when":   { "type": "string", "enum": ["today","tomorrow","week","ahead"], "description": "Corner badge: today / week / ahead" },
+              "tone":   { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+            }
+          }
+        },
+        "today":    { "type": "array", "description": "Today's scheduled data releases & Fed events.", "items": { "$ref": "#/definitions/calItem" } },
+        "tomorrow": { "type": "array", "description": "Tomorrow's scheduled releases.", "items": { "$ref": "#/definitions/calItem" } },
+        "week": {
+          "type": "array",
+          "description": "Full week-at-a-glance calendar, Mon→Fri.",
+          "items": {
+            "type": "object",
+            "required": ["date", "event"],
+            "properties": {
+              "date":       { "type": "string", "description": "e.g. 'Fri Jun 5'" },
+              "event":      { "type": "string" },
+              "importance": { "type": "string", "enum": ["high","med","low"], "default": "med" },
+              "status":     { "type": "string", "enum": ["done","today","ahead"], "description": "Renders as a colored tag." },
+              "tone":       { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+            }
+          }
+        }
+      }
+    },
+
+    "marketCommentary": {
+      "type": "object",
+      "description": "Holistic, multi-view 'why is the tape doing this today' commentary, rendered as a prominent section near the top (below the insider block + macro). The point is synthesis the per-card analysis can't give: WHY a whole sector or list of names is down/up today, argued from more than one angle. Spend real research effort here.",
+      "properties": {
+        "headline": { "type": "string", "description": "One line, e.g. 'Semis lead a risk-off tape as oil spikes and yields back up'." },
+        "summary":  { "type": "string", "description": "2-4 sentence synthesis: what moved, how much, and the dominant driver. Use real numbers from mood[]/marketdata.json." },
+        "drivers": {
+          "type": "array",
+          "description": "The forces pushing the tape, each 'THEME/TICKER — mechanism'. 3-6 items.",
+          "items": { "type": "string" }
+        },
+        "views": {
+          "type": "object",
+          "description": "Same facts, three lenses. Forces multi-view thinking instead of one narrative.",
+          "properties": {
+            "bull": { "type": "string", "description": "The constructive read — why today's move is noise / a buying opportunity." },
+            "bear": { "type": "string", "description": "The worried read — why today's move is the start of something." },
+            "base": { "type": "string", "description": "Most-likely path given the weight of evidence." }
+          }
+        },
+        "whatWouldChangeMind": {
+          "type": "array",
+          "description": "Falsifiers — concrete events/prints that would flip the base case. 2-4 items.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "news": {
+      "type": "array",
+      "description": "News cards. Should already be sorted by priority desc by the generator.",
+      "items": {
+        "type": "object",
+        "required": ["id","headline","priority","tickers","levels"],
+        "properties": {
+          "id":         { "type": "integer" },
+          "headline":   { "type": "string" },
+          "source":     { "type": "string", "description": "e.g. 'Yahoo Finance · 2h ago'" },
+          "url":        { "type": "string" },
+          "category":   { "type": "string", "description": "e.g. 'AI · Semis'" },
+          "priority":   { "type": "integer", "minimum": 1, "maximum": 10 },
+          "confidence": { "type": "string", "enum": ["HIGH","MED","LOW"], "default": "MED" },
+          "sentiment":  { "type": "string", "enum": ["bull","bear","mixed","neutral"], "default": "neutral",
+                          "description": "Emoji dot on the headline: bull=🟢 bear=🔴 mixed=🟡 neutral=⚪" },
+
+          "tickers": {
+            "type": "array",
+            "description": "Primary ticker chips shown directly under the headline.",
+            "items": {
+              "type": "object",
+              "required": ["symbol","score"],
+              "properties": {
+                "symbol": { "type": "string" },
+                "score":  { "type": "integer", "minimum": -3, "maximum": 3 },
+                "note":   { "type": "string", "description": "Optional override label, e.g. 'Chinese chip ETFs'" }
+              }
+            }
+          },
+
+          "levels": {
+            "type": "object",
+            "description": "Three depths of impact analysis.",
+            "required": ["L1","L2","L3"],
+            "properties": {
+              "L1": { "$ref": "#/definitions/level" },
+              "L2": { "$ref": "#/definitions/level" },
+              "L3": { "$ref": "#/definitions/level" }
+            }
+          },
+
+          "beneficiaries": { "type": "array", "items": { "type": "string" } },
+          "victims":       { "type": "array", "items": { "type": "string" } },
+
+          "timeline": {
+            "type": "object",
+            "properties": {
+              "D": { "type": "string", "description": "Days" },
+              "W": { "type": "string", "description": "Weeks" },
+              "M": { "type": "string", "description": "Months" },
+              "L": { "type": "string", "description": "Long-term" }
+            }
+          },
+
+          "keyPoints": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+
+    "tickerTable": {
+      "type": "array",
+      "description": "Aggregated ticker reference table at the bottom.",
+      "items": {
+        "type": "object",
+        "required": ["symbol","name","sector","score"],
+        "properties": {
+          "symbol": { "type": "string" },
+          "name":   { "type": "string" },
+          "sector": { "type": "string" },
+          "score":  { "type": "integer", "minimum": -3, "maximum": 3 },
+          "driver": { "type": "string", "description": "Primary news driver / one-liner" }
+        }
+      }
+    },
+
+    "sectorHeatmap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sector","score"],
+        "properties": {
+          "sector": { "type": "string" },
+          "score":  { "type": "integer", "description": "Net signed score across all news" }
+        }
+      }
+    },
+
+    "actionSummary": {
+      "type": "object",
+      "properties": {
+        "buys":      { "type": "array", "items": { "type": "string" } },
+        "sells":     { "type": "array", "items": { "type": "string" } },
+        "watchlist": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "leaderboard": {
+      "type": "object",
+      "description": "🥇🥈🥉 'Bottom line: who wins today' ranked board.",
+      "properties": {
+        "winners": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rank","name","why"],
+            "properties": {
+              "rank": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string" },
+              "why":  { "type": "string" }
+            }
+          }
+        },
+        "losers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["rank","name","why"],
+            "properties": {
+              "rank": { "type": "integer", "minimum": 1 },
+              "name": { "type": "string" },
+              "why":  { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "otherStories": {
+      "type": "array",
+      "description": "Compact mini-table of low-priority headlines.",
+      "items": {
+        "type": "object",
+        "required": ["headline","keyPoint"],
+        "properties": {
+          "headline":     { "type": "string" },
+          "keyPoint":     { "type": "string" },
+          "beneficiaries":{ "type": "string", "description": "Comma-separated short list" }
+        }
+      }
+    },
+
+    "footer": { "type": "string" }
+  },
+
+  "definitions": {
+    "calItem": {
+      "type": "object",
+      "required": ["time", "event"],
+      "properties": {
+        "time":       { "type": "string", "description": "e.g. '8:30a ET'" },
+        "event":      { "type": "string", "description": "e.g. 'Nonfarm Payrolls (May)'" },
+        "importance": { "type": "string", "enum": ["high","med","low"], "default": "med", "description": "Dot color: high=red, med=amber, low=grey." },
+        "forecast":   { "type": "string", "description": "Consensus, e.g. '+85k' (use '—' or 'n/a' to hide)." },
+        "prior":      { "type": "string", "description": "Previous print, e.g. '+115k'." },
+        "tone":       { "type": "string", "enum": ["pos","neg","neu"], "default": "neu" }
+      }
+    },
+    "level": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text":    { "type": "string", "description": "Narrative paragraph for this level." },
+        "tickers": {
+          "type": "array",
+          "description": "Optional ticker chips rendered inside the level box.",
+          "items": {
+            "type": "object",
+            "required": ["symbol","score"],
+            "properties": {
+              "symbol": { "type": "string" },
+              "score":  { "type": "integer", "minimum": -3, "maximum": 3 },
+              "note":   { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
