@@ -28,12 +28,12 @@
 | **`render.js`** | Pure converter: `report.json → marketbeat_report.html` (fixed name; date is INSIDE the file; <50 ms; no fetch, no LLM) |
 | **`sources.js`** | 🆕 RSS + HTML source registry (20+ feeds: Yahoo, CNBC, MarketWatch, WSJ, Bloomberg, FT, NYT, Benzinga, Seeking Alpha, Investing.com, …) |
 | **`newsbeat.js`** | Fully autonomous: fetches all sources, scores, writes `report.json`, calls renderer. Auto-detects `sources.js` if present. |
-
+| **`diff.js`** | 🆕 Yesterday-vs-today diff: NEW/DROPPED/CHANGED tickers, sentiment flips, sector rotation, fresh headlines hitting tracked tickers |
 | **`scoreboard.js`** | 🆕 Cumulative ticker scoreboard across N days (append-only JSONL log + HTML rollup with spark grid + persistent-theme tags) |
 | **`enrich.js`** | 🆕 LLM enrichment loop for agent mode (Arena/etc.): flags thin cards, writes an agent prompt, applies the agent's JSON patch back + re-renders |
 | **`lint.js`** | 🆕 Schema + content linter. Catches missing macro tiles, thin L2/L3, placeholders, missing beneficiaries/victims, etc. Can write `lint.prompt.md` so an agent can read its own homework and fix it. Exit codes are CI-friendly (0/1/2). |
 | **`daily.js`** | 🆕 One-command end-of-day wrap: **lint** → snapshot → log → render → diff → scoreboard. **Gap-tolerant** (weekends/holidays/missed days). `--strict` aborts on lint errors. |
-
+| (no history logs) | Standalone mode: no scoreboard.jsonl / history.jsonl / insider logs (all gitignored; each run is self-contained) |
 | **`scripts/precommit.sh`** | (optional) Git pre-commit hook (update for standalone if used). |
 | **`.gitignore`** | 🆕 Ignores transient files (`lint.prompt.md`, `diff.*.json`, `scoreboard_*.html`, etc.) |
 | **`INSTALL.md`** | This file |
@@ -98,6 +98,10 @@ node enrich.js plan                              # → enrich.prompt.md (thin ca
 # (agent reads prompt, writes enrich.patch.json)
 node enrich.js apply                             # merge patch + re-render
 
+# Day-over-day diff (always compares report.previous.json → report.json)
+node diff.js
+node diff.js report.previous.json report.json    # explicit (same as default)
+
 # Cumulative scoreboard across N days (defaults to 7)
 node scoreboard.js append report.json            # log today's tickers
 node scoreboard.js show  --days=7                # render N-day HTML rollup
@@ -123,7 +127,7 @@ chmod +x .git/hooks/pre-commit
 The hook will, on every `git commit` that touches `news/`:
 
 1. Validate JSON syntax for every staged `report*.json`
-
+2. Validate `scoreboard.jsonl` line-by-line
 3. Run `lint.js --strict` on `news/report.json` — **blocks** if errors
 4. Re-render `marketbeat_report.html` from the staged `report.json`
 5. Auto-stage the regenerated HTML
@@ -151,13 +155,18 @@ The linter checks **all 8 committed data files** (not just `report.json`):
 |------|------|-----------------|
 | **E001–E011** | `report.json` top-level | macro block + Fed/NFP/CPI tiles, mood ≥ 5 cells, news 8–25 cards, ticker table, leaderboard ≥ 3w/3l |
 | **E101–E109** | each news card | valid id/headline/priority/confidence/sentiment, L1/L2/L3 ≥ 80 chars no placeholders, beneficiaries/victims, full D/W/M/L timeline |
-
+| **E202–E205** | `report.previous.json` | valid JSON, date strictly earlier (or warn if same as today), within 30-day sanity bound |
+| **E301–E307** | `scoreboard.jsonl` | every line valid JSON, required fields, scores in [-3..3], ≤ 30 unique dates (rolling cap), no future dates, no (date,symbol) dupes |
+| **E402–E406** | `history.jsonl` | every line valid JSON, required fields, ≤ 90 unique dates (rolling cap), no future dates, no duplicate dates |
 | **E501–E504** | `marketbeat_report.html` | exists, `<title>` date matches `report.json.date`, has macro section, news-card count matches |
-
+| **E602** | `marketbeat_report.previous.html` | `<title>` date matches `report.previous.json.date` |
+| **E702** | `marketbeat_diff.html` | `<title>` date matches `report.json.date` |
+| **E802** | `scoreboard_7d.html` | "last N day(s)" matches `scoreboard.jsonl` unique dates |
+| **C901–C904** | cross-file consistency | `report.json.date` matches latest `scoreboard.jsonl` / `history.jsonl` date · all `tickerTable` symbols appear in today's scoreboard rows · `history.jsonl` today entry matches `report.json.title` |
 | **W201–W209** | warnings (don't block) | < 3 tickers, thin L2+L3, missing category/url, no priority-10 card, sentiment monoculture |
 
 **Why this matters:** an LLM regenerating only `report.json` and skipping
-
+`daily.js` would leave `scoreboard.jsonl` / `history.jsonl` / HTMLs out of
 sync. The linter catches this drift before it pollutes git history.
 
 **Agent-friendly loop**: with `--strict --fix-prompt`, the linter writes
@@ -183,6 +192,7 @@ Each run is completely standalone for that moment's news. The LLM only ever sees
 
 ### 📆 Calendar-gap handling
 
+`diff.js` compares the dates **inside** `report.previous.json` and `report.json`
 (not the filenames), so it correctly labels weekend / holiday / missed-day gaps:
 
 | Scenario (dates inside the two JSONs) | Banner |
@@ -192,6 +202,7 @@ Each run is completely standalone for that moment's news. The LLM only ever sees
 | Fri → Tue (Mon was a holiday)         | *4-day gap — weekend/holiday/missed* |
 | You forgot for a week                 | *7-day gap — weekend/holiday/missed* |
 | Same date (re-run within same day)    | Diff is skipped (idempotent) |
+| First-ever run (no `report.previous.json`) | Diff skipped, graceful warning |
 
 `scoreboard.js show --days=7` uses **last 7 dates with logged data**, not
 last 7 calendar days — so a 4-day window over a holiday week still shows 4
@@ -385,6 +396,7 @@ ajv validate -s news/report.schema.json -d news/report.json
 | Linter complains about W202 / W203 | Soft warnings about thin L2/L3 narrative — deepen one of them or ignore |
 | Agent wrote HTML instead of JSON | Re-paste `PROMPT.md` and stress the "do NOT generate HTML" line in the 4-phase workflow |
 | `lint.js --strict` keeps failing | Read `lint.prompt.md` — it lists every error with its JSON path |
+| `diff.js` says "no report.previous.json" | First-ever run — `daily.js` creates one as its final step; tomorrow's diff will work |
 
 ---
 
@@ -393,7 +405,7 @@ ajv validate -s news/report.schema.json -d news/report.json
 Completed in v0.3:
 - [x] **RSS feed support** — 20+ feeds via `sources.js` (Yahoo, CNBC, MarketWatch, WSJ, Bloomberg, FT, NYT, Benzinga, Seeking Alpha, Investing.com)
 - [x] **LLM enrichment loop** (`enrich.js`) — works with Arena agent mode, no API key
-
+- [x] **Yesterday-vs-today diff** (`diff.js`) — ticker movement, sentiment flips, sector rotation
 - [x] **Cumulative ticker scoreboard** (`scoreboard.js`) — append-only JSONL log + N-day HTML rollup with spark grid
 - [x] **Macro & economic-calendar block** — Fed/NFP/CPI tiles + today/tomorrow/week calendar
 
@@ -407,16 +419,18 @@ Completed in v0.4:
 
 Completed in v0.6 (this release):
 - [x] **Linter now covers all 8 committed files** — not just `report.json`
-
+- [x] **`scoreboard.jsonl` validation** — line-by-line JSON, score range, rolling 30-day cap, no future dates, no (date,symbol) dupes
+- [x] **`history.jsonl` validation** — required fields, rolling 90-day cap, no duplicate dates
 - [x] **HTML date sync** — `marketbeat_report.html` / `.previous.html` / `_diff.html` `<title>` dates must match their source JSON
-
+- [x] **Cross-file consistency (C901–C904)** — `report.json.date` ↔ latest `scoreboard.jsonl` ↔ latest `history.jsonl`; all `tickerTable` symbols must appear in today's scoreboard rows
 - [x] **53 unique check codes** (up from 19) — LLMs that touch any file get caught
 - [x] **`report.schema.json` v0.6** — `version` bumped (no breaking changes)
 
 Completed in v0.5:
-
+- [x] **Fixed filenames** — 6 working files in `news/` never change day-to-day (`report.json`, `report.previous.json`, `marketbeat_report.html`, `marketbeat_report.previous.html`, `marketbeat_diff.html`, `scoreboard_7d.html`). Date lives INSIDE each file.
 - [x] **`daily.js` rotation** — automatically promotes today → previous at end of run, so tomorrow's diff just works
-
+- [x] **`history.jsonl`** — long-term archive (one compact line per day), rolling 90-day window
+- [x] **`scoreboard.jsonl` rolling 30-day window** — auto-prunes older rows on every `append`
 - [x] **Size budget = ~750 KB capped forever** — no unbounded growth
 - [x] **Auto-migration** — `daily.js` removes any legacy date-suffixed files on first run
 - [x] **`previous-day = diff baseline ONLY` rule** prominently documented in PROMPT.md
@@ -485,20 +499,20 @@ so git diff shows clean content overwrites rather than file-creation noise.
 The LLM only ever sees ONE previous day's HTML as a style reference.
 
 > **Viewing the scoreboard on GitHub:** open
-
+> `news/scoreboard_7d.html` in the repo → click **"Raw"** → it renders in
 > the browser. Or use `htmlpreview.github.io` for an even cleaner view.
 
 `.gitignore` (already in repo):
 ```
 news/scoreboard_*.html
-
+news/diff.json
 news/lint.prompt.md
 news/enrich.prompt.md
 news/enrich.patch*.json
 # legacy date-suffixed files from the old layout (auto-migrated away)
 news/report.[0-9]*.json
 news/marketbeat_report_[0-9]*.html
-
+news/marketbeat_diff_[0-9]*.html
 news/diff.[0-9]*.json
 ```
 

@@ -1,5 +1,15 @@
 # 📋 Market Beat — LLM Prompt (paste this into any agent)
 
+**Minimal files needed for fresh clone / reproducibility (standalone mode):**
+- 7 JS: daily.js, insiders.js, lint.js, marketdata.js, render.js, sources.js, validate.js
+- 2 MD: INSTALL.md, PROMPT.md (this file)
+- report.schema.json
+- .gitignore
+
+All generated data (report.json, marketdata.json, insiders.json, marketbeat_report.html, any .jsonl) are temporary and gitignored. Only commit the above + the final HTML in ../uploads/.
+
+Run: PHASE 0 (marketdata + insiders fetch), paste this prompt to write report.json, then `node daily.js --strict`.
+
 > **Goal:** get the agent to spend its time on *content quality* and write a
 > structured `report.json` file. **Do not let the LLM write HTML.**
 > A 200-line deterministic renderer (`render.js`) converts JSON → HTML in <50ms.

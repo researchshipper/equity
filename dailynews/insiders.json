@@ -1,0 +1,163 @@
+{
+  "asof": "2026-06-04",
+  "fetchedAt": "2026-06-04T02:09:27.274Z",
+  "status": "ok",
+  "source": "OpenInsider cluster buys",
+  "windowDays": 30,
+  "minBuyers": 2,
+  "clusterBuys": [
+    {
+      "symbol": "LILA",
+      "name": "Liberty Latin America Ltd.",
+      "buyers": 2,
+      "totalUSD": 107229266,
+      "lastTrade": "2026-05-22",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/LILA",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=LILA",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "BRCB",
+      "name": "Black Rock Coffee Bar, Inc.",
+      "buyers": 3,
+      "totalUSD": 73337883,
+      "lastTrade": "2026-05-21",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/BRCB",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=BRCB",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "IFF",
+      "name": "International Flavors & Fragrances Inc",
+      "buyers": 2,
+      "totalUSD": 32284388,
+      "lastTrade": "2026-06-01",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/IFF",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=IFF",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "PLSE",
+      "name": "Pulse Biosciences, Inc.",
+      "buyers": 2,
+      "totalUSD": 26590676,
+      "lastTrade": "2026-05-15",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/PLSE",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=PLSE",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "MOBI",
+      "name": "Mobia Medical, Inc.",
+      "buyers": 6,
+      "totalUSD": 19024980,
+      "lastTrade": "2026-05-11",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/MOBI",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=MOBI",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    }
+  ],
+  "clusterBuys7d": [
+    {
+      "symbol": "IFF",
+      "name": "International Flavors & Fragrances Inc",
+      "buyers": 2,
+      "totalUSD": 32284388,
+      "lastTrade": "2026-06-01",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/IFF",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=IFF",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "CDW",
+      "name": "Cdw Corp",
+      "buyers": 2,
+      "totalUSD": 2505138,
+      "lastTrade": "2026-05-27",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/CDW",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=CDW",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "BSM",
+      "name": "Black Stone Minerals, L.P.",
+      "buyers": 2,
+      "totalUSD": 2392030,
+      "lastTrade": "2026-05-29",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/BSM",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=BSM",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "GRNT",
+      "name": "Granite Ridge Resources, Inc.",
+      "buyers": 6,
+      "totalUSD": 919373,
+      "lastTrade": "2026-05-27",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/GRNT",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=GRNT",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    },
+    {
+      "symbol": "SMWB",
+      "name": "Similarweb Ltd.",
+      "buyers": 4,
+      "totalUSD": 1020716,
+      "lastTrade": "2026-06-01",
+      "titles": [
+        "Insiders"
+      ],
+      "links": {
+        "openinsider": "http://openinsider.com/SMWB",
+        "dataroma": "https://www.dataroma.com/m/ins/ins.php?t=SMWB",
+        "sec": "https://www.sec.gov/edgar/search/"
+      }
+    }
+  ],
+  "note": "7-day (aggressive/recent latest buys) + 30-day (smoother aggregate — primary filter for signals). Strong net buying pressure in 90-day window (purchases outweigh sells). Scorecard tracks 7d/30d/90d forward returns."
+}
