@@ -1,0 +1,31 @@
+# Market Beat — files that should NEVER be committed.
+# This is now a "standalone / fire-and-forget" setup.
+# Each run pulls fresh data, LLM (or agent) writes report.json,
+# daily.js --strict produces the final timestamped HTML in ../uploads/.
+# No history, no diff, no previous, no jsonl, no need to commit data files back.
+# Only commit the *code* (js, md, schema) + the final HTML in uploads/.
+
+# All generated data / intermediate reports (temporary per run)
+report.json
+report.previous.json
+marketdata.json
+insiders.json
+insiders.block.html
+marketbeat_report.html
+marketbeat_report.previous.html
+marketbeat_diff.html
+scoreboard_*.html
+diff.json
+*.jsonl
+
+# Linter & enrichment scratchpads — agent reads + discards
+lint.prompt.md
+enrich.prompt.md
+enrich.patch.json
+enrich.patch.*.json
+
+# Legacy date-suffixed (safety)
+report.[0-9]*.json
+marketbeat_report_[0-9]*.html
+marketbeat_diff_[0-9]*.html
+diff.[0-9]*.json
