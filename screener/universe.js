@@ -1,0 +1,3 @@
+'use strict';
+// Curated universe (extracted from screener.js; MAXR removed — delisted 2023).
+module.exports = ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "TSLA", "AVGO", "TSM", "AMD", "ASML", "CRM", "ADBE", "NFLX", "NOW", "UBER", "INTU", "WDAY", "SNOW", "PLTR", "DDOG", "CRWD", "PANW", "ZS", "NET", "MDB", "TEAM", "HUBS", "SHOP", "MELI", "CPNG", "SE", "BABA", "JD", "PDD", "QCOM", "TXN", "INTC", "AMAT", "LRCX", "MU", "KLAC", "ARM", "MRVL", "SMCI", "VRT", "ANET", "CEG", "VST", "TLN", "GEV", "CCJ", "UUUU", "BWXT", "LEU", "RDW", "LUNR", "ASTS", "RKLB", "SPIR", "BKSY", "PL", "RTX", "LMT", "GD", "NOC", "AVAV", "KTOS", "CLSK", "MARA", "RIOT", "IREN", "CORZ", "WULF", "CIFR"];
