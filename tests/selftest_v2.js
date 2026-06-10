@@ -1,8 +1,8 @@
 'use strict';
 // selftest_v2.js — offline validation of indicators_v2 / setups / regime with synthetic series.
-const I = require('./lib/indicators_v2.js');
-const { classifySetup } = require('./lib/setups.js');
-const { classifyRegime } = require('./lib/regime.js');
+const I = require('../lib/indicators_v2.js');
+const { classifySetup } = require('../lib/setups.js');
+const { classifyRegime } = require('../lib/regime.js');
 
 let pass = 0, fail = 0;
 const ok = (c, n) => c ? (pass++, console.log(`  ✓ ${n}`)) : (fail++, console.error(`  ✗ ${n}`));
