@@ -66,5 +66,16 @@ const rOff = classifyRegime({ SPY: dn(220), QQQ: dn(220), IWM: dn(220), HYG: dn(
 ok(rOff.regime === 'RISK_OFF' && rOff.exposure < 0.5, `bear tape → RISK_OFF (got ${rOff.regime}, ${rOff.score})`);
 ok(rOn.weights.technical > rOff.weights.technical && rOff.weights.quality > rOn.weights.quality, 'adaptive composite weights shift by regime');
 
+
+// ── stop floor (EQIX-class bug: tight swing low → noise stop → fantasy R:R) ──
+console.log('stop floor:');
+const tight = coilSeries();
+// force last 10 bars to have lows barely below close (0.3%) — tighter than 1 ATR
+for (let i = tight.length - 10; i < tight.length; i++) tight[i].low = tight[i].close * 0.997;
+const sT = classifySetup(tight);
+const stopDist = sT.entry - sT.stop;
+ok(stopDist >= sT.atr * 0.99, `stop floored at >=1 ATR despite tight swing low (dist ${stopDist.toFixed(2)} vs ATR ${sT.atr})`);
+ok(sT.rr < 6, `R:R no longer fantasy (got ${sT.rr})`);
+
 console.log(`\nselftest: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
