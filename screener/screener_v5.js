@@ -25,6 +25,7 @@ const { getSMA, getRSI, getATR } = require('../lib/indicators.js');
 const { relStrength, rsLineNearHigh, upDownVolRatio, obvSlope, closingRange } = require('../lib/indicators_v2.js');
 const { classifySetup } = require('../lib/setups.js');
 const { classifyRegime, sectorLeadership } = require('../lib/regime.js');
+const { evaluateSignals, parseJsonl } = require('../lib/scorecard.js');
 
 const REGIME_SYMS = ['SPY', 'QQQ', 'IWM', 'HYG', 'IEF', '^VIX', 'RSP'];
 const SECTOR_ETFS = ['XLK', 'XLE', 'XLF', 'XLI', 'XLV', 'XLY', 'XLP', 'XLU', 'XLB', 'XLC', 'XLRE'];
@@ -151,5 +152,38 @@ async function screenOne(sym, spyCloses, regime) {
   };
   fs.writeFileSync('screener_dump.json', JSON.stringify(dump, null, 2));
   fs.writeFileSync('top_tickers.txt', final.map(r => r.sym).join(','));
+
+  // ── Forward-return ledger: auto-APPEND every TRIGGERED signal (never overwrite). ──
+  // One JSON line per signal. Scorecard later computes +7/+30/+90d returns per row.
+  const dateStr = new Date().toISOString().slice(0, 10);
+  const lines = final.filter(r => r.setup.state === 'TRIGGERED').map(r => JSON.stringify({
+    date: dateStr, sym: r.sym, entry: r.setup.entry, stop: r.setup.stop, t1: r.setup.t1,
+    pivot: r.setup.pivot, rr: r.setup.rr, score: r.setup.score, rs: r.rs,
+    regime: regime.regime, exposure: regime.exposure,
+  }));
+  const priorLog = fs.existsSync('screener_log.jsonl') ? parseJsonl(fs.readFileSync('screener_log.jsonl', 'utf8')) : [];
+  const already = new Set(priorLog.map(x => `${x.sym}|${x.date}`));
+  const fresh = lines.filter(l => { const o = JSON.parse(l); return !already.has(`${o.sym}|${o.date}`); });
+  if (fresh.length) {
+    fs.appendFileSync('screener_log.jsonl', fresh.join('\n') + '\n');
+    console.log(`📒 Appended ${fresh.length} TRIGGERED signal(s) to screener_log.jsonl (commit this file).`);
+  } else if (lines.length) {
+    console.log('📒 TRIGGERED signal(s) already logged today — no duplicate append.');
+  }
+
+  // ── Scorecard: evaluate the FULL ledger (history) so the report shows tracking. ──
+  try {
+    const ledger = fs.existsSync('screener_log.jsonl') ? parseJsonl(fs.readFileSync('screener_log.jsonl', 'utf8')) : [];
+    if (ledger.length) {
+      const syms = [...new Set(ledger.map(x => x.sym))];
+      const quotesBySym = {};
+      for (const sym of syms) quotesBySym[sym] = (await chartCloses(sym, 200)).quotes;
+      const card = evaluateSignals(ledger, quotesBySym);
+      card.asOf = new Date().toISOString();
+      fs.writeFileSync('scorecard.json', JSON.stringify(card, null, 2));
+      const st = card.stats;
+      console.log(`📈 Scorecard: ${st.total} signals | ${st.open} open | win rate ${st.winRatePct ?? '—'}% | avg R ${st.avgR ?? '—'} | cum R ${st.cumR ?? '—'} → scorecard.json`);
+    }
+  } catch (e) { console.log('⚠️  scorecard generation failed (non-fatal):', e.message); }
   console.log(`\n✅ [3/3] screener_dump.json written — feed to LLM for the reasoning pass (Pass 2).`);
 })();
