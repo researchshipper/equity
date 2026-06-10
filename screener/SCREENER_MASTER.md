@@ -1,63 +1,46 @@
-# 🚀 UNIFIED ALPHA SCREENER — PLAYBOOK
+# SCREENER MASTER — v5 (READ THIS FIRST, AGENT)
 
-This is a standalone project separate from individual stock analysis. It hunts the market for explosive technical setups and layers on an AI Neural Hunt to identify unpriced fundamental catalysts.
+⚠️ **AUTHORITATIVE WORKFLOW. The legacy path (screener.js + neuralmd.js, repo `arena2`) is DEPRECATED.**
+Do NOT curl from `researchshipper/arena2` — that reference was stale. All code lives in THIS repo (`researchshipper/equity`), already checked out. Do not fetch scripts from the network.
 
-## ⚡ SETUP INSTRUCTIONS
-Download the required scripts before running:
+## Run order (exactly this, fail loudly, never fall back to legacy)
+
 ```bash
-curl -sLO https://raw.githubusercontent.com/researchshipper/arena2/main/screener/screener.js
-curl -sLO https://raw.githubusercontent.com/researchshipper/arena2/main/screener/neuralmd.js
-mkdir -p ../lib
-curl -sL https://raw.githubusercontent.com/researchshipper/arena2/main/lib/indicators.js -o ../lib/indicators.js
-curl -sL https://raw.githubusercontent.com/researchshipper/arena2/main/lib/sanity.js -o ../lib/sanity.js
-npm install yahoo-finance2 --silent
+# 0. Preflight — MUST print "13 passed, 0 failed". If it errors, STOP and report; do not run anything else.
+node tests/selftest_v2.js
+
+# 1. Screen (curated 75) or full S&P 500 merge:
+node screener/screener_v5.js --top=15
+node screener/screener_v5.js --universe=sp500 --top=15
 ```
 
-## 🔄 EXECUTION ORDER
+**Hard rules for the agent:**
+- If `screener_v5.js` throws (missing module, network error), REPORT THE ERROR. Falling back to `screener.js` is FORBIDDEN — it has known bugs (unclamped stops, analyst-target R:R inflation) that v5 exists to fix.
+- Success criteria: console shows a `Regime:` line + a `STATE` column with values in {TRIGGERED, COILING, REVERSAL, EXTENDED}, and `screener_dump.json` + `top_tickers.txt` exist. If the output table says "COILED SPRING" or "WATCHING", you ran the WRONG script.
 
-**STEP 1 ── Run the Technical Screener**
-Run the highly-concurrent Node engine to scan the Top 70+ universe (or S&P500).
-```bash
-node screener.js
-# Or to scan the S&P500: node screener.js --universe=sp500
-```
-*This generates `screener_report.html` (Tab 1) and exports the top 5 tickers to `top_tickers.txt`.*
+## What v5 does (so you can sanity-check it)
+1. **Regime gate** — SPY/QQQ/IWM/HYG/IEF/VIX/RSP → RISK_ON / NEUTRAL / RISK_OFF, exposure multiplier, sector ETF leadership. In RISK_OFF only TRIGGERED setups survive.
+2. **Liquidity gate** — price > $5, median $20M+ daily dollar volume.
+3. **RS gate** — weighted 1m/3m/6m excess return vs SPY; only top 40% advance.
+4. **Setup state machine** (`lib/setups.js`) — COILING (watch + alert level) → TRIGGERED (pivot break ≤3% past pivot, ≥1.4x vol, strong close = the entry) → EXTENDED (no chase; wait for retest). Stops clamped ≤8%; targets are measured-move with a 2R floor — NEVER analyst targets.
+5. **Earnings flag** — ⚠️ if earnings within 7 days.
 
-**STEP 2 ── Read the Top 5 Tickers**
-```bash
-cat top_tickers.txt
-```
+## Pass 2 — LLM reasoning over the dump (replaces legacy neuralmd flow)
+Open `screener_dump.json`. It embeds its own rubric in the `instructions` field. Follow it exactly:
+- Use ONLY numbers present in the file. Never invent prices, never cite from memory.
+- Web-search 7-day news per candidate for catalyst fuel; conflicts between tape evidence and setup state cap conviction at 5.
+- `earningsRisk: true` → conviction ≤4 or explicit gap-sizing note.
+- Respect `regime.exposure` as the position-size ceiling.
+- Output the strict JSON array the rubric specifies, then a 3-line portfolio note.
 
-**STEP 3 ── Execute AI Neural Hunt (Double Verification Directive)**
-For each of the 5 tickers:
-- Perform deep `web_search` specifically hunting for: Unannounced M&A rumors, Government contract awards (DoD/NASA), AI infrastructure partnerships, or macro tailwinds.
-- Double verify facts. Do not rely solely on Yahoo Finance news; search alternative data sources, Reddit/Twitter sentiment mentions, or recent SEC filings.
+## Verification (maintainer)
+Every cited price in the Pass-2 output must exist in `screener_dump.json` (same E012 discipline as Market Beat). Log every TRIGGERED signal to `screener_log.jsonl` for +7/+30/+90d forward-return scoring.
 
-**STEP 4 ── Write `neural_insights.txt`**
-Format your research exactly like this, separated by `---`:
+## File contract
+| File | Producer | Consumer |
+|---|---|---|
+| `screener_dump.json` | screener_v5.js | LLM Pass 2 |
+| `top_tickers.txt` | screener_v5.js | stock_analyzer/run_pipeline.js |
+| `screener_log.jsonl` | maintainer/agent appends TRIGGERED rows | forward-return scorecard |
 
-```text
-TICKER: KTOS
-RATING: STRONG BUY
-ENTRY: 64.13
-EXIT: 75.36
-VAL_MOAT: Dominant provider of target drones for the DoD. Low-cost attritable mass is the new Pentagon procurement strategy.
-TAILWINDS_RISKS: Tailwind: Rising geopolitical tensions. Risk: Margin compression from supply chain bottlenecks on solid rocket motors.
-FUEL_NEWS: Recently awarded a $7M Counter-UAS contract. Rumors circulating about a new hypersonic testing facility in Indiana.
-STORY_CHANGERS: 1. Transitioning from test drones to armed tactical drones (Valkyrie). 2. Potential acquisition target for larger defense primes.
----
-TICKER: META
-RATING: BUY
-ENTRY: 632.51
-EXIT: 673.01
-VAL_MOAT: 3 billion Daily Active Users. Irreplaceable advertising duopoly with Google.
-TAILWINDS_RISKS: Tailwind: AI dramatically improving ad targeting. Risk: $145B AI capex cycle compressing near-term FCF.
-FUEL_NEWS: Quietly rolling out paid Meta AI subscriptions across WhatsApp, creating a massive new recurring revenue stream.
-STORY_CHANGERS: 1. WhatsApp business API monetization finally scaling. 2. Llama 4 open-source models undercutting competitors' licensing revenues.
-```
-
-**STEP 5 ── Generate Final Dashboard**
-```bash
-node neuralmd.js neural_insights.txt
-```
-*This reads your text file and injects beautiful HTML cards into the second tab, creating `final_screener_report.html`.*
+Legacy files `screener.js`, `neuralmd.js`, `screener_report.html`, `neural_insights.txt` are retained for history only. Delete them once v5 has produced 5 clean daily runs.

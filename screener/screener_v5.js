@@ -30,7 +30,7 @@ const REGIME_SYMS = ['SPY', 'QQQ', 'IWM', 'HYG', 'IEF', '^VIX', 'RSP'];
 const SECTOR_ETFS = ['XLK', 'XLE', 'XLF', 'XLI', 'XLV', 'XLY', 'XLP', 'XLU', 'XLB', 'XLC', 'XLRE'];
 
 // keep the curated universe from screener.js (import or paste); placeholder require:
-const UNIVERSE = require('./universe.js'); // export the array from old screener.js into universe.js
+const { resolveUniverse } = require('./universe.js'); // single source of truth (curated + optional S&P 500)
 
 async function chartCloses(sym, days = 420) {
   const d1 = Math.floor(Date.now() / 1000) - days * 24 * 3600;
@@ -110,14 +110,13 @@ async function screenOne(sym, spyCloses, regime) {
   regime.signals.forEach(s => console.log(`     ${s}`));
   console.log(`   Leading sectors: ${leaders.slice(0, 4).map(l => `${l.etf}(${l.rs > 0 ? '+' : ''}${l.rs})`).join('  ')}`);
 
-  let universe = UNIVERSE;
-  // (sp500 merge identical to old screener — omitted for brevity, reuse getSP500())
+  const universe = await resolveUniverse(args); // --universe=sp500 merges S&P 500
 
   console.log(`\n🔬 [1/3] Screening ${universe.length} tickers (liquidity → RS → setup state machine)…`);
   const results = [];
   const conc = 8;
   for (let i = 0; i < universe.length; i += conc) {
-    const chunk = await Promise.all(universe.slice(i, i + conc).map(s => screenOne(s, spyCloses, regime.regime ? regime : regime)));
+    const chunk = await Promise.all(universe.slice(i, i + conc).map(s => screenOne(s, spyCloses, regime)));
     results.push(...chunk.filter(Boolean));
     process.stdout.write(`\r   batch ${Math.floor(i / conc) + 1}/${Math.ceil(universe.length / conc)}`);
     await new Promise(r => setTimeout(r, 250));
