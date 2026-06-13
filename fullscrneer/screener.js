@@ -35,6 +35,12 @@ const args = process.argv.slice(2);
 const universeArg = args.find(a => a.startsWith('--universe='));
 const universeName = universeArg ? universeArg.split('=')[1] : 'default';
 const isDemo = args.includes('--demo');
+// --interval=1d (default) or --interval=1wk to match a WEEKLY TradingView chart.
+// The technical engine is timeframe-relative: superV5.3 on a weekly chart will
+// only match a screener run with --interval=1wk, never a daily run.
+const intervalArg = args.find(a => a.startsWith('--interval='));
+const interval = intervalArg ? intervalArg.split('=')[1] : '1d';
+if (!['1d', '1wk'].includes(interval)) { console.error(`Unsupported --interval=${interval} (use 1d or 1wk)`); process.exit(1); }
 
 /**
  * Generate realistic OHLCV data with specific technical patterns.
@@ -280,9 +286,11 @@ const NDX100_PROFILES = {
 // ── Fetch real data from Yahoo Finance ────────────────────────────
 async function fetchTickerData(sym) {
   try {
-    const d1 = Math.floor(Date.now() / 1000) - cfg.chartDays * 24 * 3600;
+    // Weekly bars need ~5.2x the calendar window for the same bar count
+    const days = interval === '1wk' ? Math.ceil(cfg.chartDays * 5.2) : cfg.chartDays;
+    const d1 = Math.floor(Date.now() / 1000) - days * 24 * 3600;
     const [ch, qs] = await Promise.all([
-      yahooFinance.chart(sym, { period1: d1, interval: '1d' }).catch(() => null),
+      yahooFinance.chart(sym, { period1: d1, interval }).catch(() => null),
       yahooFinance.quoteSummary(sym, { modules: ['financialData', 'recommendationTrend', 'defaultKeyStatistics'] }).catch(() => null)
     ]);
 
@@ -478,6 +486,21 @@ async function runLive() {
   console.log('================================================================\n');
 
   const { results, macroResult } = isDemo ? await runDemo() : await runLive();
+
+  if (isDemo) {
+    // HARD WATERMARK: demo data is FABRICATED (synthetic prices, hardcoded
+    // macro, hardcoded analyst upside). Tag every row so it can never be
+    // mistaken for a real screen.
+    console.log('\n⛔⛔⛔  DEMO MODE — ALL DATA BELOW IS FABRICATED. DO NOT TRADE ON IT.  ⛔⛔⛔\n');
+    for (const r of results) {
+      r.demo = true;
+      r.sym = r.sym + ' [FAKE]';
+      if (r.rating && r.rating.comboWhy) r.rating.comboWhy = '[DEMO — FABRICATED DATA] ' + r.rating.comboWhy;
+    }
+    if (macroResult) macroResult.why = '[DEMO — FABRICATED DATA] ' + macroResult.why;
+  } else {
+    console.log(`[RUN] LIVE data | interval=${interval} | ${new Date().toISOString().slice(0, 10)} — compare against a ${interval === '1wk' ? 'WEEKLY' : 'DAILY'} TradingView chart only`);
+  }
 
   results.sort((a, b) => {
     if (b.rating.rating !== a.rating.rating) return b.rating.rating - a.rating.rating;
