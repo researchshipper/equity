@@ -28,6 +28,7 @@ import { computeMacroRegime } from './lib/macro.js';
 import { computeRating } from './lib/rating.js';
 import { computeRisk } from './lib/risk.js';
 import { getUniverse, NDX100 } from './lib/universe.js';
+import { assessDilution } from './lib/dilution.js';
 import { generateReport, generateTopTickers, generateConsoleSummary } from './lib/report.js';
 
 // ── Parse CLI args ────────────────────────────────────────────────
@@ -41,6 +42,12 @@ const isDemo = args.includes('--demo');
 const intervalArg = args.find(a => a.startsWith('--interval='));
 const interval = intervalArg ? intervalArg.split('=')[1] : '1d';
 if (!['1d', '1wk'].includes(interval)) { console.error(`Unsupported --interval=${interval} (use 1d or 1wk)`); process.exit(1); }
+// Custom universe: --universe=custom --tickers=AAPL,MSFT,TTD  (or --tickers=@list.txt)
+const tickersArg = args.find(a => a.startsWith('--tickers='));
+const customSpec = tickersArg ? tickersArg.split('=').slice(1).join('=') : '';
+// Dilution AI policy: --dilution=flagged (default) | all | off
+const dilutionArg = args.find(a => a.startsWith('--dilution='));
+const dilutionPolicy = dilutionArg ? dilutionArg.split('=')[1] : 'flagged';
 
 /**
  * Generate realistic OHLCV data with specific technical patterns.
@@ -291,7 +298,7 @@ async function fetchTickerData(sym) {
     const d1 = Math.floor(Date.now() / 1000) - days * 24 * 3600;
     const [ch, qs] = await Promise.all([
       yahooFinance.chart(sym, { period1: d1, interval }).catch(() => null),
-      yahooFinance.quoteSummary(sym, { modules: ['financialData', 'recommendationTrend', 'defaultKeyStatistics'] }).catch(() => null)
+      yahooFinance.quoteSummary(sym, { modules: ['financialData', 'recommendationTrend', 'defaultKeyStatistics', 'cashflowStatementHistory', 'incomeStatementHistory', 'balanceSheetHistory'] }).catch(() => null)
     ]);
 
     if (!ch || !ch.quotes || ch.quotes.length < cfg.minBars) return null;
@@ -332,13 +339,46 @@ async function fetchTickerData(sym) {
     }
 
     const fd = qs ? (qs.financialData || {}) : {};
-    return { quotes, price, vol: quotes[quotes.length - 1].volume, analystData, revGrowth: fd.revenueGrowth || 0, margins: fd.operatingMargins || 0 };
+
+    // ── Dilution fundamentals (TTM where possible) ──────────────────
+    const cfh = qs?.cashflowStatementHistory?.cashflowStatements || [];
+    const ish = qs?.incomeStatementHistory?.incomeStatementHistory || [];
+    const bsh = qs?.balanceSheetHistory?.balanceSheetStatements || [];
+    const ks  = qs?.defaultKeyStatistics || {};
+    const num = x => (x == null ? null : (typeof x === 'object' ? (x.raw ?? null) : x));
+
+    // Annual statements are most-recent-first. TTM ≈ latest annual here
+    // (Yahoo's free quoteSummary doesn't expose clean TTM cashflow).
+    const cf0 = cfh[0] || {};
+    const is0 = ish[0] || {};
+    const bs0 = bsh[0] || {};
+
+    const ocfTTM = num(cf0.totalCashFromOperatingActivities);
+    const capex  = num(cf0.capitalExpenditures);                 // negative in Yahoo
+    const fcfTTM = (ocfTTM != null && capex != null) ? ocfTTM - Math.abs(capex) : (fd.freeCashflow ?? null);
+    const sbcTTM = num(cf0.stockBasedCompensation);
+    const revTTM = num(is0.totalRevenue) ?? (fd.totalRevenue ?? null);
+    const cash   = fd.totalCash ?? num(bs0.cash) ?? null;
+    const totalDebt = fd.totalDebt ?? num(bs0.shortLongTermDebt) ?? null;
+    const debtToEquity = fd.debtToEquity != null ? fd.debtToEquity / 100 : null;
+    const shares = num(ks.sharesOutstanding) ?? null;
+    // Share-count YoY: compare latest vs year-ago common shares from balance sheet
+    let shareTrendYoY = null;
+    const sh0 = num(bs0.commonStock) ?? (bsh[0] ? num(bsh[0].commonStock) : null);
+    const sh1 = bsh[1] ? num(bsh[1].commonStock) : null;
+    if (sh0 != null && sh1 != null && sh1 !== 0) shareTrendYoY = (sh0 / sh1) - 1;
+    // Fallback: Yahoo's net share issuance proxy from key stats
+    if (shareTrendYoY == null && ks.netIncomeToCommon == null) { /* leave null */ }
+
+    const fundamentals = { ocfTTM, capex, fcfTTM, sbcTTM, revTTM, cash, totalDebt, debtToEquity, shares, shareTrendYoY };
+
+    return { quotes, price, vol: quotes[quotes.length - 1].volume, analystData, revGrowth: fd.revenueGrowth || 0, margins: fd.operatingMargins || 0, fundamentals };
   } catch (e) { return null; }
 }
 
 // ── Screen a single ticker ────────────────────────────────────────
 function screenTicker(sym, tickerData, macroResult) {
-  const { quotes, price, vol, analystData, revGrowth, margins } = tickerData;
+  const { quotes, price, vol, analystData, revGrowth, margins, fundamentals } = tickerData;
   const tech = analyzeTechnical(quotes);
   if (!tech) return null;
 
@@ -362,7 +402,7 @@ function screenTicker(sym, tickerData, macroResult) {
 
   const rating = computeRating(macroResult, tech, analystData, risk);
 
-  return { sym, price, vol, tech, analyst: analystData, risk, rating, revGrowth: (revGrowth * 100).toFixed(1) + '%', margins, macroRiskMult: macroResult ? macroResult.macroRiskMult : 1.0 };
+  return { sym, price, vol, tech, analyst: analystData, risk, rating, revGrowth: (revGrowth * 100).toFixed(1) + '%', margins, macroRiskMult: macroResult ? macroResult.macroRiskMult : 1.0, fundamentals };
 }
 
 // ── Demo mode ─────────────────────────────────────────────────────
@@ -439,7 +479,7 @@ async function runDemo() {
 
 // ── Live mode ─────────────────────────────────────────────────────
 async function runLive() {
-  const universe = await getUniverse(universeName);
+  const universe = await getUniverse(universeName, customSpec);
   console.log(`[UNIVERSE] ${universe.length} tickers loaded (${universeName})\n`);
 
   let macroResult = null;
@@ -509,6 +549,36 @@ async function runLive() {
 
   const limited = results.slice(0, cfg.maxResults);
 
+  // ── FINAL STEP: forward dilution risk on the screened list ──────────
+  // Deterministic score on all; Gemini judge per --dilution policy.
+  // Focus AI spend on actionable names (rating >= 3 / WATCH and up) unless
+  // policy=all. This is the "AI quality decision over up-to-date data" layer.
+  if (dilutionPolicy !== 'off') {
+    const aiKey = cfg.geminiApiKey || process.env.GEMINI_API_KEY || '';
+    const willCallAI = dilutionPolicy === 'all' || dilutionPolicy === 'flagged';
+    console.log(`\n[DILUTION] Forward dilution scan (policy=${dilutionPolicy}${willCallAI ? (aiKey ? ', Gemini ON' : ', Gemini OFF — no GEMINI_API_KEY') : ''})...`);
+    let aiCalls = 0, flagged = 0;
+    for (const r of limited) {
+      const ctx = { price: r.price, pctFromLo52: r.tech ? r.tech.pctFromLo52 : null };
+      // Only spend AI on actionable names even under 'flagged'/'all'
+      const actionable = r.rating.rating >= 3;
+      const policyForName = !actionable ? 'off' : dilutionPolicy;
+      r.dilution = await assessDilution(r.sym.replace(' [FAKE]', ''), r.fundamentals, ctx, isDemo ? 'off' : policyForName);
+      if (r.dilution.ai && !r.dilution.ai.error) aiCalls++;
+      if (r.dilution.tier === 'HIGH' || r.dilution.tier === 'ELEVATED') flagged++;
+    }
+    console.log(`[DILUTION] Done — ${flagged} elevated/high, ${aiCalls} AI judgments rendered`);
+    // Surface the worst dilution risks among BUY-rated names
+    const dilutionWarn = limited.filter(r => r.rating.rating >= 4 && (r.dilution?.tier === 'HIGH' || r.dilution?.tier === 'ELEVATED'));
+    if (dilutionWarn.length) {
+      console.log('[DILUTION] ⚠ BUY-rated names with elevated forward dilution risk:');
+      for (const r of dilutionWarn) {
+        const ai = r.dilution.ai && !r.dilution.ai.error ? ` | AI: ${r.dilution.ai.verdict} — ${r.dilution.ai.oneLine}` : '';
+        console.log(`           ${r.sym.padEnd(8)} risk ${r.dilution.score}/100 (${r.dilution.tier}): ${r.dilution.factors.join(', ')}${ai}`);
+      }
+    }
+  }
+
   generateConsoleSummary(limited);
 
   const html = generateReport(limited, macroResult);
@@ -526,6 +596,12 @@ async function runLive() {
     analystUp: r.analyst ? r.analyst.analystUp : null, upGrade: r.analyst ? r.analyst.upGrade : 'NO DATA',
     rr: r.risk.rr, rrGrade: r.risk.g4, stop: r.risk.stopLevel, target: r.risk.targetLevel,
     shares: r.risk.sharesFinal, comboWhy: r.rating.comboWhy,
+    dilutionScore: r.dilution ? r.dilution.score : null,
+    dilutionTier: r.dilution ? r.dilution.tier : null,
+    dilutionFactors: r.dilution ? r.dilution.factors : null,
+    dilutionNotes: r.dilution ? r.dilution.notes : null,
+    dilutionAI: r.dilution && r.dilution.ai && !r.dilution.ai.error ? r.dilution.ai : null,
+    dilutionMetrics: r.dilution ? r.dilution.metrics : null,
   }));
   fs.writeFileSync('screener_results.json', JSON.stringify(jsonData, null, 2));
   console.log('✅ JSON data saved to screener_results.json');

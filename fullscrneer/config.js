@@ -60,6 +60,8 @@ export default {
 
   // ── FRED API ────────────────────────────────────────────────────
   fredApiKey: process.env.FRED_API_KEY || '',
+  geminiApiKey: process.env.GEMINI_API_KEY || '',
+  geminiModel: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
 
   // ── Screener ────────────────────────────────────────────────────
   chartDays: 365,
