@@ -3,6 +3,7 @@
  */
 
 import https from 'https';
+import { readFileSync } from 'fs';
 
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
@@ -98,12 +99,48 @@ async function getRussell2000() {
 
 function getNDX100() { return NDX100; }
 
-export async function getUniverse(name) {
+async function getRussell3000() {
+  try {
+    const raw = await fetchUrl('https://www.slickcharts.com/russell3000');
+    const tickers = new Set();
+    const regex = /<a href="\/symbol\/([A-Z]+)"/g;
+    let match;
+    while ((match = regex.exec(raw)) !== null) tickers.add(match[1]);
+    if (tickers.size < 500) throw new Error("Too few");
+    return Array.from(tickers);
+  } catch (e) {
+    console.log(`[UNIVERSE] Russell 3000 fetch failed: ${e.message}, falling back to Russell 1000 ∪ 2000`);
+    const [r1, r2] = await Promise.all([getRussell1000(), getRussell2000()]);
+    return Array.from(new Set([...r1, ...r2]));
+  }
+}
+
+/** Parse custom tickers from "--tickers=AAPL,MSFT,TTD" or a file via "--tickers=@list.txt" */
+function parseCustomTickers(spec) {
+  if (!spec) return [];
+  let raw = spec;
+  if (spec.startsWith('@')) {
+    try { raw = readFileSync(spec.slice(1), 'utf8'); }
+    catch (e) { console.log(`[UNIVERSE] Could not read ticker file ${spec.slice(1)}: ${e.message}`); return []; }
+  }
+  return Array.from(new Set(
+    raw.split(/[\s,;\n\r\t]+/).map(t => t.trim().toUpperCase().replace('.', '-')).filter(t => /^[A-Z][A-Z\-]{0,5}$/.test(t))
+  ));
+}
+
+export async function getUniverse(name, customSpec) {
   switch (name) {
     case 'sp500': console.log('[UNIVERSE] Loading S&P 500...'); return getSP500();
     case 'russell1000': console.log('[UNIVERSE] Loading Russell 1000...'); return getRussell1000();
     case 'russell2000': console.log('[UNIVERSE] Loading Russell 2000...'); return getRussell2000();
+    case 'russell3000': console.log('[UNIVERSE] Loading Russell 3000...'); return getRussell3000();
     case 'ndx100': console.log('[UNIVERSE] Loading NDX 100...'); return getNDX100();
+    case 'custom': {
+      const t = parseCustomTickers(customSpec);
+      console.log(`[UNIVERSE] Custom universe: ${t.length} tickers`);
+      if (!t.length) { console.log('[UNIVERSE] No valid custom tickers — using default'); return DEFAULT_UNIVERSE; }
+      return t;
+    }
     default: console.log('[UNIVERSE] Using default curated universe...'); return DEFAULT_UNIVERSE;
   }
 }
