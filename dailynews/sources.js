@@ -103,9 +103,9 @@ const SOURCES = [
 // Fallback order is top→bottom; insiders.js clusters whatever rows it parses.
 // If one stops working, reorder or add a mirror here and re-run the health check.
 const INSIDER_SOURCES = [
-  { name: 'OpenInsider cluster buys',    url: 'http://openinsider.com/latest-cluster-buys',          type: 'openinsider' },
   { name: 'OpenInsider purchases 25k+',  url: 'http://openinsider.com/latest-insider-purchases-25k', type: 'openinsider' },
   { name: 'OpenInsider all purchases',   url: 'http://openinsider.com/latest-insider-purchases',     type: 'openinsider' },
+  { name: 'OpenInsider cluster buys',    url: 'http://openinsider.com/latest-cluster-buys',          type: 'openinsider' },
 ];
 
 // ─── market-data sources (used by marketdata.js) ────────────────────────────

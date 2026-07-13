@@ -46,8 +46,9 @@ const BLOCK_OUT = path.join(ROOT, 'insiders.block.html');
 let INSIDER_SOURCES;
 try { ({ INSIDER_SOURCES } = require('./sources.js')); } catch { /* sources.js may predate this */ }
 INSIDER_SOURCES = INSIDER_SOURCES || [
-  { name: 'OpenInsider cluster buys', url: 'http://openinsider.com/latest-cluster-buys', type: 'openinsider' },
   { name: 'OpenInsider purchases 25k+', url: 'http://openinsider.com/latest-insider-purchases-25k', type: 'openinsider' },
+  { name: 'OpenInsider all purchases', url: 'http://openinsider.com/latest-insider-purchases', type: 'openinsider' },
+  { name: 'OpenInsider cluster buys', url: 'http://openinsider.com/latest-cluster-buys', type: 'openinsider' },
 ];
 
 const LOG_MAX_DAYS = parseInt(process.env.INSIDER_MAX_DAYS, 10) || 120; // rolling cap on firstSeen dates
@@ -77,7 +78,8 @@ function parseOpenInsider(html) {
   const rows   = scope.match(/<tr[\s\S]*?<\/tr>/gi) || [];
   for (const row of rows) {
     if (/<th[\s\>]/i.test(row)) continue; // header
-    const cells = (row.match(/<td[\s\S]*?<\/td>/gi) || []).map(c =>
+    const cleanRow = row.replace(/onmouseover="[^"]*"/gi, '').replace(/onmouseout="[^"]*"/gi, '');
+    const cells = (cleanRow.match(/<td[\s\S]*?<\/td>/gi) || []).map(c =>
       c.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim());
     if (cells.length < 6) continue;
 
