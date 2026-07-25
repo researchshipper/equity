@@ -88,7 +88,7 @@ function main(){
 
   // ─── 0. DATA REFRESH (best-effort) ────────────────────────────────────────
   if (!skipData){
-    log(`📡 Refreshing market data + insider cluster buys (for macro + dual tables)...`);
+    log(`📡 Refreshing market data + macro regime + insider cluster buys (for macro + dual tables)...`);
     run(`node marketdata.js`,        { silent: quiet, tolerant: true });
     run(`node insiders.js fetch`,    { silent: quiet, tolerant: true });
     run(`node insiders.js score`,    { silent: quiet, tolerant: true });

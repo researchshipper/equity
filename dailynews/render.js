@@ -168,6 +168,8 @@ table.mini tr:last-child td{border-bottom:none}
 .kev.neg{border-color:#5a2a2a}.kev.pos{border-color:#1f5a3a}
 .macro .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media (max-width:760px){.macro .cols{grid-template-columns:1fr}}
+/* ── deterministic leading macro regime ───────────────────────────── */
+.macroregime{background:linear-gradient(135deg,#162b34,#0b1020 70%);border:1px solid #246153;border-radius:14px;padding:16px 18px;margin:18px 0}.mrhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.mrtitle{font-size:16px;font-weight:800}.mrpill{padding:3px 9px;border-radius:999px;background:#164537;color:#8df0c6;font-size:11px;font-weight:800}.mrpill.cash{background:#4a1e28;color:#ffb5bc}.mrpill.neutral{background:#473915;color:#f8d98c}.mrstats{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.mrstat{background:#0e1430;border:1px solid var(--line);border-radius:8px;padding:6px 9px;font-size:12px}.mrstat b{font-size:14px}.mrcols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mrbox{background:#0e1430;border:1px solid var(--line);border-radius:9px;padding:10px}.mrbox h4{margin:0 0 5px;font-size:11px;text-transform:uppercase;letter-spacing:.6px}.mrbox ul{margin:0;padding-left:16px;font-size:12px}.mrbox li{margin:3px 0}.mrai{margin-top:10px;color:#cfd8ff;font-size:13px}.mrwarn{margin-top:9px;padding:7px 9px;background:#402319;color:#ffd1a3;border-radius:7px;font-size:12px}@media(max-width:760px){.mrcols{grid-template-columns:1fr}}
 .cal{background:#0e1430;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
 .cal h4{margin:0 0 6px;font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:#9ec3ff}
 .cal table{width:100%;border-collapse:collapse;font-size:12.3px}
@@ -339,6 +341,23 @@ function renderActions(a){
 </div>`;
 }
 
+
+function renderMacroRegime(m){
+ if (!m) return '';
+ const list=(title,a)=>`<div class="mrbox"><h4>${title}</h4><ul>${(a||[]).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>Unavailable.</li>'}</ul></div>`;
+ const gates=(m.gates||[]).length ? (m.gates||[]).join(' · ') : 'None active';
+ const state=String(m.riskState||'').toLowerCase();
+ return `<section class="macroregime">
+  <div class="mrhead"><span class="mrtitle">🧭 LEADING MACRO REGIME</span><span class="mrpill ${state}">${esc(m.label||'UNAVAILABLE')}</span>${m.status==='degraded'?'<span class="mrpill cash">DATA DEGRADED</span>':''}</div>
+  <div class="mrstats"><span class="mrstat">Score <b>${esc(m.score??'—')}/100</b></span><span class="mrstat">Risk state <b>${esc(m.riskState||'—')}</b></span><span class="mrstat">Allocation guide <b>${esc(m.allocationGuidePct??'—')}%</b></span><span class="mrstat">Risk multiplier <b>${esc(m.riskMultiplier??'—')}×</b></span><span class="mrstat">Confidence <b>${esc(m.confidence||'—')}</b></span></div>
+  <div class="mrbox"><h4>Circuit breakers</h4><div>${esc(gates)}</div></div>
+  <div class="mrcols">${list('Leading evidence',m.leading)}${list('Lagging / confirmation context',m.lagging)}${list('Risks / falsifiers',m.risks)}</div>
+  ${m.aiExplanation?`<div class="mrai"><b>AI synthesis:</b> ${esc(m.aiExplanation)}</div>`:''}
+  ${(m.dataWarnings||[]).length?`<div class="mrwarn"><b>Data warnings:</b> ${esc(m.dataWarnings.join(' · '))}</div>`:''}
+  <div class="meta" style="margin-top:9px">Model v1 · 4w liquidity / 63-session market trends / 21-session curve gate · Not investment advice.</div>
+ </section>`;
+}
+
 function renderMacro(m){
   if (!m) return '';
   const has = arr => Array.isArray(arr) && arr.length;
@@ -435,6 +454,7 @@ function renderReport(r, opts = {}){
 </header>
 
 ${insiderBlock}
+${renderMacroRegime(r.macroRegime)}
 ${renderMacro(r.macro)}
 ${renderCommentary(r.marketCommentary)}
 

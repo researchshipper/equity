@@ -403,3 +403,57 @@ See **`INSTALL.md`** → *Repo layout suggestion*. In standalone mode:
 - The final dashboard HTML goes to `uploads/marketbeat_final_YYYY-MM-DD.html`.
 - Never commit report.json / marketdata.json / insiders.json / any .jsonl (all temporary, gitignored).
 - Each run is fire-and-forget for that timestamp's news + data.
+
+---
+
+## 🧭 Leading Macro Regime — mandatory deterministic block
+
+### Phase 0b: calculate it in code, never from prose
+Immediately after `node news/marketdata.js --print`, run:
+
+```bash
+node news/macroregime.js --print
+```
+
+`news/macroregime.json` is the sole source of truth for the leading macro regime,
+score, allocation guide, risk multiplier, gates, dates, and all values in
+`report.macroRegime`. **Copy those fields exactly; do not recalculate, round,
+substitute stale values, or infer values from a chart/screenshot.**
+
+The engine scores leading evidence only: 4-week/13-week Fed net liquidity,
+63-session credit and intermarket trends, plus a 21-session curve gate. CPI/PCE,
+NFP/unemployment/Sahm, housing starts, VIX/Fear & Greed and FedWatch are
+lagging/coincident or positioning context. They can qualify the explanation but
+must not be described as the leading score driver. An active circuit breaker is
+binding: never call a CASH regime constructive because equities, VIX or FedWatch
+moved favorably.
+
+Add a top-level `macroRegime` object to `report.json`. Copy `asOf`, `status`,
+`confidence`, `label`, `score`, `riskState`, `allocationGuidePct`,
+`riskMultiplier`, `gates`, and warnings from the engine exactly. Then write only
+these editorial fields using the engine evidence:
+
+```json
+"macroRegime": {
+  "asOf": "COPY_FROM_MACROREGIME_JSON",
+  "status": "ok",
+  "confidence": "HIGH",
+  "label": "COPY_FROM_ENGINE",
+  "score": 0,
+  "riskState": "COPY_FROM_ENGINE",
+  "allocationGuidePct": 0,
+  "riskMultiplier": 0,
+  "gates": [],
+  "leading": ["2–5 engine-backed leading-evidence lines"],
+  "lagging": ["1–4 clearly labelled lagging/coincident context lines"],
+  "risks": ["1–4 specific falsifiers or active circuit-breaker lines"],
+  "aiExplanation": "Exactly 2–4 sentences. Distinguish leading evidence, lagging confirmation, and risks. Do not introduce a numeric fact, forecast an index return, claim certainty, or give personalised investment advice.",
+  "dataWarnings": []
+}
+```
+
+If the engine status is `degraded`, copy all warnings, say the data are degraded,
+and do not replace missing inputs with estimates. The renderer places this section
+above the existing macro calendar and market commentary. Lint error E061 means a
+copied engine value differs; fix it by copying `macroregime.json`, not by arguing
+with the engine.

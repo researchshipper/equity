@@ -85,6 +85,18 @@ function checkTopLevel(r, out){
   if (!has(r, 'mood') || r.mood.length < 5)
     out.push({ code:'E004', ...errs(`mood[] needs ≥ 5 cells (got ${r.mood?.length || 0})`, 'mood') });
 
+  // Deterministic macro regime: content generator may explain it, never invent it.
+  const mr = r.macroRegime;
+  if (!mr) out.push({ code:'E060', ...errs('macroRegime{} missing — run macroregime.js and copy its deterministic output.', 'macroRegime') });
+  else {
+    const req=['asOf','status','label','score','riskState','allocationGuidePct','riskMultiplier','leading','lagging','risks','aiExplanation'];
+    const missing=req.filter(k=>mr[k]===undefined || mr[k]===null || (typeof mr[k]==='string'&&!len(mr[k])) || (Array.isArray(mr[k])&&!mr[k].length));
+    if(missing.length) out.push({ code:'E060', ...errs(`macroRegime missing: ${missing.join(', ')}`, 'macroRegime') });
+    const sentences=String(mr.aiExplanation||'').split(/[.!?]+/).filter(x=>x.trim()).length;
+    if(sentences && (sentences<2 || sentences>4)) out.push({ code:'E062', ...errs('macroRegime.aiExplanation must contain exactly 2–4 sentences.', 'macroRegime.aiExplanation') });
+    if(mr.status==='degraded' && !(mr.dataWarnings||[]).length) out.push({ code:'E063', ...errs('macroRegime is degraded but dataWarnings[] is empty.', 'macroRegime.dataWarnings') });
+  }
+
   const nNews = r.news?.length || 0;
   if (nNews < 8)
     out.push({ code:'E005', ...errs(`news[] needs ≥ 8 cards (got ${nNews})`, 'news') });
@@ -531,6 +543,19 @@ function checkCrossFileConsistency(dir, currentReport, out){
 // that matches a live instrument must be within tolerance of the real print.
 // Only fires when marketdata.json exists AND was fetched successfully — if the
 // data sources were blocked at fetch time we can't verify, so we note it softly.
+function checkMacroRegimeConsistency(dir, report, out){
+  const engine=readJsonSafe(path.join(dir,'macroregime.json'));
+  if(!engine){ out.push({code:'W220', ...warn('macroregime.json unavailable — deterministic macro-regime cross-check skipped.', 'macroregime.json')}); return; }
+  const r=report.macroRegime, e=engine.regime;
+  if(!r) return;
+  const score=engine.scores?.final;
+  if(r.label!==e?.label || r.riskState!==e?.riskState || r.allocationGuidePct!==e?.allocationGuidePct || r.riskMultiplier!==e?.riskMultiplier || (Number.isFinite(score)&&Math.abs(+r.score-score)>.05))
+    out.push({code:'E061', ...errs('macroRegime values disagree with macroregime.json. Copy label, score, state, allocation and multiplier exactly.', 'macroRegime')});
+  const expected=(engine.gates?.applied||[]).join('|'), got=(r.gates||[]).join('|');
+  if(expected!==got) out.push({code:'E065', ...errs('macroRegime.gates must exactly match macroregime.json applied gates.', 'macroRegime.gates')});
+  if(engine.status==='degraded' && !(r.dataWarnings||[]).length) out.push({code:'E063', ...errs('Engine data is degraded; copy its warnings into macroRegime.dataWarnings.', 'macroRegime.dataWarnings')});
+}
+
 function checkFactCheck(dir, report, out){
   const mdPath = path.join(dir, 'marketdata.json');
   if (!marketdata || !marketdata.factCheck){
@@ -601,6 +626,7 @@ function lint(report, opts = {}){
     checkHtmls(dir, report, findings);
     checkCrossFileConsistency(dir, report, findings);
     checkFactCheck(dir, report, findings);
+    checkMacroRegimeConsistency(dir, report, findings);
   }
 
   return findings;

@@ -37,6 +37,13 @@ function main() {
   const html = fs.readFileSync(HTML, 'utf8');
   const report = JSON.parse(fs.readFileSync(REPORT, 'utf8'));
 
+  // 0. Deterministic leading macro regime
+  if (!report.macroRegime) fail('report.json missing macroRegime. Run macroregime.js and copy its output.');
+  const macroRegimePhrases = ['LEADING MACRO REGIME','Leading evidence','Lagging / confirmation context','Risks / falsifiers','Circuit breakers','AI synthesis'];
+  const macroRegimeMissing = macroRegimePhrases.filter(x => !html.includes(x));
+  if (macroRegimeMissing.length) fail(`Macro regime section incomplete: ${macroRegimeMissing.join(', ')}`);
+  ok('Leading macro regime section present');
+
   // 1. Dual insiders (critical new feature)
   if (!/7d \(aggressive recent\) \+ 30d \(smoother primary\)/i.test(html)) {
     fail('Missing dual 7d+30d insider header in final HTML. Must have both aggressive 7d and smoother 30d tables.');
