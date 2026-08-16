@@ -69,6 +69,26 @@ function computeTech(quotes) {
   };
 }
 
+// ── Live valuation assumptions: ^TNX risk-free + VIX-regime ERP ─────────────
+// Replaces the frozen 4.4% rf in lib/valuation.js DEFAULTS so WACC/EVA/spread
+// track the actual rate cycle. Falls back to DEFAULTS silently if blocked.
+let LIVE_OPTS = {};
+async function fetchLiveAssumptions() {
+  const d1 = Math.floor(Date.now() / 1000) - 7 * 86400;
+  try {
+    const tnx = await yf.chart('^TNX', { period1: d1, interval: '1d' }).catch(() => null);
+    let y = tnx?.quotes?.filter(q => q.close != null).at(-1)?.close;
+    if (y != null && y > 30) y = y / 10; // legacy x10 feed
+    if (y > 0.5 && y < 12) LIVE_OPTS.riskFreeRate = +(y / 100).toFixed(4);
+  } catch {}
+  try {
+    const vix = await yf.chart('^VIX', { period1: d1, interval: '1d' }).catch(() => null);
+    const v = vix?.quotes?.filter(q => q.close != null).at(-1)?.close;
+    if (v != null) LIVE_OPTS.equityRiskPremium = v > 32 ? 0.060 : v > 25 ? 0.055 : 0.050;
+  } catch {}
+  console.log(`[stockfetch] Live WACC assumptions: rf=${LIVE_OPTS.riskFreeRate ?? 'default 4.4%'} erp=${LIVE_OPTS.equityRiskPremium ?? 'default 5.0%'}`);
+}
+
 function extractFund(qs) {
   if (!qs) return {};
 
@@ -105,7 +125,7 @@ function extractFund(qs) {
     priceToBook: sd.priceToBook,
     returnOnEquity: fd.returnOnEquity,
     interestExpense: fd.interestExpense,
-  });
+  }, LIVE_OPTS);
 
   return {
     mktcap: bil(p.marketCap),
@@ -227,6 +247,23 @@ async function fetchOne(sym, withStatements) {
 
 (async () => {
   const allSyms = [TICKER, ...PEERS];
+  await fetchLiveAssumptions();
+
+  // ── Optional regime-adaptive composite weights (lib/regime.js) ────────────
+  let regimeWeights = null, regimeTag = null;
+  try {
+    const { classifyRegime } = require('../lib/regime.js');
+    const series = {};
+    const d1r = Math.floor(Date.now() / 1000) - 420 * 86400;
+    for (const s of ['SPY', 'QQQ', 'IWM', 'HYG', 'IEF', '^VIX', 'RSP']) {
+      const ch = await yf.chart(s, { period1: d1r, interval: '1d' }).catch(() => null);
+      series[s.replace('^', '')] = (ch?.quotes || []).map(q => q.close).filter(v => v != null);
+    }
+    const reg = classifyRegime(series);
+    regimeWeights = reg.weights; regimeTag = `${reg.regime} (${reg.score}/100, exposure x${reg.exposure})`;
+    console.log(`[stockfetch] Market regime: ${regimeTag}`);
+  } catch { /* regime.js absent or blocked — fall back to static weights */ }
+
   // Statements (for the deterministic quality block) are fetched for EVERY ticker
   // so the Piotroski F-Score, EVA, margin-of-safety and 0–10 composite are
   // comparable across the whole peer table — not just the primary.
@@ -246,7 +283,8 @@ async function fetchOne(sym, withStatements) {
       marginOfSafetyPct: rq.available ? rq.marginOfSafety.discountPct : null,
       price: rt.price, ma50: rt.ma50, ma200: rt.ma200, rsi: rt.rsi, macd: rt.macd,
       goldenCross: rt.goldenCross,
-    });
+    }, regimeWeights);
+    if (regimeTag) r.composite.regime = regimeTag;
   }
 
   const primary = results[0] || {};
