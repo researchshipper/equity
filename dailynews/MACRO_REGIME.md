@@ -445,3 +445,47 @@ node dailynews/daily.js --strict
 ```
 
 This implementation makes the screenshot-style tiles useful as readable context while ensuring the reported regime is reproducible, resilient to brief rallies, and explicit about whether it is based on leading signals, lagging confirmation, or a binding liquidity/credit risk gate.
+
+## Bubble-Pop & Liquidity-Tightening Factors (Inside Leading Macro)
+
+Within `macroRegime`, track and report these three deterministic risk factors.
+Do NOT invent numbers—copy all values and Green/Yellow/Red states directly from `macroregime.json`.
+
+### 1. Exuberance & Bubble-Pop Risk (Greed, Leverage & Margin-Call Stress)
+- **What it tracks:** Market greed/complacency, leverage buildup, and the risk of forced margin calls + expanding credit stress.
+- **Inputs:**
+  - Leverage / Margin proxy (e.g., FINRA margin debt YoY% or leveraged-ETF/equity positioning)
+  - Credit stress confirmation: High-Yield OAS (`BAMLH0A0HYM2`) 21-day widening (bp) and `HYG/TLT` 63-day trend
+  - Sentiment/complacency extreme (e.g., VIX < 13 or Fear & Greed > 75 while credit spreads begin widening)
+- **Status (`GREEN` / `YELLOW` / `RED`):**
+  - `GREEN`: Normal leverage, credit spreads stable/tightening.
+  - `YELLOW`: Elevated greed/leverage OR early credit-spread widening (+15–30 bp).
+  - `RED`: Extreme leverage + expanding credit stress (HY OAS widening > +30 bp or `creditStress` gate triggered) → **High margin-call / bubble-pop risk**.
+
+### 2. Liquidity Drain & Fed Tightening Velocity
+- **What it tracks:** How fast the Fed is raising rates / tightening policy and draining system liquidity.
+- **Inputs:**
+  - Fed policy rate velocity: Effective Fed Funds / Upper Target (`FEDFUNDS` / `DFEDTARU`) change over 3M and 6M (bp)
+  - Fed Net Liquidity (`WALCL - WTREGEN - RRPONTSYD`) 4-week and 13-week change ($bn)
+- **Status (`GREEN` / `YELLOW` / `RED`):**
+  - `GREEN`: Fed cutting or on hold AND Net Liquidity flat/expanding.
+  - `YELLOW`: Slow rate hikes (+25–50 bp over 3M) OR mild Net Liquidity drain (-$50bn to -$150bn over 4W).
+  - `RED`: Aggressive Fed hiking (> +50 bp over 3M) AND/OR rapid Net Liquidity drain (< -$150bn over 4W) → **Active liquidity tightening**.
+
+### 3. Market Liquidity — NFCI Tightening Trajectory (1W / 1M / 6M / 1Y)
+- **What it tracks:** Chicago Fed National Financial Conditions Index (`NFCI`, weekly from FRED). Higher/rising `NFCI` = tighter financial conditions; negative/falling = looser.
+- **Required Comparisons (copy from `macroregime.json`):**
+  - **Current NFCI** vs. **Last Week (1W)**
+  - **Current NFCI** vs. **Last Month (1M / 4W)**
+  - **Current NFCI** vs. **Last 6 Months (6M / 26W)**
+  - **Current NFCI** vs. **Last Year (1Y / 52W)**
+- **Bubble-Pop Proximity Rule:**
+  - `GREEN` (Loose / Easing): NFCI < 0 and falling across 1W/1M/6M.
+  - `YELLOW` (Transitioning Tighter): NFCI rising over 1W and 1M (even if still < 0).
+  - `RED` (Tightening / Bubble-Pop Near): NFCI rising across **1W, 1M, 6M, and 1Y** (or NFCI > 0 and rising) → **Flag: `BUBBLE POP RISK: NEAR`**.
+
+### Output Rule for `report.json`
+In `macroRegime.aiExplanation`, explicitly state:
+1. The **Green / Yellow / Red** status for **Exuberance/Leverage**, **Liquidity Drain**, and **NFCI Trajectory**.
+2. Whether **NFCI** is tighter or looser than **1W, 1M, 6M, and 1Y** ago.
+3. If **2 or more** of these 3 factors are `RED` (especially if NFCI is tightening across all horizons), clearly warn that **bubble-pop risk is elevated/near**.
