@@ -1,0 +1,67 @@
+{
+  "regime_title": "Defensive & Rate-Sensitive Catch-Up Regime",
+  "regime_summary": "Broad healthcare, financials, and staples leaders broke toward 52-week highs while direct sub-sector twins lagged despite strong internal constituent breadth (>75% above 50-DMA) and constructive net inflows. Meanwhile, concentrated semis and energy services sit below their 50-DMAs and remain quarantined.",
+  "regime_pills": [
+    {"label": "Breakout Leaders", "text": "XLF, XLV, XLP, RSP holding near 52-week highs"},
+    {"label": "Breadth Confirmation", "text": "KRE (96%>50D), XHE (96%>50D), XPH (92%>50D), PBJ (76%>50D)"},
+    {"label": "Quarantined Clusters", "text": "SMH/SOXX (21-28%>50D), HACK/CIBR, URNM/URA broken below trend"}
+  ],
+  "setups": [
+    {
+      "ldr": "XLF", "lag": "KRE", "tier": "Tier 1", "win": "1W", "cat": "CORE",
+      "cluster": "Financials (Broad vs Regional Banks)",
+      "entry_rng": [71.50, 72.80], "stop": 69.80,
+      "twin_note": "96% of top constituents above 50-DMA · +$546M 1M net inflows",
+      "note": "Core Financials twin holding 10/10 closes above 20-EMA/50-DMA with steepening-curve tailwind and heavy 1M inflows."
+    },
+    {
+      "ldr": "XLV", "lag": "XHE", "tier": "Tier 1", "win": "1M", "cat": "EXP",
+      "cluster": "Healthcare (Broad vs Equipment)",
+      "entry_rng": [92.50, 94.80], "stop": 89.50,
+      "twin_note": "96% constituent breadth above 50-DMA · Z63 -1.64σ",
+      "note": "Med-tech equipment lagging broad XLV by +2.6% (1M) / +12.8% (1Q) while basing firmly above moving average support."
+    },
+    {
+      "ldr": "XLF", "lag": "IAI", "tier": "Tier 1", "win": "1M", "cat": "EXP",
+      "cluster": "Financials (Broad vs Broker-Dealers)",
+      "entry_rng": [140.00, 143.50], "stop": 135.50,
+      "twin_note": "Z63 -1.59σ · Z21 -1.22σ · Corr 0.78",
+      "note": "Capital markets & exchanges twin stretched -1.59σ below XLF while holding above both 20-EMA and 50-DMA."
+    },
+    {
+      "ldr": "XLP", "lag": "PBJ", "tier": "Tier 1", "win": "1Q", "cat": "EXP",
+      "cluster": "Staples (Broad vs Food & Beverage)",
+      "entry_rng": [47.00, 48.20], "stop": 45.20,
+      "twin_note": "Z63 -2.20σ · Corr 0.85 · 76% breadth above 50-DMA",
+      "note": "High-correlation staples twin lagging XLP by +8.5% over 1Q with intact multi-month support floor."
+    },
+    {
+      "ldr": "XLV", "lag": "XPH", "tier": "Tier 1", "win": "1Q", "cat": "EXP",
+      "cluster": "Healthcare (Broad vs Pharmaceuticals)",
+      "entry_rng": [64.80, 66.80], "stop": 62.50,
+      "twin_note": "92% breadth above 50-DMA · +$30.6M 1M inflows",
+      "note": "Pharma sub-sector lagging broad healthcare by +18.5% over 1Q while reclaiming and holding above 20-EMA & 50-DMA."
+    },
+    {
+      "ldr": "XLF", "lag": "KBWB", "tier": "Tier 2", "win": "1Q", "cat": "EXP",
+      "cluster": "Financials (Broad vs Large Banks)",
+      "entry_rng": [66.00, 68.00], "stop": 63.50,
+      "twin_note": "",
+      "note": "Wide +11.0% 1Q lag (Z63 -1.58σ) vs XLF; monitor for sustained multi-day closes above 50-DMA."
+    },
+    {
+      "ldr": "SMH", "lag": "SOXX", "tier": "Tier 3", "win": "1W", "cat": "CORE",
+      "cluster": "Semiconductors",
+      "entry_rng": null, "stop": 135.00,
+      "twin_note": "",
+      "note": "Quarantined: Only 20.8% of SOXX constituents above 50-DMA; severe semiconductor trend breakdown."
+    },
+    {
+      "ldr": "HACK", "lag": "CIBR", "tier": "Tier 3", "win": "1M", "cat": "EXP",
+      "cluster": "Cybersecurity Parity",
+      "entry_rng": null, "stop": 55.00,
+      "twin_note": "",
+      "note": "Quarantined: Both cybersecurity ETFs broken below 50-DMA (0/10 closes above 50-DMA, RSI 26.1)."
+    }
+  ]
+}
