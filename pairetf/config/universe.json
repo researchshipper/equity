@@ -1,0 +1,35 @@
+{
+  "pairs": [
+    ["SMH", "SOXX", "Semiconductors (Concentrated vs Broad)", "CORE"],
+    ["GDX", "GDXJ", "Gold Miners (Seniors vs Juniors)", "CORE"],
+    ["XLE", "OIH",  "Energy (Majors vs Oil Services)", "CORE"],
+    ["QQQ", "IWM",  "Large Growth vs Small Caps", "CORE"],
+    ["SPY", "RSP",  "S&P 500 (Cap-Weight vs Equal-Weight)", "CORE"],
+    ["XBI", "IBB",  "Biotech (EW SMID vs Cap-Weight Large)", "CORE"],
+    ["XLF", "KRE",  "Financials (Broad vs Regional Banks)", "CORE"],
+
+    ["XLE", "XOP",  "Energy (Majors vs E&P)", "EXP"],
+    ["XLK", "IGV",  "Tech (Broad vs Software)", "EXP"],
+    ["XLK", "RSPT", "Tech (Cap-Weight vs Equal-Weight)", "EXP"],
+    ["QQQ", "QQQE", "Nasdaq-100 (Cap-Weight vs Equal-Weight)", "EXP"],
+    ["XLY", "XRT",  "Consumer Disc (Cap-Weight vs EW Retail)", "EXP"],
+    ["XLI", "IYT",  "Industrials (Broad vs Transports)", "EXP"],
+    ["XLI", "ITA",  "Industrials (Broad vs Aerospace/Defense)", "EXP"],
+    ["XHB", "ITB",  "Housing (EW Homebuilders vs Construction)", "EXP"],
+    ["XLB", "XME",  "Materials (Broad vs Metals & Mining)", "EXP"],
+    ["XLV", "IHI",  "Healthcare (Broad vs Med Devices)", "EXP"],
+    ["XLV", "XPH",  "Healthcare (Broad vs Pharmaceuticals)", "EXP"],
+    ["XLV", "XHE",  "Healthcare (Broad vs Healthcare Equipment)", "EXP"],
+    ["XLV", "IHF",  "Healthcare (Broad vs Providers)", "EXP"],
+    ["XLF", "KBE",  "Financials (Broad vs Equal-Weight Banks)", "EXP"],
+    ["XLF", "KBWB", "Financials (Broad vs Large Banks)", "EXP"],
+    ["XLF", "IAI",  "Financials (Broad vs Broker-Dealers)", "EXP"],
+    ["XLP", "PBJ",  "Staples (Broad vs Food & Beverage)", "EXP"],
+    ["GLD", "SLV",  "Precious Metals (Gold vs Silver)", "EXP"],
+    ["URA", "URNM", "Uranium (Broad Nuclear vs Pure Miners)", "EXP"],
+    ["CIBR", "HACK","Cybersecurity Parity", "EXP"],
+    ["XLU", "ICLN", "Utilities vs Clean Energy", "EXP"],
+    ["SMH", "XSD",  "Semiconductors (Cap-Weight vs Equal-Weight)", "EXP"],
+    ["IWM", "IWN",  "Small Caps (Broad vs Small-Cap Value)", "EXP"]
+  ]
+}
