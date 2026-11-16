@@ -1,0 +1,88 @@
+{
+  "regime_title": "Live Market Tape & Sector Rotation Context",
+  "regime_summary": "Replace with a crisp 2-4 sentence summary of current sector leadership, macro/earnings catalysts, and why verified post-earnings laggards holding 20-EMA/50-DMA support outperform falling-knife traps.",
+  "regime_pills": [
+    {"label": "Breakout Clusters", "text": "Exchanges (CBOE/NDAQ), Waste (WCN/RSG/WM), Staples (MDLZ/HSY, PG/CL), MedTech (JNJ/ABT), P&C Ins. (ALL/TRV)"},
+    {"label": "Imminent Earnings Week", "text": "Quarantine or Tier-2-watchlist any pair reporting within 7 trading days."},
+    {"label": "Special Exclusions", "text": "Exclude active M&A merger-arb pairs from RV parity."}
+  ],
+  "special_exclusions": [
+    {
+      "badge": "EXCLUDED · M&A ARB",
+      "cluster": "Class I Railroads",
+      "title": "UNP vs. NSC — Active Merger Arbitrage Exclusion",
+      "note": "Example exclusion: Confirmed active merger between peers distorts quantitative Z-scores; exclude from relative-value parity."
+    }
+  ],
+  "setups": [
+    {
+      "ldr": "CBOE", "lag": "NDAQ", "tier": "Tier 1", "win": "1W", "cat": "EXP",
+      "cluster": "Exchanges & Market Data",
+      "entry_rng": [105.00, 107.80], "stop": 103.20, "short_tag": "", "twin_note": "",
+      "note": "Q3 Beat: Net rev $1.48B (+14% organic), ARR $3.37B (+14%), Adj EPS $1.04 (+19% YoY), active ASR. Lag driven purely by CBOE volatility surge."
+    },
+    {
+      "ldr": "JNJ", "lag": "ABT", "tier": "Tier 1", "win": "1W", "cat": "EXP",
+      "cluster": "Healthcare / MedTech",
+      "entry_rng": [106.50, 108.50], "stop": 104.50, "short_tag": "",
+      "twin_note": "Tactical 1W Stop $104.50 (below 50-EMA) · Structural 50-DMA Stop $103.20",
+      "note": "Q3 Reaffirm: Sales +14.5% (+7.0% comp), FY26 Adj EPS tightened ($5.50-$5.55), Libre Duo launch ahead; trading at deep Forward P/E discount on 20-EMA support."
+    },
+    {
+      "ldr": "WCN", "lag": "WM", "tier": "Tier 1", "win": "1M", "cat": "CORE",
+      "cluster": "Waste & Environmental",
+      "entry_rng": [235.00, 240.00], "stop": 231.50, "short_tag": "",
+      "twin_note": "Core Twin Confirmed: RSG > WM (+8.59% 1Q · Corr 0.85 · -13.0% Fwd P/E)",
+      "note": "Q3 Reaffirm: Rev +6.3%, YTD FCF +42%, FY26 rev & FCF reaffirmed at high end. Minor EPS timing noise created -12% multiple discount above 50-DMA."
+    },
+    {
+      "ldr": "ALL", "lag": "TRV", "tier": "Tier 1", "win": "1M", "cat": "EXP",
+      "cluster": "P&C Insurance",
+      "entry_rng": [393.00, 399.50], "stop": 387.50, "short_tag": "",
+      "twin_note": "Quality P&C ROE Premium; Cluster Value Alt: PGR > CB (-11.6% Fwd P/E)",
+      "note": "Q3 Blowout: Core EPS $9.18 (+24.9% beat), 22.1% Core ROE, 86.8% combined ratio, $1.5B buybacks. Pure post-print digestion lag."
+    },
+    {
+      "ldr": "MDLZ", "lag": "HSY", "tier": "Tier 1", "win": "1Q", "cat": "EXP",
+      "cluster": "Staples / Confectionery",
+      "entry_rng": [169.50, 173.50], "stop": 166.20, "short_tag": "", "twin_note": "",
+      "note": "Q3 Beat & Raise: Adj EPS $2.64 (+25.1% beat), GM +10.9pp, FY26 Adj EPS growth raised to +36%-38.5%, 2027 cocoa deflation ahead."
+    },
+    {
+      "ldr": "PG", "lag": "CL", "tier": "Tier 1", "win": "1Q", "cat": "CORE",
+      "cluster": "Staples / Household",
+      "entry_rng": [95.50, 98.20], "stop": 92.60, "short_tag": "", "twin_note": "",
+      "note": "Q3 Beat & Raise: Rev +4.6% (+3.6% organic, +1.7% volume), Base EPS +4.8% beat, GM +80bps, FY26 sales guidance raised."
+    },
+    {
+      "ldr": "COST", "lag": "WMT", "tier": "Tier 2", "win": "1W", "cat": "CORE",
+      "cluster": "Big-Box Retail",
+      "entry_rng": [123.00, 126.50], "stop": 119.50, "short_tag": "Earnings Risk", "twin_note": "",
+      "note": "Clean statistical stretch and P/E discount, but WMT faces imminent Q3 earnings print. Wait for post-print clarity."
+    },
+    {
+      "ldr": "KO", "lag": "PEP", "tier": "Tier 2", "win": "1Q", "cat": "CORE",
+      "cluster": "Staples / Beverages",
+      "entry_rng": [138.00, 142.00], "stop": 132.50, "short_tag": "Guide Cut", "twin_note": "",
+      "note": "Deep Forward P/E discount, but management cut FY26 Core EPS growth guidance citing North America margin pressure. Caution required."
+    },
+    {
+      "ldr": "AMD", "lag": "NVDA", "tier": "Tier 3", "win": "1W", "cat": "CORE",
+      "cluster": "AI GPUs / Semis",
+      "entry_rng": null, "stop": 145.00, "short_tag": "CEO/Earn", "twin_note": "",
+      "note": "Quarantined trap: CEO resignation shock + broken trend well below 50-DMA + imminent earnings binary."
+    },
+    {
+      "ldr": "DE", "lag": "CAT", "tier": "Tier 3", "win": "1Q", "cat": "CORE",
+      "cluster": "Heavy Machinery",
+      "entry_rng": null, "stop": 540.00, "short_tag": "Destock", "twin_note": "",
+      "note": "Quarantined trap: Flagged Q4 dealer destocking and tariff margin drag; broken decisively below 50-DMA."
+    },
+    {
+      "ldr": "CRWD", "lag": "PANW", "tier": "Tier 3", "win": "1Q", "cat": "CORE",
+      "cluster": "Cybersecurity",
+      "entry_rng": null, "stop": 295.00, "short_tag": "Bear/Earn", "twin_note": "",
+      "note": "Quarantined trap: Deep bear drawdown below 50-DMA ahead of imminent earnings."
+    }
+  ]
+}
