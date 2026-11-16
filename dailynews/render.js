@@ -347,9 +347,18 @@ function renderMacroRegime(m){
  const list=(title,a)=>`<div class="mrbox"><h4>${title}</h4><ul>${(a||[]).map(x=>`<li>${esc(x)}</li>`).join('')||'<li>Unavailable.</li>'}</ul></div>`;
  const gates=(m.gates||[]).length ? (m.gates||[]).join(' · ') : 'None active';
  const state=String(m.riskState||'').toLowerCase();
+ const bp=m.bubblePopFactors;
+ const tlBadge=s=>s==='RED'?'neg':s==='YELLOW'?'neu':'pos';
+ const nfciRow=(label,o)=>o?`<span>${label}: <b>${o.prior??'n/a'}</b> (${o.tighter?'<span class="neg">Tighter</span>':'<span class="pos">Looser</span>'})</span>`:'';
+ const bubbleHtml=bp?`<div class="mood" style="margin-top:10px">
+   <div class="cell"><div class="k">Exuberance / Margin Risk</div><div class="v ${tlBadge(bp.exuberanceBubblePop.status)}">${esc(bp.exuberanceBubblePop.status)}</div><div class="d">HY OAS 21d: ${bp.exuberanceBubblePop.hyOasChange21dBp??'n/a'} bp</div></div>
+   <div class="cell"><div class="k">Liquidity Drain &amp; Fed</div><div class="v ${tlBadge(bp.liquidityDrain.status)}">${esc(bp.liquidityDrain.status)}</div><div class="d">4w Liq: $${bp.liquidityDrain.netLiquidity4wUsdBn??'n/a'}bn · Fed 3m: ${bp.liquidityDrain.fedFunds3mChangeBp??'n/a'} bp</div></div>
+   <div class="cell"><div class="k">NFCI Trajectory ${bp.bubblePopNear?'· ⚠️ BUBBLE POP NEAR':''}</div><div class="v ${tlBadge(bp.nfciTrajectory.status)}">${esc(bp.nfciTrajectory.status)} (${bp.nfciTrajectory.current??'n/a'})</div><div class="d" style="display:flex;gap:8px;flex-wrap:wrap">${nfciRow('1W',bp.nfciTrajectory.vs1w)}${nfciRow('1M',bp.nfciTrajectory.vs1m)}${nfciRow('6M',bp.nfciTrajectory.vs6m)}${nfciRow('1Y',bp.nfciTrajectory.vs1y)}</div></div>
+ </div>`:'';
  return `<section class="macroregime">
   <div class="mrhead"><span class="mrtitle">🧭 LEADING MACRO REGIME</span><span class="mrpill ${state}">${esc(m.label||'UNAVAILABLE')}</span>${m.status==='degraded'?'<span class="mrpill cash">DATA DEGRADED</span>':''}</div>
   <div class="mrstats"><span class="mrstat">Score <b>${esc(m.score??'—')}/100</b></span><span class="mrstat">Risk state <b>${esc(m.riskState||'—')}</b></span><span class="mrstat">Allocation guide <b>${esc(m.allocationGuidePct??'—')}%</b></span><span class="mrstat">Risk multiplier <b>${esc(m.riskMultiplier??'—')}×</b></span><span class="mrstat">Confidence <b>${esc(m.confidence||'—')}</b></span></div>
+  ${bubbleHtml}
   <div class="mrbox"><h4>Circuit breakers</h4><div>${esc(gates)}</div></div>
   <div class="mrcols">${list('Leading evidence',m.leading)}${list('Lagging / confirmation context',m.lagging)}${list('Risks / falsifiers',m.risks)}</div>
   ${m.aiExplanation?`<div class="mrai"><b>AI synthesis:</b> ${esc(m.aiExplanation)}</div>`:''}

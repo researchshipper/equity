@@ -95,6 +95,15 @@ function checkTopLevel(r, out){
     const sentences=String(mr.aiExplanation||'').split(/[.!?]+/).filter(x=>x.trim()).length;
     if(sentences && (sentences<2 || sentences>4)) out.push({ code:'E062', ...errs('macroRegime.aiExplanation must contain exactly 2–4 sentences.', 'macroRegime.aiExplanation') });
     if(mr.status==='degraded' && !(mr.dataWarnings||[]).length) out.push({ code:'E063', ...errs('macroRegime is degraded but dataWarnings[] is empty.', 'macroRegime.dataWarnings') });
+    const bp = mr.bubblePopFactors;
+    if (!bp || !bp.exuberanceBubblePop || !bp.liquidityDrain || !bp.nfciTrajectory) {
+      out.push({ code:'E064', ...errs('macroRegime.bubblePopFactors missing — copy exuberanceBubblePop, liquidityDrain, nfciTrajectory from macroregime.json.', 'macroRegime.bubblePopFactors') });
+    } else {
+      const validTL = s => ['GREEN','YELLOW','RED'].includes(s);
+      if (!validTL(bp.exuberanceBubblePop.status) || !validTL(bp.liquidityDrain.status) || !validTL(bp.nfciTrajectory.status)) {
+        out.push({ code:'E065', ...errs('bubblePopFactors statuses must be GREEN, YELLOW, or RED.', 'macroRegime.bubblePopFactors') });
+      }
+    }
   }
 
   const nNews = r.news?.length || 0;

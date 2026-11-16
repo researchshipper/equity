@@ -652,6 +652,136 @@
           "items": {
             "type": "string"
           }
+        },
+        "bubblePopFactors": {
+          "type": "object",
+          "required": [
+            "bubblePopNear",
+            "exuberanceBubblePop",
+            "liquidityDrain",
+            "nfciTrajectory"
+          ],
+          "properties": {
+            "bubblePopNear": {
+              "type": "boolean"
+            },
+            "exuberanceBubblePop": {
+              "type": "object",
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "GREEN",
+                    "YELLOW",
+                    "RED"
+                  ]
+                },
+                "hyOasChange21dBp": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "hygTltChange63dPct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "hygLqdChange63dPct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "summary": {
+                  "type": "string"
+                }
+              }
+            },
+            "liquidityDrain": {
+              "type": "object",
+              "required": [
+                "status"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "GREEN",
+                    "YELLOW",
+                    "RED"
+                  ]
+                },
+                "fedFundsPct": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "fedFunds3mChangeBp": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "netLiquidity4wUsdBn": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "netLiquidity13wUsdBn": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "nfciTrajectory": {
+              "type": "object",
+              "required": [
+                "status",
+                "current",
+                "vs1w",
+                "vs1m",
+                "vs6m",
+                "vs1y"
+              ],
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "GREEN",
+                    "YELLOW",
+                    "RED"
+                  ]
+                },
+                "current": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "vs1w": {
+                  "type": "object"
+                },
+                "vs1m": {
+                  "type": "object"
+                },
+                "vs6m": {
+                  "type": "object"
+                },
+                "vs1y": {
+                  "type": "object"
+                }
+              }
+            }
+          }
         }
       }
     }

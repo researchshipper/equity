@@ -452,6 +452,13 @@ these editorial fields using the engine evidence:
 }
 ```
 
+- **Bubble-Pop & Liquidity-Tightening Factors (`macroRegime.bubblePopFactors`):**
+  Copy `exuberanceBubblePop`, `liquidityDrain`, and `nfciTrajectory` verbatim from `macroregime.json` (do not invent numbers or `GREEN`/`YELLOW`/`RED` states).
+  In `macroRegime.aiExplanation`, explicitly state:
+  1. The `GREEN` / `YELLOW` / `RED` status for Exuberance/Margin Risk, Liquidity Drain, and NFCI.
+  2. Whether NFCI is tighter or looser vs. 1W, 1M, 6M, and 1Y ago.
+  3. If `bubblePopNear` is `true` (or 2+ factors are `RED`), warn that bubble-pop risk is elevated/near.
+
 If the engine status is `degraded`, copy all warnings, say the data are degraded,
 and do not replace missing inputs with estimates. The renderer places this section
 above the existing macro calendar and market commentary. Lint error E061 means a
