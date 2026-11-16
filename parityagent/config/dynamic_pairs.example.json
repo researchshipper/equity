@@ -1,0 +1,10 @@
+{
+  "asof_note": "Optional Step 0 Dynamic Hot-Theme Radar: copy to data/dynamic_pairs.json with 4-10 timely current-market pairs (e.g., non-S&P 500 leaders, ADRs, or cross-sub-industry themes). Every pair is automatically merged into Step 1 and gated by deterministic correlation, spread, Z-score & MA math.",
+  "pairs": [
+    ["TSM",  "ASML", "Semiconductor Foundry/Litho", "DYNAMIC"],
+    ["ARM",  "MRVL", "AI Silicon / Custom ASICs",   "DYNAMIC"],
+    ["VRT",  "ETN",  "AI Data Center Power",        "DYNAMIC"],
+    ["NEM",  "AEM",  "Gold Miners",                 "DYNAMIC"],
+    ["SPOT", "NFLX", "Digital Media / Streaming",   "DYNAMIC"]
+  ]
+}
